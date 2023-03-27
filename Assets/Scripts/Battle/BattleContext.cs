@@ -2,6 +2,8 @@
 {
 	public class BattleContext
 	{
+		public BattleManager BattleManager;
+		
 		public BattleParty PlayerParty;
 		public BattleParty EnemyParty;
 

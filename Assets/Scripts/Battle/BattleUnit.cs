@@ -1,21 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 namespace SaturnRPG.Battle
 {
 	public class BattleUnit : MonoBehaviour
 	{
-		// Start is called before the first frame update
-		void Start()
+		public PartyMember PartyMember { get; private set; }
+
+		public void SetPartyMember(PartyMember partyMember)
 		{
-        
+			this.PartyMember = partyMember;
 		}
 
-		// Update is called once per frame
-		void Update()
+		public int HP { get; private set; }
+
+		public bool CanAttack { get; private set; } = true;
+
+		public async UniTask<BattleAttack> ChooseAttack(BattleContext context)
 		{
-        
+			return await PartyMember.BattleAttackChooser.ChooseAttack(context, this);
 		}
 	}
 }

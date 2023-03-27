@@ -1,6 +1,8 @@
-﻿namespace SaturnRPG.Battle
+﻿using UnityEngine;
+
+namespace SaturnRPG.Battle
 {
-	public class BattleMove
+	public abstract class BattleMove : ScriptableObject
 	{
 		
 	}
