@@ -9,20 +9,19 @@ namespace SaturnRPG.Battle
 {
 	public class BattleManager : MonoBehaviour
 	{
-		[SerializeField] public AsyncEvent<BattleContext> OnBattleStart;
-
-		[SerializeField] public AsyncEvent<BattleState> OnBattleStateChange;
-
-		[SerializeField] public AsyncEvent OnBattleWon, OnBattleLost;
-
+		public AsyncEvent<BattleContext> OnBattleStart;
+		public AsyncEvent<BattleState> OnBattleStateChange;
+		public AsyncEvent OnBattleWon, OnBattleLost;
+		public AsyncEvent<int> OnTurnStart;
+		
 		private readonly BattleContext _battleContext = new();
 		
-		[SerializeField, Required] private BattleUnitManager playerUnitManager;
-
-		[SerializeField, Required] private BattleUnitManager enemyUnitManager;
+		[SerializeField, Required] private BattleUnitManager playerUnitManager, enemyUnitManager;
 		
 		[ShowInInspector, ReadOnly]
 		public BattleState BattleState { get; private set; }
+		[ShowInInspector, ReadOnly]
+		public int TurnCount { get; private set; }
 
 		private void Start()
 		{
@@ -39,6 +38,8 @@ namespace SaturnRPG.Battle
 			
 			playerUnitManager.InitializeBattleUnits(playerParty);
 			enemyUnitManager.InitializeBattleUnits(enemyParty);
+
+			TurnCount = 1;
 			
 			BattleAsync().Forget();
 		}
@@ -56,6 +57,7 @@ namespace SaturnRPG.Battle
 
 			while (!playerUnitManager.AllUnitsDown() && !enemyUnitManager.AllUnitsDown())
 			{
+				await OnTurnStart.Invoke(TurnCount);
 				await ChangeState(BattleState.PlayerTurn);
 
 				foreach (var unit in playerUnitManager.ActiveUnits)
@@ -63,6 +65,8 @@ namespace SaturnRPG.Battle
 					if (!unit.CanAttack) continue;
 
 					var attack = await unit.ChooseAttack(_battleContext);
+					
+					await attack.PlayAttack(_battleContext);
 
 					if (playerUnitManager.AllUnitsDown())
 					{
@@ -76,6 +80,29 @@ namespace SaturnRPG.Battle
 						return;
 					}
 				}
+
+				foreach (var unit in enemyUnitManager.ActiveUnits)
+				{
+					if (!unit.CanAttack) continue;
+
+					var attack = await unit.ChooseAttack(_battleContext);
+					
+					await attack.PlayAttack(_battleContext);
+
+					if (playerUnitManager.AllUnitsDown())
+					{
+						await EndBattle(false);
+						return;
+					}
+
+					if (enemyUnitManager.AllUnitsDown())
+					{
+						await EndBattle(true);
+						return;
+					}
+				}
+
+				TurnCount++;
 			}
 		}
 

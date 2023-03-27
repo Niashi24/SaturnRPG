@@ -1,9 +1,16 @@
-﻿namespace SaturnRPG.Battle
+﻿using Cysharp.Threading.Tasks;
+
+namespace SaturnRPG.Battle
 {
 	public class BattleAttack
 	{
-		public BattleMove Attack;
+		public BattleMove MoveBase;
 		public BattleUnit User;
 		public BattleUnit Target;
+
+		public async UniTask PlayAttack(BattleContext context)
+		{
+			await MoveBase.PlayMove(context, this);
+		}
 	}
 }

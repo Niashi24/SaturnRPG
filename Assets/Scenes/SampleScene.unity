@@ -316,6 +316,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1208726613}
   - component: {fileID: 1208726614}
+  - component: {fileID: 1208726615}
   m_Layer: 0
   m_Name: Battle System
   m_TagString: Untagged
@@ -350,6 +351,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e5aa794e496440499954d2f4aed710f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerUnitManager: {fileID: 1208726615}
+  enemyUnitManager: {fileID: 1208726615}
+--- !u!114 &1208726615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208726612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8f05dd9843943eab021e3e9ebb8b36d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  availableUnits: []
 --- !u!1 &1282834509
 GameObject:
   m_ObjectHideFlags: 0
