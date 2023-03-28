@@ -2,94 +2,88 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using LS.Utilities;
-using UnityEngine;
 
 namespace SaturnRPG.Utilities
 {
-	[System.Serializable]
+	[Serializable]
 	public class AsyncEvent
 	{
-		[SerializeField]
-		private HashSet<Func<UniTask>> callbacks;
+		private HashSet<Func<UniTask>> _callbacks = new();
 
 		public void Subscribe(Func<UniTask> callback)
 		{
-			callbacks.Add(callback);
+			_callbacks.Add(callback);
 		}
 
 		public void Unsubscribe(Func<UniTask> callback)
 		{
-			callbacks.Remove(callback);
+			_callbacks.Remove(callback);
 		}
 
 		public async UniTask Invoke()
 		{
-			var tasks = callbacks
+			var tasks = _callbacks
 				.Select(x => x.Invoke())
 				.ToArray();
 
 			await UniTask.WhenAll(tasks);
 			
-			callbacks.Clear();
+			_callbacks.Clear();
 		}
 	}
 	
-	[System.Serializable]
+	[Serializable]
 	public class AsyncEvent<T>
 	{
-		[SerializeField]
-		private HashSet<Func<T, UniTask>> callbacks = new();
+		private HashSet<Func<T, UniTask>> _callbacks = new();
 
 		public void Subscribe(Func<T, UniTask> callback)
 		{
-			callbacks.Add(callback);
+			_callbacks.Add(callback);
 		}
 
 		public void Unsubscribe(Func<T, UniTask> callback)
 		{
-			callbacks.Remove(callback);
+			_callbacks.Remove(callback);
 		}
 
-		public async Task Invoke(T value)
+		public async UniTask Invoke(T value)
 		{
-			var tasks = callbacks
+			var tasks = _callbacks
 				.Select(x => x.Invoke(value))
 				.ToArray();
 
 			await UniTask.WhenAll(tasks);
 			
-			callbacks.Clear();
+			_callbacks.Clear();
 		}
 	}
 	
-	[System.Serializable]
+	[Serializable]
 	public class AsyncEvent<T1, T2>
 	{
-		[SerializeField]
-		private HashSet<Func<T1, T2, UniTask>> callbacks = new();
+		private HashSet<Func<T1, T2, UniTask>> _callbacks = new();
 
 		public void Subscribe(Func<T1, T2, UniTask> callback)
 		{
-			callbacks.Add(callback);
+			_callbacks.Add(callback);
 		}
 
 		public void Unsubscribe(Func<T1, T2, UniTask> callback)
 		{
-			callbacks.Remove(callback);
+			_callbacks.Remove(callback);
 		}
 
-		public async Task Invoke(T1 value1, T2 value2)
+		public async UniTask Invoke(T1 value1, T2 value2)
 		{
-			var tasks = callbacks
+			var tasks = _callbacks
 				.Select(x => x.Invoke(value1, value2))
 				.ToArray();
 
 			await UniTask.WhenAll(tasks);
 			
-			callbacks.Clear();
+			_callbacks.Clear();
 		}
 	}
 }
