@@ -9,5 +9,7 @@ namespace SaturnRPG.Battle
 		[field: SerializeField] public List<BattleMove> Moves { get; private set; }
 		
 		[field: SerializeField, Required] public BattleAttackChooser BattleAttackChooser { get; private set; }
+		
+		[field: SerializeField] public BattleStats Stats { get; private set; }
 	}
 }

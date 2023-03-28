@@ -7,6 +7,7 @@ namespace SaturnRPG.Battle
 		public BattleMove MoveBase;
 		public BattleUnit User;
 		public BattleUnit Target;
+		public BattleStats Stats;
 
 		public async UniTask PlayAttack(BattleContext context)
 		{

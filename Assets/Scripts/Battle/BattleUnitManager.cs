@@ -6,12 +6,16 @@ namespace SaturnRPG.Battle
 	public class BattleUnitManager : MonoBehaviour
 	{
 		[SerializeField] private BattleUnit[] availableUnits;
-		
-		public List<BattleUnit> ActiveUnits { get; private set; }
+
+		public List<BattleUnit> ActiveUnits { get; private set; } = new();
 
 		public void InitializeBattleUnits(BattleParty battleParty)
 		{
-			
+			ActiveUnits.Clear();
+			for (int i = 0; i < battleParty.PartyMembers.Count && i < availableUnits.Length; i++)
+			{
+				availableUnits[i].SetPartyMember(battleParty.PartyMembers[i]);
+			}
 		}
 
 		public bool AllUnitsDown()
