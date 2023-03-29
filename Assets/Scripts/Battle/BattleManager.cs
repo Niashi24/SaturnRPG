@@ -4,7 +4,6 @@ using Cysharp.Threading.Tasks;
 using SaturnRPG.Utilities;
 using UnityEngine;
 using Sirenix.OdinInspector;
-using UnityEngine.PlayerLoop;
 
 namespace SaturnRPG.Battle
 {
@@ -102,6 +101,12 @@ namespace SaturnRPG.Battle
 						return;
 					}
 				}
+
+				var tickAllies = playerUnitManager.ActiveUnits.Select(x => x.TickStatusConditions(_battleContext));
+				var tickEnemies = enemyUnitManager.ActiveUnits.Select(x => x.TickStatusConditions(_battleContext));
+
+				await UniTask.WhenAll(tickAllies);
+				await UniTask.WhenAll(tickEnemies);
 
 				TurnCount++;
 			}
