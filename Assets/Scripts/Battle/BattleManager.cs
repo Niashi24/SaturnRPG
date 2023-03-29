@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using SaturnRPG.Utilities;
 using UnityEngine;
@@ -9,10 +10,10 @@ namespace SaturnRPG.Battle
 {
 	public class BattleManager : MonoBehaviour
 	{
-		public AsyncEvent<BattleContext> OnBattleStart;
-		public AsyncEvent<BattleState> OnBattleStateChange;
-		public AsyncEvent OnBattleWon, OnBattleLost;
-		public AsyncEvent<int> OnTurnStart;
+		public readonly AsyncEvent<BattleContext> OnBattleStart = new();
+		public readonly AsyncEvent<BattleState> OnBattleStateChange = new();
+		public readonly AsyncEvent OnBattleWon = new(), OnBattleLost = new();
+		public readonly AsyncEvent<int> OnTurnStart = new();
 		
 		private readonly BattleContext _battleContext = new();
 		
@@ -62,7 +63,7 @@ namespace SaturnRPG.Battle
 
 				foreach (var unit in playerUnitManager.ActiveUnits)
 				{
-					if (!unit.CanAttack) continue;
+					if (!unit.CanAttack()) continue;
 
 					var attack = await unit.ChooseAttack(_battleContext);
 					
@@ -83,7 +84,7 @@ namespace SaturnRPG.Battle
 
 				foreach (var unit in enemyUnitManager.ActiveUnits)
 				{
-					if (!unit.CanAttack) continue;
+					if (!unit.CanAttack()) continue;
 
 					var attack = await unit.ChooseAttack(_battleContext);
 					

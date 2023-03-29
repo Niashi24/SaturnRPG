@@ -6,7 +6,6 @@ using Cysharp.Threading.Tasks;
 
 namespace SaturnRPG.Utilities
 {
-	[Serializable]
 	public class AsyncEvent
 	{
 		private HashSet<Func<UniTask>> _callbacks = new();
@@ -33,7 +32,6 @@ namespace SaturnRPG.Utilities
 		}
 	}
 	
-	[Serializable]
 	public class AsyncEvent<T>
 	{
 		private HashSet<Func<T, UniTask>> _callbacks = new();
@@ -60,7 +58,6 @@ namespace SaturnRPG.Utilities
 		}
 	}
 	
-	[Serializable]
 	public class AsyncEvent<T1, T2>
 	{
 		private HashSet<Func<T1, T2, UniTask>> _callbacks = new();

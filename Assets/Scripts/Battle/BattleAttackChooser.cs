@@ -9,6 +9,6 @@ namespace SaturnRPG.Battle
 		[Tooltip("Higher priority choosers get called first (AI goes before Player).")]
 		public int SelectionPriority { get; private set; } = 0;
 		
-		public abstract UniTask<BattleAttack> ChooseAttack(BattleContext context, BattleUnit unit);
+		public abstract UniTask<BattleAttack> ChooseAttack(BattleContext context, PartyMemberBattleUnit unit);
 	}
 }

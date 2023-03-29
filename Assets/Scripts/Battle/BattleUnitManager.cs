@@ -5,9 +5,9 @@ namespace SaturnRPG.Battle
 {
 	public class BattleUnitManager : MonoBehaviour
 	{
-		[SerializeField] private BattleUnit[] availableUnits;
+		[SerializeField] private PartyMemberBattleUnit[] availableUnits;
 
-		public List<BattleUnit> ActiveUnits { get; private set; } = new();
+		public List<PartyMemberBattleUnit> ActiveUnits { get; private set; } = new();
 
 		public void InitializeBattleUnits(BattleParty battleParty)
 		{

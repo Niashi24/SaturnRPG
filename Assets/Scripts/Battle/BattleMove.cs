@@ -15,13 +15,18 @@ namespace SaturnRPG.Battle
 		[field: SerializeField, TextArea(3, int.MaxValue)]
 		public string MoveDescription;
 		
-		[field: SerializeField] public int MP { get; private set; }
+		[field: SerializeField] public int MPCost { get; private set; }
 
 		public async UniTask PlayMove(BattleContext context, BattleAttack attack)
 		{
-			BattleMoveComponent battleMove = Instantiate(movePrefab, Vector3.zero, Quaternion.identity);
+			var battleMove = Instantiate(movePrefab, Vector3.zero, Quaternion.identity);
 			await battleMove.PlayAttack(context, attack);
 			Destroy(battleMove.gameObject);
+		}
+
+		public bool CanBeUsed(BattleContext context, PartyMemberBattleUnit user)
+		{
+			return user.MP >= MPCost && movePrefab.CanBeUsed(context, user);
 		}
 	}
 }
