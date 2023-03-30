@@ -24,7 +24,7 @@ namespace SaturnRPG.Battle
 			Destroy(battleMove.gameObject);
 		}
 
-		public bool CanBeUsed(BattleContext context, PartyMemberBattleUnit user)
+		public bool CanBeUsed(BattleContext context, BattleUnit user)
 		{
 			return user.MP >= MPCost && movePrefab.CanBeUsed(context, user);
 		}

@@ -1,13 +1,18 @@
 ﻿using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace SaturnRPG.Battle
 {
 	public class BattleUnitManager : MonoBehaviour
 	{
-		[SerializeField] private PartyMemberBattleUnit[] availableUnits;
+		[SerializeField]
+		private BattleUnit[] availableUnits;
+		
+		[field: SerializeField, Required]
+		public AllUnit AllTargetable { get; private set; }
 
-		public List<PartyMemberBattleUnit> ActiveUnits { get; private set; } = new();
+		public List<BattleUnit> ActiveUnits { get; private set; } = new();
 
 		public void InitializeBattleUnits(BattleParty battleParty)
 		{
@@ -16,6 +21,8 @@ namespace SaturnRPG.Battle
 			{
 				availableUnits[i].SetPartyMember(battleParty.PartyMembers[i]);
 			}
+			
+			AllTargetable.SetActiveUnits(ActiveUnits);
 		}
 
 		public bool AllUnitsDown()

@@ -8,8 +8,8 @@ namespace SaturnRPG.Battle
 	{
 		public abstract UniTask PlayAttack(BattleContext context, BattleAttack attack);
 
-		public abstract bool CanBeUsed(BattleContext context, PartyMemberBattleUnit user);
+		public abstract bool CanBeUsed(BattleContext context, BattleUnit user);
 
-		public abstract List<PartyMemberBattleUnit> GetTargetableUnits(PartyMemberBattleUnit user, BattleContext context);
+		public abstract List<ITargetable> GetTargetables(BattleUnit user, BattleContext context);
 	}
 }

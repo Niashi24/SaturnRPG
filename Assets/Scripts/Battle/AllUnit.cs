@@ -6,16 +6,16 @@ using UnityEngine;
 
 namespace SaturnRPG.Battle
 {
-	public class AllUnit : BattleUnit
+	public class AllUnit : MonoBehaviour, ITargetable
 	{
-		public override int HP => 0;
-		public override int MP => 0;
+		public int HP => 0;
+		public int MP => 0;
 		
-		[SerializeField] private new string name;
-		public override string Name => name;
+		[field: SerializeField]
+		public string Name { get; private set; }
 		
-		public override List<StatusCondition> StatusConditions => new ();
-		public override BattleStats BaseStats => new BattleStats();
+		public List<StatusCondition> StatusConditions { get; private set; } = new ();
+		public BattleStats BaseStats => new BattleStats();
 
 		private List<BattleUnit> _activeUnits;
 
@@ -24,43 +24,30 @@ namespace SaturnRPG.Battle
 			_activeUnits = ActiveUnits;
 		}
 
-		public override void SetPartyMember(PartyMember partyMember)
+		public bool CanBeAttacked()
 		{
-			Debug.LogError("Error! Tried to set party member of AllUnit.", this);
+			return _activeUnits != null && _activeUnits.Count != 0;
 		}
 
-		public override bool CanAttack()
-		{
-			Debug.LogError("Error! Tried to check if AllUnit can attack.", this);
-			return false;
-		}
-
-		public override BattleStats GetBattleStats()
+		public BattleStats GetBattleStats()
 		{
 			Debug.LogError("Error! Tried to get battle stats of AllUnit", this);
 			return new BattleStats();
 		}
 
-		public override List<BattleMove> GetAvailableMoves(PartyMemberBattleUnit user, BattleContext context)
+		public List<BattleMove> GetAvailableMoves(BattleUnit user, BattleContext context)
 		{
 			Debug.LogError("Error! Tried to get available moves of AllUnit.", this);
 			return new List<BattleMove>();
 		}
 
-		public override async UniTask<BattleAttack> ChooseAttack(BattleContext context)
+		public async UniTask<BattleAttack> ChooseAttack(BattleContext context)
 		{
 			await UniTask.CompletedTask;
 			return new BattleAttack();
 		}
 
-		public override async UniTask TickStatusConditions(BattleContext context)
-		{
-			Debug.LogError("Error! Tried to tick status conditions of AllUnit", this);
-			await UniTask.CompletedTask;
-			return;
-		}
-
-		public override async UniTask AddStatusCondition(BattleContext context, StatusCondition statusCondition)
+		public async UniTask AddStatusCondition(BattleContext context, StatusCondition statusCondition)
 		{
 			if (_activeUnits == null)
 			{
@@ -72,7 +59,7 @@ namespace SaturnRPG.Battle
 			await UniTask.WhenAll(_activeUnits.Select(x => x.AddStatusCondition(context, statusCondition)));
 		}
 
-		public override async UniTask DealDamage(int damage)
+		public async UniTask DealDamage(int damage)
 		{
 			if (_activeUnits == null)
 			{
@@ -84,7 +71,7 @@ namespace SaturnRPG.Battle
 			await UniTask.WhenAll(_activeUnits.Select(x => x.DealDamage(damage)));
 		}
 
-		public override async UniTask UseMP(int mp)
+		public async UniTask UseMP(int mp)
 		{
 			if (_activeUnits == null)
 			{
