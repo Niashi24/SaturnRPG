@@ -9,14 +9,17 @@ namespace SaturnRPG.Battle
 	[CreateAssetMenu(menuName = "Battle/Battle Move")]
 	public class BattleMove : ScriptableObject
 	{
-		[SerializeField, Required] private BattleMoveComponent movePrefab;
+		[SerializeField, Required]
+		private BattleMoveComponent movePrefab;
 
-		[field: SerializeField] public string MoveName { get; private set; }
+		[field: SerializeField]
+		public string MoveName { get; private set; }
 
 		[field: SerializeField, TextArea(3, int.MaxValue)]
 		public string MoveDescription;
 		
-		[field: SerializeField] public int MPCost { get; private set; }
+		[field: SerializeField]
+		public int MPCost { get; private set; }
 
 		public async UniTask PlayMove(BattleContext context, BattleAttack attack)
 		{

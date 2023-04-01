@@ -2,6 +2,7 @@
 
 namespace SaturnRPG.Battle
 {
+	[System.Serializable]
 	public struct BattleStats
 	{
 		public int HP;

@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace SaturnRPG.Battle
 {
+	[CreateAssetMenu(menuName = "Battle/Attack Chooser/Random Attack Chooser")]
 	public class RandomAttackChooser : BattleAttackChooser
 	{
 		[SerializeField, Required]

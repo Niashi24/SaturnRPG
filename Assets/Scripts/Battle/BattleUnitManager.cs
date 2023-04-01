@@ -15,6 +15,16 @@ namespace SaturnRPG.Battle
 
 		public List<BattleUnit> ActiveUnits { get; private set; } = new();
 
+		public List<BattleUnit> GetTargetableUnits()
+		{
+			List<BattleUnit> TargetableUnits = new();
+			foreach (var unit in ActiveUnits)
+				if (unit.CanBeAttacked())
+					TargetableUnits.Add(unit);
+
+			return TargetableUnits;
+		}
+
 		public void InitializeBattleUnits(BattleParty battleParty)
 		{
 			ActiveUnits.Clear();

@@ -15,7 +15,7 @@ namespace SaturnRPG.Battle
 
 		public int HP { get; private set; }
 		public int MP { get; private set; }
-		public string Name => PartyMember != null ? PartyMember.name : "???";
+		public string Name => PartyMember != null ? PartyMember.Name : "???";
 		public int SelectionPriority => PartyMember != null ? PartyMember.BattleAttackChooser.SelectionPriority : 0;
 
 		public List<StatusCondition> StatusConditions { get; private set; } = new();

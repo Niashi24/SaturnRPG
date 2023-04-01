@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e7fff60cbfb4ecd9c5b9ae4750fc9d4, type: 3}
+  m_Name: Rider
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Rider
+  <Moves>k__BackingField: []
+  <BattleAttackChooser>k__BackingField: {fileID: 11400000, guid: 6635fadef29ca5a408cb9ed52e36126d, type: 2}
+  <Stats>k__BackingField:
+    HP: 20
+    MP: 5
+    Attack: 5
+    Magic: 1
+    Defense: 2
+  <HP>k__BackingField: 20
+  <MP>k__BackingField: 5

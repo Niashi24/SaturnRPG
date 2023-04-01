@@ -1,12 +1,16 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace SaturnRPG.Battle.Moves
 {
 	public class DoNothingMove : BattleMoveComponent
 	{
-		public override UniTask PlayAttack(BattleContext context, BattleAttack attack)
-			=> UniTask.CompletedTask;
+		public override async UniTask PlayAttack(BattleContext context, BattleAttack attack)
+		{
+			Debug.Log($"{attack.User.Name} did nothing!");
+			await UniTask.Delay(1000);
+		}
 
 		public override bool CanBeUsed(BattleContext context, BattleUnit user)
 			=> true;
