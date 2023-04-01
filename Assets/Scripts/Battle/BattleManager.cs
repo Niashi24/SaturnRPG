@@ -11,12 +11,16 @@ namespace SaturnRPG.Battle
 	{
 		public readonly AsyncEvent<BattleContext> OnBattleStart = new();
 		public readonly AsyncEvent<BattleState> OnBattleStateChange = new();
-		public readonly AsyncEvent OnBattleWon = new(), OnBattleLost = new();
+		public readonly AsyncEvent OnBattleWon = new(), OnBattleLost = new(), OnBattleQuit = new();
 		public readonly AsyncEvent<int> OnTurnStart = new();
 		
 		private readonly BattleContext _battleContext = new();
 		
-		[SerializeField, Required] private BattleUnitManager playerUnitManager, enemyUnitManager;
+		[SerializeField, Required]
+		private BattleUnitManager playerUnitManager, enemyUnitManager;
+		
+		[SerializeField, Required]
+		private BattleAttackManager battleAttackManager;
 		
 		[ShowInInspector, ReadOnly]
 		public BattleState BattleState { get; private set; }
@@ -25,9 +29,10 @@ namespace SaturnRPG.Battle
 
 		private void Start()
 		{
-			BattleAsync().Forget();
+			// BattleAsync().Forget();
 		}
 
+		[Button]
 		public void StartBattle(BattleParty playerParty, BattleParty enemyParty)
 		{
 			_battleContext.BattleManager = this;
@@ -55,58 +60,41 @@ namespace SaturnRPG.Battle
 			await OnBattleStart.Invoke(_battleContext);
 			await ChangeState(BattleState.Start);
 
+			// awaits the given async function, gets the turn outcome from it
+			// if the battle should end, returns true, otherwise returns false
+			async UniTask<bool> AwaitTurnOutcome(UniTask<TurnOutcome> turnOutcome)
+			{
+				switch (await turnOutcome)
+				{
+					case TurnOutcome.Continue:
+						return false;
+					case TurnOutcome.PlayerWon:
+						await EndBattle(true);
+						return true;
+					case TurnOutcome.PlayerLost:
+						await EndBattle(false);
+						return true;
+					default:
+						return false;
+				}
+			}
+
 			while (!playerUnitManager.AllUnitsDown() && !enemyUnitManager.AllUnitsDown())
 			{
 				await OnTurnStart.Invoke(TurnCount);
 				await ChangeState(BattleState.PlayerTurn);
 
-				foreach (var unit in playerUnitManager.ActiveUnits)
-				{
-					if (!unit.CanAttack()) continue;
+				if (await AwaitTurnOutcome(battleAttackManager.ProcessAttacks(playerUnitManager, _battleContext)))
+					return;
 
-					var attack = await unit.ChooseAttack(_battleContext);
-					
-					await attack.PlayAttack(_battleContext);
+				if (await AwaitTurnOutcome(battleAttackManager.ProcessAttacks(enemyUnitManager, _battleContext)))
+					return;
 
-					if (playerUnitManager.AllUnitsDown())
-					{
-						await EndBattle(false);
-						return;
-					}
+				if (await AwaitTurnOutcome(enemyUnitManager.TickStatusConditions(_battleContext)))
+					return;
 
-					if (enemyUnitManager.AllUnitsDown())
-					{
-						await EndBattle(true);
-						return;
-					}
-				}
-
-				foreach (var unit in enemyUnitManager.ActiveUnits)
-				{
-					if (!unit.CanAttack()) continue;
-
-					var attack = await unit.ChooseAttack(_battleContext);
-					
-					await attack.PlayAttack(_battleContext);
-
-					if (playerUnitManager.AllUnitsDown())
-					{
-						await EndBattle(false);
-						return;
-					}
-
-					if (enemyUnitManager.AllUnitsDown())
-					{
-						await EndBattle(true);
-						return;
-					}
-				}
-
-				var tickAllies = playerUnitManager.ActiveUnits.Select(x => x.TickStatusConditions(_battleContext));
-				var tickEnemies = enemyUnitManager.ActiveUnits.Select(x => x.TickStatusConditions(_battleContext));
-
-				await UniTask.WhenAll(tickAllies);
-				await UniTask.WhenAll(tickEnemies);
+				if (await AwaitTurnOutcome(playerUnitManager.TickStatusConditions(_battleContext)))
+					return;
 
 				TurnCount++;
 			}

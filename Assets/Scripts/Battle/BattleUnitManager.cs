@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -35,6 +36,23 @@ namespace SaturnRPG.Battle
 			}
 
 			return true;
+		}
+
+		public async UniTask<TurnOutcome> TickStatusConditions(BattleContext context)
+		{
+			UniTask[] unitTasks = new UniTask[ActiveUnits.Count];
+			for (int i = 0; i < ActiveUnits.Count; i++)
+			{
+				unitTasks[i] = ActiveUnits[i].TickStatusConditions(context);
+			}
+
+			await UniTask.WhenAll(unitTasks);
+
+			if (context.PlayerUnitManager.AllUnitsDown())
+				return TurnOutcome.PlayerLost;
+			if (context.EnemyUnitManager.AllUnitsDown())
+				return TurnOutcome.PlayerWon;
+			return TurnOutcome.Continue;
 		}
 	}
 }

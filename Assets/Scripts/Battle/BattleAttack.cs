@@ -13,5 +13,15 @@ namespace SaturnRPG.Battle
 		{
 			await MoveBase.PlayMove(context, this);
 		}
+
+		public bool CanBeUsed()
+		{
+			if (MoveBase == null) return false;
+			if (User == null) return false;
+			if (Target == null) return false;
+			if (!User.CanAttack()) return false;
+
+			return Target.CanBeAttacked();
+		}
 	}
 }

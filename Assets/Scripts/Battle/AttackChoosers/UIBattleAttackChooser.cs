@@ -13,5 +13,10 @@ namespace SaturnRPG.Battle
 			// TODO: Make and call the UI
 			throw new System.NotImplementedException();
 		}
+
+		public override UniTask<BattleAttack> RedoChoiceSelection(BattleContext context, BattleUnit unit, BattleAttack former)
+		{
+			return ChooseAttack(context, unit);
+		}
 	}
 }

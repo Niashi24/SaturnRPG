@@ -16,6 +16,7 @@ namespace SaturnRPG.Battle
 		public int HP { get; private set; }
 		public int MP { get; private set; }
 		public string Name => PartyMember != null ? PartyMember.name : "???";
+		public int SelectionPriority => PartyMember != null ? PartyMember.BattleAttackChooser.SelectionPriority : 0;
 
 		public List<StatusCondition> StatusConditions { get; private set; } = new();
 
@@ -51,14 +52,18 @@ namespace SaturnRPG.Battle
 			List<BattleMove> availableMoves = new();
 			if (PartyMember != null)
 				availableMoves.AddRange(PartyMember.Moves);
-			// TODO: Return Battle Moves of Player Character
+			// TODO: If player is first in party, add "Run" move?
 			return new List<BattleMove>();
 		}
 
-		public async UniTask<BattleAttack> ChooseAttack(BattleContext context)
-		{
-			return await PartyMember.BattleAttackChooser.ChooseAttack(context, this);
-		}
+		public UniTask<BattleAttack> ChooseAttack(BattleContext context) 
+			=> PartyMember.BattleAttackChooser.ChooseAttack(context, this);
+
+		public UniTask<BattleAttack> RedoAttackChoice(BattleAttack previous, BattleContext context)
+			=> PartyMember.BattleAttackChooser.RedoChoiceSelection(context, this, previous);
+
+		public BattleAttack FixAttack(BattleAttack former, BattleContext context)
+			=> PartyMember.BattleAttackChooser.FixAttack(former, context);
 
 		public async UniTask AddStatusCondition(BattleContext context, StatusCondition statusCondition)
 		{
@@ -75,7 +80,7 @@ namespace SaturnRPG.Battle
 		public async UniTask DealDamage(int damage)
 		{
 			int oldHealth = HP;
-			HP = (int)Mathf.Clamp(HP - damage, 0, GetBattleStats().HP);
+			HP = Mathf.Clamp(HP - damage, 0, GetBattleStats().HP);
 			// Do Hit Animation
 			await OnHPChange.Invoke(HP, oldHealth);
 		}
@@ -83,7 +88,7 @@ namespace SaturnRPG.Battle
 		public async UniTask UseMP(int mp)
 		{
 			int oldMP = MP;
-			MP = (int)Mathf.Clamp(MP - mp, 0, GetBattleStats().MP);
+			MP = Mathf.Clamp(MP - mp, 0, GetBattleStats().MP);
 			// Do MP Animations
 			await OnMPChange.Invoke(MP, oldMP);
 		}

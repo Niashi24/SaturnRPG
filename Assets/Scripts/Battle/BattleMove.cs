@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -27,6 +28,11 @@ namespace SaturnRPG.Battle
 		public bool CanBeUsed(BattleContext context, BattleUnit user)
 		{
 			return user.MP >= MPCost && movePrefab.CanBeUsed(context, user);
+		}
+
+		public List<ITargetable> GetTargetables(BattleUnit user, BattleContext context)
+		{
+			return movePrefab.GetTargetables(user, context);
 		}
 	}
 }
