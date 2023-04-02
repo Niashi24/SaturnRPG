@@ -2,22 +2,28 @@
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using SaturnRPG.Utilities;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace SaturnRPG.Battle
 {
 	public class BattleUnit : MonoBehaviour, ITargetable
 	{
-		public PartyMember PartyMember { get; private set; }
 		public Action<PartyMember> OnSetPartyMember;
 		public readonly AsyncEvent<int, int> OnHPChange = new();
 		public readonly AsyncEvent<int, int> OnMPChange = new();
-
+		
+		[ShowInInspector, ReadOnly]
+		public PartyMember PartyMember { get; private set; }
+		[ShowInInspector, ReadOnly]
 		public int HP { get; private set; }
+		[ShowInInspector, ReadOnly]
 		public int MP { get; private set; }
+		[ShowInInspector, ReadOnly]
 		public string Name => PartyMember != null ? PartyMember.Name : "???";
 		public int SelectionPriority => PartyMember != null ? PartyMember.BattleAttackChooser.SelectionPriority : 0;
 
+		[ShowInInspector, ReadOnly]
 		public List<StatusCondition> StatusConditions { get; private set; } = new();
 
 		public BattleStats BaseStats => PartyMember.Stats;
@@ -35,6 +41,10 @@ namespace SaturnRPG.Battle
 		public void SetPartyMember(PartyMember partyMember)
 		{
 			PartyMember = partyMember;
+			HP = partyMember.GetStartHP();
+			MP = partyMember.GetStartMP();
+			
+			OnSetPartyMember?.Invoke(PartyMember);
 		}
 
 		public BattleStats GetBattleStats()
@@ -53,7 +63,7 @@ namespace SaturnRPG.Battle
 			if (PartyMember != null)
 				availableMoves.AddRange(PartyMember.Moves);
 			// TODO: If player is first in party, add "Run" move?
-			return new List<BattleMove>();
+			return availableMoves;
 		}
 
 		public UniTask<BattleAttack> ChooseAttack(BattleContext context) 

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Random Attack Chooser
   m_EditorClassIdentifier: 
   <SelectionPriority>k__BackingField: 0
-  defaultMove: {fileID: 0}
-  doNothingMove: {fileID: 0}
+  defaultMove: {fileID: 11400000, guid: 06bd5a8e1835deb42ad536548729f664, type: 2}
+  doNothingMove: {fileID: 11400000, guid: 06bd5a8e1835deb42ad536548729f664, type: 2}

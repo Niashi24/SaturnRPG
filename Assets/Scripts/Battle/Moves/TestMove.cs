@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -15,7 +16,10 @@ namespace SaturnRPG.Battle.Moves
 			Debug.Log($"{attack.User.Name} attacked {attack.Target.Name}!");
 			await UniTask.Delay(1000);
 
-			await attack.Target.DealDamage(userStats.Attack - enemyStats.Defense);
+			int damage = userStats.Attack - enemyStats.Defense;
+			damage = Math.Max(0, damage);
+
+			await attack.Target.DealDamage(damage);
 		}
 
 		public override bool CanBeUsed(BattleContext context, BattleUnit user)

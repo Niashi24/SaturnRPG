@@ -13,6 +13,7 @@ namespace SaturnRPG.Battle
 		[field: SerializeField, Required]
 		public AllUnit AllTargetable { get; private set; }
 
+		[ShowInInspector, ReadOnly]
 		public List<BattleUnit> ActiveUnits { get; private set; } = new();
 
 		public List<BattleUnit> GetTargetableUnits()
@@ -31,6 +32,7 @@ namespace SaturnRPG.Battle
 			for (int i = 0; i < battleParty.PartyMembers.Count && i < availableUnits.Length; i++)
 			{
 				availableUnits[i].SetPartyMember(battleParty.PartyMembers[i]);
+				ActiveUnits.Add(availableUnits[i]);
 			}
 			
 			AllTargetable.SetActiveUnits(ActiveUnits);

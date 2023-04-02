@@ -9,18 +9,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e7fff60cbfb4ecd9c5b9ae4750fc9d4, type: 3}
-  m_Name: Ariel
+  m_Script: {fileID: 11500000, guid: 4d29bdee14ad4d13b6bb08fdf9844c18, type: 3}
+  m_Name: Enemy 3
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Ariel
+  <Name>k__BackingField: Enemy 3
   <Moves>k__BackingField:
   - {fileID: 11400000, guid: c35ac21953ed346478ada0101c9eda78, type: 2}
   <BattleAttackChooser>k__BackingField: {fileID: 11400000, guid: 6635fadef29ca5a408cb9ed52e36126d, type: 2}
   <Stats>k__BackingField:
-    HP: 20
-    MP: 5
-    Attack: 5
-    Magic: 1
-    Defense: 2
-  <HP>k__BackingField: 20
-  <MP>k__BackingField: 5
+    HP: 10
+    MP: 0
+    Attack: 3
+    Magic: 0
+    Defense: 0

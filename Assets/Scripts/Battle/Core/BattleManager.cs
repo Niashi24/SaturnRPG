@@ -33,6 +33,7 @@ namespace SaturnRPG.Battle
 		}
 
 		[Button]
+		[DisableInEditorMode]
 		public void StartBattle(BattleParty playerParty, BattleParty enemyParty)
 		{
 			_battleContext.BattleManager = this;
@@ -52,6 +53,7 @@ namespace SaturnRPG.Battle
 		private async UniTask ChangeState(BattleState state)
 		{
 			this.BattleState = state;
+			Debug.Log($"Changed to {state} state");
 			await OnBattleStateChange.Invoke(state);
 		}
 
@@ -82,10 +84,13 @@ namespace SaturnRPG.Battle
 			while (!playerUnitManager.AllUnitsDown() && !enemyUnitManager.AllUnitsDown())
 			{
 				await OnTurnStart.Invoke(TurnCount);
+				
 				await ChangeState(BattleState.PlayerTurn);
 
 				if (await AwaitTurnOutcome(battleAttackManager.ProcessAttacks(playerUnitManager, _battleContext)))
 					return;
+
+				await ChangeState(BattleState.EnemyTurn);
 
 				if (await AwaitTurnOutcome(battleAttackManager.ProcessAttacks(enemyUnitManager, _battleContext)))
 					return;

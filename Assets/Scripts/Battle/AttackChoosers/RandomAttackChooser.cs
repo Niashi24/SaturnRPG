@@ -18,10 +18,12 @@ namespace SaturnRPG.Battle
 		public override async UniTask<BattleAttack> ChooseAttack(BattleContext context, BattleUnit unit)
 		{
 			List<BattleMove> usableMoves = unit.GetAvailableMoves(context);
+			// foreach (var move in usableMoves) Debug.Log($"{move.MoveName}");
 			usableMoves.Shuffle();
 			for (int i = 0; i < usableMoves.Count; i++)
 			{
 				var targetables = usableMoves[i].GetTargetables(unit, context);
+				// foreach (var target in targetables) Debug.Log($"{target.Name}");
 				targetables.Shuffle();
 				for (int j = 0; j < targetables.Count; j++)
 				{
@@ -43,7 +45,7 @@ namespace SaturnRPG.Battle
 				if (defaultTargetables[i].CanBeAttacked())
 					return new BattleAttack()
 					{
-						MoveBase = usableMoves[i],
+						MoveBase = defaultMove,
 						Stats = unit.GetBattleStats(),
 						Target = defaultTargetables[i],
 						User = unit

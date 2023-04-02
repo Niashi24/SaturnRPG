@@ -27,8 +27,6 @@ namespace SaturnRPG.Utilities
 				.ToArray();
 
 			await UniTask.WhenAll(tasks);
-			
-			_callbacks.Clear();
 		}
 	}
 	
@@ -53,8 +51,6 @@ namespace SaturnRPG.Utilities
 				.ToArray();
 
 			await UniTask.WhenAll(tasks);
-			
-			_callbacks.Clear();
 		}
 	}
 	
@@ -79,8 +75,6 @@ namespace SaturnRPG.Utilities
 				.ToArray();
 
 			await UniTask.WhenAll(tasks);
-			
-			_callbacks.Clear();
 		}
 	}
 }

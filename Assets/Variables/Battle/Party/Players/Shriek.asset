@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Shriek
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Shriek
-  <Moves>k__BackingField: []
+  <Moves>k__BackingField:
+  - {fileID: 11400000, guid: c35ac21953ed346478ada0101c9eda78, type: 2}
   <BattleAttackChooser>k__BackingField: {fileID: 11400000, guid: 6635fadef29ca5a408cb9ed52e36126d, type: 2}
   <Stats>k__BackingField:
     HP: 20
