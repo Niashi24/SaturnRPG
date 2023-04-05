@@ -1,4 +1,6 @@
-﻿namespace SaturnRPG.Battle
+﻿using System.Threading;
+
+namespace SaturnRPG.Battle
 {
 	public class BattleContext
 	{
@@ -9,6 +11,8 @@
 
 		public BattleUnitManager PlayerUnitManager;
 		public BattleUnitManager EnemyUnitManager;
+
+		public CancellationToken BattleCancellationToken;
 
 		public BattleUnitManager GetEnemies(BattleUnit user)
 		{

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6998400098043064378}
   - component: {fileID: 6998400098043064377}
   m_Layer: 0
-  m_Name: Player Units
+  m_Name: Battle Unit Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

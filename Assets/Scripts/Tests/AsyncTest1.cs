@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using SaturnRPG.Battle;
 using Sirenix.OdinInspector;
@@ -23,7 +24,7 @@ namespace SaturnRPG
             Vector2 target = transform.position + displacement;
             while (Vector2.Distance(transform.position, target) > 0)
             {
-                await UniTask.Yield();
+                await UniTask.Yield(cancellationToken: context.BattleCancellationToken);
                 transform.position = Vector2.MoveTowards(transform.position, target, Time.deltaTime);
             }
         }

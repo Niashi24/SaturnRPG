@@ -77,4 +77,28 @@ namespace SaturnRPG.Utilities
 			await UniTask.WhenAll(tasks);
 		}
 	}
+	
+	public class AsyncEvent<T1, T2, T3>
+	{
+		private HashSet<Func<T1, T2, T3, UniTask>> _callbacks = new();
+
+		public void Subscribe(Func<T1, T2, T3, UniTask> callback)
+		{
+			_callbacks.Add(callback);
+		}
+
+		public void Unsubscribe(Func<T1, T2, T3, UniTask> callback)
+		{
+			_callbacks.Remove(callback);
+		}
+
+		public async UniTask Invoke(T1 value1, T2 value2, T3 value3)
+		{
+			var tasks = _callbacks
+				.Select(x => x.Invoke(value1, value2, value3))
+				.ToArray();
+
+			await UniTask.WhenAll(tasks);
+		}
+	}
 }

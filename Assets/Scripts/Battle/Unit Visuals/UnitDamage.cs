@@ -35,7 +35,7 @@ namespace SaturnRPG.Battle
 			else
 				Debug.Log($"{battleUnit.Name} was knocked out!");
 
-			await UniTask.Delay(1000);
+			await UniTask.Delay(1000, cancellationToken: BattleManager.I.BattleContext.BattleCancellationToken);
 		}
 	}
 }

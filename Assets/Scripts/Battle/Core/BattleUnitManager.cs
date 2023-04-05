@@ -26,6 +26,16 @@ namespace SaturnRPG.Battle
 			return TargetableUnits;
 		}
 
+		public List<BattleUnit> GetAttackingUnits()
+		{
+			List<BattleUnit> AttackingUnits = new();
+			foreach (var unit in ActiveUnits)
+				if (unit.CanAttack())
+					AttackingUnits.Add(unit);
+			
+			return AttackingUnits;
+		}
+
 		public void InitializeBattleUnits(BattleParty battleParty)
 		{
 			ActiveUnits.Clear();
@@ -40,8 +50,6 @@ namespace SaturnRPG.Battle
 
 		public bool AllUnitsDown()
 		{
-			if (ActiveUnits.Count == 0) return true;
-
 			foreach (var unit in ActiveUnits)
 			{
 				if (unit.HP > 0) return false;

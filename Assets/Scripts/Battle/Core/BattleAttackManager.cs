@@ -7,11 +7,11 @@ namespace SaturnRPG.Battle
 {
 	public class BattleAttackManager : MonoBehaviour
 	{
-		public readonly AsyncEvent<BattleAttack> OnAttack = new();
+		public readonly AsyncEvent<BattleAttack, BattleContext> OnAttack = new();
 
 		public async UniTask<TurnOutcome> ProcessAttacks(BattleUnitManager unitManager, BattleContext context)
 		{
-			BattleUnit[] sortedUnits = unitManager.ActiveUnits.OrderByDescending(x => x.SelectionPriority).ToArray();
+			BattleUnit[] sortedUnits = unitManager.GetAttackingUnits().OrderByDescending(x => x.SelectionPriority).ToArray();
 
 			BattleAttack[] attacks = new BattleAttack[sortedUnits.Length];
 			for (int i = 0; i < sortedUnits.Length; i++)
@@ -32,7 +32,7 @@ namespace SaturnRPG.Battle
 			{
 				if (attack.CanBeUsed())
 				{
-					await OnAttack.Invoke(attack);
+					await OnAttack.Invoke(attack, context);
 					await attack.PlayAttack(context);
 				}
 				else  // Attack failed, try to fix it
@@ -41,7 +41,7 @@ namespace SaturnRPG.Battle
 					var newAttack = attack.User.FixAttack(attack, context);
 					if (newAttack.CanBeUsed())
 					{
-						await OnAttack.Invoke(attack);
+						await OnAttack.Invoke(attack, context);
 						await attack.PlayAttack(context);
 					}
 				}

@@ -9,7 +9,7 @@ namespace SaturnRPG.Battle
 {
 	public class BattleUnit : MonoBehaviour, ITargetable
 	{
-		public Action<PartyMember> OnSetPartyMember;
+		public event Action<PartyMember> OnSetPartyMember;
 		public readonly AsyncEvent<int, int> OnHPChange = new();
 		public readonly AsyncEvent<int, int> OnMPChange = new();
 		

@@ -14,7 +14,7 @@ namespace SaturnRPG.Battle.Moves
 			BattleStats enemyStats = attack.Target.GetBattleStats();
 			
 			Debug.Log($"{attack.User.Name} attacked {attack.Target.Name}!");
-			await UniTask.Delay(1000);
+			await UniTask.Delay(1000, cancellationToken: context.BattleCancellationToken);
 
 			int damage = userStats.Attack - enemyStats.Defense;
 			damage = Math.Max(0, damage);

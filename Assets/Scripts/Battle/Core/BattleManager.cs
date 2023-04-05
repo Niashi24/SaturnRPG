@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using SaturnRPG.Utilities;
 using UnityEngine;
@@ -9,12 +11,14 @@ namespace SaturnRPG.Battle
 {
 	public class BattleManager : MonoBehaviour
 	{
+		public static BattleManager I { get; private set; }
+		
 		public readonly AsyncEvent<BattleContext> OnBattleStart = new();
 		public readonly AsyncEvent<BattleState> OnBattleStateChange = new();
 		public readonly AsyncEvent OnBattleWon = new(), OnBattleLost = new(), OnBattleQuit = new();
 		public readonly AsyncEvent<int> OnTurnStart = new();
 		
-		private readonly BattleContext _battleContext = new();
+		public readonly BattleContext BattleContext = new();
 		
 		[SerializeField, Required]
 		private BattleUnitManager playerUnitManager, enemyUnitManager;
@@ -27,21 +31,37 @@ namespace SaturnRPG.Battle
 		[ShowInInspector, ReadOnly]
 		public int TurnCount { get; private set; }
 
-		private void Start()
+		private void OnEnable()
 		{
-			// BattleAsync().Forget();
+			if (I == null)
+			{
+				I = this;
+			}
+			else
+			{
+				Destroy(gameObject);
+			}
 		}
 
+		private void OnDisable()
+		{
+			if (I == this)
+			{
+				I = null;
+			}
+		}
+		
 		[Button]
 		[DisableInEditorMode]
 		public void StartBattle(BattleParty playerParty, BattleParty enemyParty)
 		{
-			_battleContext.BattleManager = this;
-			_battleContext.PlayerParty = playerParty;
-			_battleContext.PlayerUnitManager = playerUnitManager;
-			_battleContext.EnemyParty = enemyParty;
-			_battleContext.EnemyUnitManager = enemyUnitManager;
-			
+			BattleContext.BattleManager = this;
+			BattleContext.PlayerParty = playerParty;
+			BattleContext.PlayerUnitManager = playerUnitManager;
+			BattleContext.EnemyParty = enemyParty;
+			BattleContext.EnemyUnitManager = enemyUnitManager;
+			BattleContext.BattleCancellationToken = this.GetCancellationTokenOnDestroy();
+
 			playerUnitManager.InitializeBattleUnits(playerParty);
 			enemyUnitManager.InitializeBattleUnits(enemyParty);
 
@@ -59,7 +79,7 @@ namespace SaturnRPG.Battle
 
 		private async UniTaskVoid BattleAsync()
 		{
-			await OnBattleStart.Invoke(_battleContext);
+			await OnBattleStart.Invoke(BattleContext);
 			await ChangeState(BattleState.Start);
 
 			// awaits the given async function, gets the turn outcome from it
@@ -87,18 +107,18 @@ namespace SaturnRPG.Battle
 				
 				await ChangeState(BattleState.PlayerTurn);
 
-				if (await AwaitTurnOutcome(battleAttackManager.ProcessAttacks(playerUnitManager, _battleContext)))
+				if (await AwaitTurnOutcome(battleAttackManager.ProcessAttacks(playerUnitManager, BattleContext)))
 					return;
 
 				await ChangeState(BattleState.EnemyTurn);
 
-				if (await AwaitTurnOutcome(battleAttackManager.ProcessAttacks(enemyUnitManager, _battleContext)))
+				if (await AwaitTurnOutcome(battleAttackManager.ProcessAttacks(enemyUnitManager, BattleContext)))
 					return;
 
-				if (await AwaitTurnOutcome(enemyUnitManager.TickStatusConditions(_battleContext)))
+				if (await AwaitTurnOutcome(enemyUnitManager.TickStatusConditions(BattleContext)))
 					return;
 
-				if (await AwaitTurnOutcome(playerUnitManager.TickStatusConditions(_battleContext)))
+				if (await AwaitTurnOutcome(playerUnitManager.TickStatusConditions(BattleContext)))
 					return;
 
 				TurnCount++;
