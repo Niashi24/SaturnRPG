@@ -11,7 +11,9 @@ namespace SaturnRPG.Battle
 
 		public async UniTask<TurnOutcome> ProcessAttacks(BattleUnitManager unitManager, BattleContext context)
 		{
-			BattleUnit[] sortedUnits = unitManager.GetAttackingUnits().OrderByDescending(x => x.SelectionPriority).ToArray();
+			BattleUnit[] sortedUnits = unitManager.GetAttackingUnits()
+				.OrderByDescending(x => x.SelectionPriority)
+				.ToArray();
 
 			BattleAttack[] attacks = new BattleAttack[sortedUnits.Length];
 			for (int i = 0; i < sortedUnits.Length; i++)

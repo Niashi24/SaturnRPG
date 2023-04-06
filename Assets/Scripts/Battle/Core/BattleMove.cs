@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using LS.SearchWindows;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -10,6 +11,7 @@ namespace SaturnRPG.Battle
 	public class BattleMove : ScriptableObject
 	{
 		[SerializeField, Required]
+		[AssetsOnly, AssetSearch]
 		private BattleMoveComponent movePrefab;
 
 		[field: SerializeField]

@@ -25,9 +25,9 @@ namespace SaturnRPG.Battle
 		
 		[SerializeField, Required]
 		private BattleAttackManager battleAttackManager;
-		
+
 		[ShowInInspector, ReadOnly]
-		public BattleState BattleState { get; private set; }
+		public BattleState BattleState { get; private set; } = BattleState.End;
 		[ShowInInspector, ReadOnly]
 		public int TurnCount { get; private set; }
 
@@ -53,8 +53,11 @@ namespace SaturnRPG.Battle
 		
 		[Button]
 		[DisableInEditorMode]
-		public void StartBattle(BattleParty playerParty, BattleParty enemyParty)
+		public async UniTask StartBattle(BattleParty playerParty, BattleParty enemyParty)
 		{
+			if (BattleState != BattleState.End)
+				return;
+			
 			BattleContext.BattleManager = this;
 			BattleContext.PlayerParty = playerParty;
 			BattleContext.PlayerUnitManager = playerUnitManager;
@@ -67,7 +70,7 @@ namespace SaturnRPG.Battle
 
 			TurnCount = 1;
 			
-			BattleAsync().Forget();
+			await BattleAsync();
 		}
 
 		private async UniTask ChangeState(BattleState state)
@@ -77,7 +80,7 @@ namespace SaturnRPG.Battle
 			await OnBattleStateChange.Invoke(state);
 		}
 
-		private async UniTaskVoid BattleAsync()
+		private async UniTask BattleAsync()
 		{
 			await OnBattleStart.Invoke(BattleContext);
 			await ChangeState(BattleState.Start);
