@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e7fff60cbfb4ecd9c5b9ae4750fc9d4, type: 3}
-  m_Name: Ariel
+  m_Name: Arial
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Ariel
+  <Name>k__BackingField: Arial
   <Moves>k__BackingField:
   - {fileID: 11400000, guid: c35ac21953ed346478ada0101c9eda78, type: 2}
   <BattleAttackChooser>k__BackingField: {fileID: 11400000, guid: 6635fadef29ca5a408cb9ed52e36126d, type: 2}
