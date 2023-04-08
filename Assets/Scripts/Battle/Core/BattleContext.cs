@@ -5,6 +5,7 @@ namespace SaturnRPG.Battle
 	public class BattleContext
 	{
 		public BattleManager BattleManager;
+		public BattleCamera BattleCamera;
 		
 		public BattleParty PlayerParty;
 		public BattleParty EnemyParty;

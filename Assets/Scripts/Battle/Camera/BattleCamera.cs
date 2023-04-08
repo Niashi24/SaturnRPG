@@ -25,18 +25,23 @@ namespace SaturnRPG.Battle
 		private Vector3 _velocity = Vector3.zero;
 
 		[ShowInInspector, ReadOnly]
-		private Vector3 _targetPosition;
+		private I3DViewable _target;
 
-		void Start()
+		private readonly ConstantViewable _constantViewable = new();
+
+		private void Start()
 		{
-			_targetPosition = transform.position;
+			_constantViewable.Position = transform.position;
+			_target = _constantViewable;
 		}
 
-		void Update()
+		private void Update()
 		{
+			var targetPosition = CalcTargetPosition(_target.GetPosition());
+			
 			transform.localPosition = Vector3.SmoothDamp(
 				transform.localPosition,
-				_targetPosition,
+				targetPosition,
 				ref _velocity,
 				smoothTime
 			);
@@ -46,25 +51,33 @@ namespace SaturnRPG.Battle
 		[DisableInEditorMode]
 		public void SetTargetPosition(Vector3 position)
 		{
-			position += targetOffset;
-			_targetPosition = new Vector3(
-				Mathf.Clamp(position.x, minMaxX.x, minMaxX.y),
-				Mathf.Clamp(position.y, minMaxY.x, minMaxY.y),
-				Mathf.Clamp(position.z, minMaxZ.x, minMaxZ.y)
-			);
+			_constantViewable.Position = position;
+			_target = _constantViewable;
 		}
 
-		public void SetTarget(I3DViewable viewable)
+		private Vector3 CalcTargetPosition(Vector3 rawPosition)
 		{
-			SetTargetPosition(viewable.GetPosition());
+			rawPosition += targetOffset;
+			rawPosition = new Vector3(
+				Mathf.Clamp(rawPosition.x, minMaxX.x, minMaxX.y),
+				Mathf.Clamp(rawPosition.y, minMaxY.x, minMaxY.y),
+				Mathf.Clamp(rawPosition.z, minMaxZ.x, minMaxZ.y)
+			);
+			return rawPosition;
 		}
-		
-		#if UNITY_EDITOR
-		public void SetTarget(LS.Utilities.ObjectReference<I3DViewable> viewable)
+
+		[Button, DisableInEditorMode]
+		public void SetTarget(I3DViewable viewable, bool follow = true)
 		{
-			if (!viewable.HasValue) return;
-			SetTarget(viewable.Value);
+			if (follow)
+			{
+				_target = viewable;
+			}
+			else
+			{
+				_target = _constantViewable;
+				_constantViewable.Position = _target.GetPosition();
+			}
 		}
-		#endif
 	}
 }
