@@ -1,4 +1,5 @@
 ﻿using Cysharp.Threading.Tasks;
+using SaturnRPG.Battle.Unit_Visuals;
 using SaturnRPG.Camera3D2D;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -22,8 +23,9 @@ namespace SaturnRPG.Battle
 		private void OnEnable()
 		{
 			battleUnit.OnSetPartyMember += SetPartyMember;
+			battleUnit.OnHPChange.Subscribe(TakeDamage);
 		}
-		
+
 		private void Start() { BattleManager.I.OnBattleStateChange.Subscribe(CleanUpOnEnd); }
 
 		private void OnDisable()
@@ -48,6 +50,19 @@ namespace SaturnRPG.Battle
 			PartyMemberVisual.transform.localPosition = Vector3.zero;
 			
 			cameraAnchor.SetSize(PartyMemberVisual.Size);
+		}
+
+		private async UniTask TakeDamage(int HP, int oldHP)
+		{
+			var cancelToken = BattleManager.I.BattleContext.BattleCancellationToken;
+
+			if (oldHP == 0 && HP == 0) return;
+			if (oldHP == 0 && HP > 0)
+				await PartyMemberVisual.PlayAnimation(BattleVisualStates.Revived, cancelToken);
+			else if (oldHP > 0 && HP == 0)
+				await PartyMemberVisual.PlayAnimation(BattleVisualStates.MortalBlow, cancelToken);
+			else if (oldHP > 0 && HP > 0)
+				await PartyMemberVisual.PlayAnimation(BattleVisualStates.Hit, cancelToken);
 		}
 
 		private UniTask CleanUpOnEnd(BattleState state)
