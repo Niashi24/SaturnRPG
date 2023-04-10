@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7c970db23e842a888d45c30019d6cb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <UnitVisual>k__BackingField: {fileID: 7003122967631623939}
 --- !u!1 &8646640380761356064
 GameObject:
   m_ObjectHideFlags: 0
@@ -55,6 +56,8 @@ GameObject:
   m_Component:
   - component: {fileID: 5725467211449665704}
   - component: {fileID: 338985769380194892}
+  - component: {fileID: 7003122967631623939}
+  - component: {fileID: 1535293678071386092}
   m_Layer: 0
   m_Name: Visual
   m_TagString: Untagged
@@ -90,3 +93,55 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battleUnit: {fileID: 2696257129409464395}
+--- !u!114 &7003122967631623939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8646640380761356064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 697ba66ae2f74df48bdc5dad6e20cd12, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleUnit: {fileID: 2696257129409464395}
+  <Anchor3D>k__BackingField: {fileID: 0}
+  cameraAnchor: {fileID: 1535293678071386092}
+--- !u!114 &1535293678071386092
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8646640380761356064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acd14e73b176ee9468e19d34be74b52e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inputCamera:
+    useReference: 1
+    value: {fileID: 0}
+    reference:
+      _object: {fileID: 11400000, guid: cd767011318a21948b3bc91bf1dc88ab, type: 2}
+  outputCamera:
+    useReference: 1
+    value: {fileID: 0}
+    reference:
+      _object: {fileID: 11400000, guid: da9935ef9958c24459e4072e28ef0330, type: 2}
+  <Anchor>k__BackingField: {fileID: 0}
+  anchorX: 0
+  anchorY: 0
+  sizeReference:
+    rid: 3810672231534034944
+  inputCameraType: 0
+  middleCameraType: 2
+  outputCameraType: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 3810672231534034944
+      type: {class: ManualSize, ns: SaturnRPG.Camera3D2D, asm: Assembly-CSharp}
+      data:
+        size: {x: 0, y: 0}

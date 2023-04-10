@@ -17,6 +17,9 @@ namespace SaturnRPG.Battle
 		
 		[field: SerializeField]
 		public BattleStats Stats { get; private set; }
+		
+		[field: SerializeField]
+		public Animator AnimatorPrefab { get; private set; }
 
 		public abstract int GetStartHP();
 		public abstract int GetStartMP();

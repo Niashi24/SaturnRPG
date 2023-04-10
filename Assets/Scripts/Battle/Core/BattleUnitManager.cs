@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -7,6 +8,8 @@ namespace SaturnRPG.Battle
 {
 	public class BattleUnitManager : MonoBehaviour
 	{
+		public event Action<List<BattleUnit>> OnSetActiveUnits;
+		
 		[SerializeField]
 		private BattleUnit[] availableUnits;
 		
@@ -46,6 +49,8 @@ namespace SaturnRPG.Battle
 			}
 			
 			AllTargetable.SetActiveUnits(ActiveUnits);
+			
+			OnSetActiveUnits?.Invoke(ActiveUnits);
 		}
 
 		public bool AllUnitsDown()

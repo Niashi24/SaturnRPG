@@ -7,10 +7,10 @@ using UnityEngine;
 
 namespace SaturnRPG.Battle
 {
-	public class BattleUnit : MonoBehaviour, ITargetable, I3DViewable
+	public class BattleUnit : MonoBehaviour, ITargetable
 	{
-		[SerializeField, LabelText("3D View Transform")]
-		private Transform _3Dview;
+		[field: SerializeField, Required]
+		public UnitVisual UnitVisual { get; private set; }
 		
 		public event Action<PartyMember> OnSetPartyMember;
 		public readonly AsyncEvent<int, int> OnHPChange = new();
@@ -104,13 +104,6 @@ namespace SaturnRPG.Battle
 			MP = Mathf.Clamp(MP - mp, 0, GetBattleStats().MP);
 			// Do MP Animations
 			await OnMPChange.Invoke(MP, oldMP);
-		}
-
-		public Vector3 GetPosition()
-		{
-			if (_3Dview != null)
-				return _3Dview.position;
-			return Vector3.zero;
 		}
 	}
 }
