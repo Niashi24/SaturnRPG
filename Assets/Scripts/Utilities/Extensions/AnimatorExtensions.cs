@@ -6,16 +6,22 @@ namespace SaturnRPG.Utilities.Extensions
 {
 	public static class AnimatorExtensions
 	{
-		public static async UniTask PlayAnimation(Animator animator, string animation)
+		public static async UniTask PlayAnimation(this Animator animator, string animation)
 		{
-			animator.Play(animation);
+			var stateID = Animator.StringToHash(animation);
+			if (!animator.HasState(0, Animator.StringToHash(animation))) return;
+			animator.Play(stateID);
+			
 			await UniTask.Delay((int)(1000 * (animator.GetCurrentAnimatorStateInfo(0).length +
 			                                  animator.GetCurrentAnimatorStateInfo(0).normalizedTime)));
 		}
 
-		public static async UniTask PlayAnimation(Animator animator, string animation, CancellationToken cancellationToken)
+		public static async UniTask PlayAnimation(this Animator animator, string animation, CancellationToken cancellationToken)
 		{
-			animator.Play(animation);
+			var stateID = Animator.StringToHash(animation);
+			if (!animator.HasState(0, Animator.StringToHash(animation))) return;
+			animator.Play(stateID);
+
 			await UniTask.Delay((int)(1000 * (animator.GetCurrentAnimatorStateInfo(0).length +
 			                           animator.GetCurrentAnimatorStateInfo(0).normalizedTime)),
 				cancellationToken: cancellationToken);

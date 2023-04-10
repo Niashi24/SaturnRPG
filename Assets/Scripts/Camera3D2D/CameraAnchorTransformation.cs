@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LS.Utilities;
+using SaturnRPG.Utilities.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -50,6 +51,14 @@ namespace SaturnRPG.Camera3D2D
         [Tooltip("Translated position is transferred from Middle Type into output position using Output Camera")]
         private CameraPositionType outputCameraType;
 
+        [Header("Override X,Y,Z")]
+        [SerializeField]
+        private Optional<float> x;
+        [SerializeField]
+        private Optional<float> y;
+        [SerializeField]
+        private Optional<float> z;
+
         private Func<Vector3, Camera, Vector3> _inputFunction = defaultIdentityFunction;
         private Func<Vector3, Camera, Vector3> _outputFunction = defaultIdentityFunction;
 
@@ -71,6 +80,8 @@ namespace SaturnRPG.Camera3D2D
             Vector3 position = _outputFunction(_inputFunction(Anchor.position, inputCamera.Value), outputCamera.Value);
             position += new Vector3(-anchorX * halfSize.x, -anchorY * halfSize.y);
 
+            position = position.With(x.Enabled ? x.Value : null, y.Enabled ? y.Value : null, z.Enabled ? z.Value : null);
+
             transform.position = position;
         }
 
@@ -90,6 +101,13 @@ namespace SaturnRPG.Camera3D2D
         {
             if (outputCamera == null) return;
             this.outputCamera.Value = outputCamera;
+        }
+
+        public void SetSize(ISize size)
+        {
+            if (size == null) return;
+
+            sizeReference = size;
         }
 
         private void UpdateCameraFunctions()

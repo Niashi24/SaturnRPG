@@ -22,3 +22,4 @@ MonoBehaviour:
     Attack: 3
     Magic: 0
     Defense: 0
+  <VisualPrefab>k__BackingField: {fileID: 7858351256762439645, guid: f1c4af4567f986f4d81dfa6738ddc4e7, type: 3}

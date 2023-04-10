@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using LS.SearchWindows;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -18,8 +19,8 @@ namespace SaturnRPG.Battle
 		[field: SerializeField]
 		public BattleStats Stats { get; private set; }
 		
-		[field: SerializeField]
-		public Animator AnimatorPrefab { get; private set; }
+		[field: SerializeField, AssetSearch]
+		public PartyMemberVisual VisualPrefab { get; private set; }
 
 		public abstract int GetStartHP();
 		public abstract int GetStartMP();

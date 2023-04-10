@@ -34,7 +34,7 @@ namespace SaturnRPG.Battle
 		[ShowInInspector, ReadOnly]
 		public int TurnCount { get; private set; }
 
-		private void OnEnable()
+		private void Awake()
 		{
 			if (I == null)
 			{
@@ -43,14 +43,6 @@ namespace SaturnRPG.Battle
 			else
 			{
 				Destroy(gameObject);
-			}
-		}
-
-		private void OnDisable()
-		{
-			if (I == this)
-			{
-				I = null;
 			}
 		}
 		

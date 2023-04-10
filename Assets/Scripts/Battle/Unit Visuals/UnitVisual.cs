@@ -17,7 +17,7 @@ namespace SaturnRPG.Battle
 		private CameraAnchorTransformation cameraAnchor;
 
 		[ShowInInspector, ReadOnly]
-		public Animator Animator { get; private set; }
+		public PartyMemberVisual PartyMemberVisual { get; private set; }
 
 		private void OnEnable()
 		{
@@ -33,17 +33,21 @@ namespace SaturnRPG.Battle
 
 		private void SetPartyMember(PartyMember partyMember)
 		{
-			if (partyMember.AnimatorPrefab == null)
+			if (partyMember.VisualPrefab == null)
 			{
 				// Add blank animator
-				var obj = Instantiate(new GameObject("Animator"), Vector3.zero, Quaternion.identity, transform);
-				Animator = obj.AddComponent<Animator>();
+				var obj = new GameObject("Unit Visual Prefab");
+				obj.transform.parent = transform;
+				PartyMemberVisual = obj.AddComponent<PartyMemberVisual>();
 				
-				Debug.LogWarning($"Party Member {partyMember.Name} is missing an animator.");
+				Debug.LogWarning($"Party Member {partyMember.Name} is missing an Visual Component.");
 				return;
 			}
 
-			Animator = Instantiate(partyMember.AnimatorPrefab, Vector3.zero, Quaternion.identity, transform);
+			PartyMemberVisual = Instantiate(partyMember.VisualPrefab, Vector3.zero, Quaternion.identity, transform);
+			PartyMemberVisual.transform.localPosition = Vector3.zero;
+			
+			cameraAnchor.SetSize(PartyMemberVisual.Size);
 		}
 
 		private UniTask CleanUpOnEnd(BattleState state)
@@ -56,7 +60,7 @@ namespace SaturnRPG.Battle
 
 		private void CleanUpVisuals()
 		{
-			Destroy(Animator.gameObject);
+			Destroy(PartyMemberVisual.gameObject);
 		}
 
 		public Vector3 GetPosition()

@@ -18,8 +18,8 @@ namespace SaturnRPG.Battle
 		[SerializeField]
 		private Vector3 targetOffset;
 
-		[SerializeField]
-		private float smoothTime = 0.3f;
+		[field: SerializeField]
+		public float SmoothTime { get; private set; } = 0.3f;
 
 		[ShowInInspector, ReadOnly]
 		private Vector3 _velocity = Vector3.zero;
@@ -43,7 +43,7 @@ namespace SaturnRPG.Battle
 				transform.localPosition,
 				targetPosition,
 				ref _velocity,
-				smoothTime
+				SmoothTime
 			);
 		}
 
