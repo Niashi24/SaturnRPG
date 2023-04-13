@@ -45,7 +45,13 @@ namespace SaturnRPG.Battle
 				Destroy(gameObject);
 			}
 		}
-		
+
+		private void OnDestroy()
+		{
+			if (I == this)
+				I = null;
+		}
+
 		[Button]
 		[DisableInEditorMode]
 		public async UniTask StartBattle(BattleParty playerParty, BattleParty enemyParty)
