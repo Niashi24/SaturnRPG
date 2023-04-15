@@ -106,7 +106,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battleUnit: {fileID: 2696257129409464395}
-  <Anchor3D>k__BackingField: {fileID: 0}
   cameraAnchor: {fileID: 1535293678071386092}
 --- !u!114 &1535293678071386092
 MonoBehaviour:
@@ -132,7 +131,7 @@ MonoBehaviour:
       _object: {fileID: 11400000, guid: da9935ef9958c24459e4072e28ef0330, type: 2}
   <Anchor>k__BackingField: {fileID: 0}
   anchorX: 0
-  anchorY: 0
+  anchorY: -1
   sizeReference:
     rid: 3810672231534034944
   inputCameraType: 0

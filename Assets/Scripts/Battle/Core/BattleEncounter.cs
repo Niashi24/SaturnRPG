@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace SaturnRPG.Battle
 {
-	[CreateAssetMenu(fileName = "New Battle Scenario", menuName = "Battle/Scenario")]
+	[CreateAssetMenu(fileName = "New Battle Encounter", menuName = "Battle/Encounter")]
 	public class BattleEncounter : ScriptableObject
 	{
 		[field: SerializeField, Required]

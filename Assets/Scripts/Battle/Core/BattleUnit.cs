@@ -30,6 +30,7 @@ namespace SaturnRPG.Battle
 		public List<StatusCondition> StatusConditions { get; private set; } = new();
 
 		public BattleStats BaseStats => PartyMember.Stats;
+		public I3DViewable Viewable3D => UnitVisual;
 
 		public bool CanAttack()
 		{

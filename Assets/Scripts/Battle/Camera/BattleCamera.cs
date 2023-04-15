@@ -1,4 +1,5 @@
-﻿using Sirenix.OdinInspector;
+﻿using Cysharp.Threading.Tasks;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -39,8 +40,10 @@ namespace SaturnRPG.Battle
 		{
 			var targetPosition = CalcTargetPosition(_target.GetPosition());
 			
-			transform.localPosition = Vector3.SmoothDamp(
-				transform.localPosition,
+			// Debug.Log($"Target: {targetPosition}");
+			
+			transform.position = Vector3.SmoothDamp(
+				transform.position,
 				targetPosition,
 				ref _velocity,
 				SmoothTime
@@ -78,6 +81,39 @@ namespace SaturnRPG.Battle
 				_target = _constantViewable;
 				_constantViewable.Position = _target.GetPosition();
 			}
+		}
+		
+		public void SetTarget(ITargetable targetable, bool follow = true)
+		{
+			if (targetable != null)
+				SetTarget(targetable.Viewable3D, follow);
+		}
+
+		public async UniTask SetTargetAndWait(I3DViewable viewable, bool follow = true)
+		{
+			var cancelToken = BattleManager.I.BattleContext.BattleCancellationToken;
+			
+			SetTarget(viewable);
+
+			// const float minDX = 0.1f;
+			//
+			// float t = Time.time;
+			//
+			// while (Mathf.Abs((CalcTargetPosition(viewable.GetPosition()) - transform.position).magnitude) > minDX)
+			// 	await UniTask.Yield(cancelToken);
+			//
+			// float dT = Time.time - t;
+			//
+			// Debug.Log($"Time taken: {dT}. Off by factor of {dT / SmoothTime}");
+
+			await UniTask.Delay((int)(1000 * SmoothTime * 4));
+			// Debug.Log((CalcTargetPosition(viewable.GetPosition()) - transform.position).magnitude);
+		}
+
+		public UniTask SetTargetAndWait(ITargetable targetable, bool follow = true)
+		{
+			if (targetable == null) return UniTask.CompletedTask;
+			return SetTargetAndWait(targetable.Viewable3D, follow);
 		}
 	}
 }

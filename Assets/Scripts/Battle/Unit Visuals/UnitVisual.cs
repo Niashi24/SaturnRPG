@@ -11,7 +11,7 @@ namespace SaturnRPG.Battle
 		[SerializeField, Required]
 		private BattleUnit battleUnit;
 		
-		[field: SerializeField, LabelText("3D View Transform")]
+		[ShowInInspector, ReadOnly, LabelText("3D View Transform")]
 		public Transform Anchor3D { get; private set; }
 
 		[SerializeField, Required]
@@ -48,6 +48,7 @@ namespace SaturnRPG.Battle
 
 			PartyMemberVisual = Instantiate(partyMember.VisualPrefab, Vector3.zero, Quaternion.identity, transform);
 			PartyMemberVisual.transform.localPosition = Vector3.zero;
+			PartyMemberVisual.Initialize(battleUnit, this);
 			
 			cameraAnchor.SetSize(PartyMemberVisual.Size);
 		}
@@ -76,6 +77,7 @@ namespace SaturnRPG.Battle
 		private void CleanUpVisuals()
 		{
 			Destroy(PartyMemberVisual.gameObject);
+			cameraAnchor.SetSize(new ManualSize());
 		}
 
 		public Vector3 GetPosition()

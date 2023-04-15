@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Cysharp.Threading.Tasks;
+using SaturnRPG.Battle;
 using SaturnRPG.Camera3D2D;
 using SaturnRPG.Utilities.Extensions;
 using Sirenix.OdinInspector;
@@ -16,6 +17,11 @@ namespace SaturnRPG
 
         [field: SerializeReference, Required]
         public ISize Size { get; private set; } = new ManualSize();
+
+        public void Initialize(BattleUnit unit, UnitVisual visual)
+        {
+            
+        }
 
         public async UniTask PlayAnimation(string animation)
         {

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace SaturnRPG.Battle
 {
-	public class AllUnit : MonoBehaviour, ITargetable
+	public class AllUnit : MonoBehaviour, ITargetable, I3DViewable
 	{
 		public int HP => 0;
 		public int MP => 0;
@@ -16,6 +16,8 @@ namespace SaturnRPG.Battle
 		
 		public List<StatusCondition> StatusConditions { get; private set; } = new ();
 		public BattleStats BaseStats => new BattleStats();
+
+		public I3DViewable Viewable3D => this;
 
 		private List<BattleUnit> _activeUnits;
 
@@ -81,6 +83,20 @@ namespace SaturnRPG.Battle
 			}
 
 			await UniTask.WhenAll(_activeUnits.Select(x => x.UseMP(mp)));
+		}
+
+		public Vector3 GetPosition()
+		{
+			if (_activeUnits == null || _activeUnits.Count == 0) return Vector3.zero;
+
+			Vector3 averagePosition = Vector3.zero;
+
+			foreach (var unit in _activeUnits)
+				averagePosition += unit.Viewable3D.GetPosition();
+			
+			averagePosition /= _activeUnits.Count;
+			
+			return averagePosition;
 		}
 	}
 }

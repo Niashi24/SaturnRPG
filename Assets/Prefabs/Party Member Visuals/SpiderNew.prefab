@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7858351256762439640}
   - component: {fileID: 7858351256762439646}
   - component: {fileID: 7858351256762439645}
+  - component: {fileID: 9097721050617078035}
   m_Layer: 0
   m_Name: SpiderNew
   m_TagString: Untagged
@@ -97,7 +98,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf2282d799afeb94ea41ea6a4b811504, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 0}
+  animator: {fileID: 9097721050617078035}
   <Size>k__BackingField:
     rid: 3810672231534034946
   references:
@@ -107,3 +108,23 @@ MonoBehaviour:
       type: {class: SpriteRendererSize, ns: SaturnRPG.Camera3D2D, asm: Assembly-CSharp}
       data:
         spriteRenderer: {fileID: 7858351256762439646}
+--- !u!95 &9097721050617078035
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7858351256762439641}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c51b39380003a2447b7a09b240a8a77a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

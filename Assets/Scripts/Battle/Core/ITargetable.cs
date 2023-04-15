@@ -10,6 +10,7 @@ namespace SaturnRPG.Battle
 		string Name { get; }
 		List<StatusCondition> StatusConditions { get; }
 		BattleStats BaseStats { get; }
+		I3DViewable Viewable3D { get; }
 
 		bool CanBeAttacked();
 		BattleStats GetBattleStats();

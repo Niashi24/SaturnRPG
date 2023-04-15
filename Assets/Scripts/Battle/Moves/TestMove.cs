@@ -14,11 +14,15 @@ namespace SaturnRPG.Battle.Moves
 			BattleStats enemyStats = attack.Target.GetBattleStats();
 			
 			Debug.Log($"{attack.User.Name} attacked {attack.Target.Name}!");
-			await UniTask.Delay(1000, cancellationToken: context.BattleCancellationToken);
+			await attack.User.UnitVisual.PartyMemberVisual.PlayAnimation("TestMoveAnim");
+			
+			// await UniTask.Delay(1000, cancellationToken: context.BattleCancellationToken);
 
 			int damage = userStats.Attack - enemyStats.Defense;
 			damage = Math.Max(0, damage);
 
+			await context.BattleCamera.SetTargetAndWait(attack.Target.Viewable3D);
+			
 			await attack.Target.DealDamage(damage);
 		}
 

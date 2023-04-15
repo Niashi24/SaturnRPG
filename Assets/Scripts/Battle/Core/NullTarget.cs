@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
 
 namespace SaturnRPG.Battle
 {
 
-	public class NullTarget : ITargetable
+	public class NullTarget : ITargetable, I3DViewable
 	{
 		public static NullTarget I { get; private set; } = new();
 		
@@ -13,7 +14,9 @@ namespace SaturnRPG.Battle
 		public string Name => "";
 		public List<StatusCondition> StatusConditions { get; private set; } = new();
 		public BattleStats BaseStats { get; }
-		
+
+		public I3DViewable Viewable3D => this;
+
 		public bool CanBeAttacked() => false;
 
 		public BattleStats GetBattleStats() => BaseStats;
@@ -24,5 +27,7 @@ namespace SaturnRPG.Battle
 		public UniTask DealDamage(int damage) => UniTask.CompletedTask;
 
 		public UniTask UseMP(int mp) => UniTask.CompletedTask;
+
+		public Vector3 GetPosition() => Vector3.zero;
 	}
 }
