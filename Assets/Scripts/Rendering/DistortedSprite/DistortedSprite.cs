@@ -1,12 +1,15 @@
-﻿using Sirenix.OdinInspector;
+﻿using System;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace SaturnRPG.Rendering.DistortedSprite
 {
-	public class TestDistortedSprite : MonoBehaviour
+	public class DistortedSprite : MonoBehaviour
 	{
-		[SerializeField]
-		Vector2 v1,v2,v3,v4;
+		[field: SerializeField]
+		[field: ValidateInput("CorrectSize", "Incorrect size.")]
+		[field: OnValueChanged(nameof(UpdateMesh), true)]
+		public Vector3[] Vertices { get; private set; }
 
 		[SerializeField, Required]
 		private MeshFilter meshFilter;
@@ -26,18 +29,57 @@ namespace SaturnRPG.Rendering.DistortedSprite
 		private static readonly int[] DEFAULT_TRIS = new int[] { 0, 1, 2, 0, 2, 3 };
 
 		[Button]
-		public void UpdateMesh(Sprite texture = null)
+		public void UpdateSprite(Sprite texture = null)
+		{
+			if (texture != null)
+				meshRenderer.material.SetTexture("_MainTex", texture.texture);
+		}
+
+		[Button]
+		public void UpdateMesh()
 		{
 			if (meshFilter == null) return;
 			if (meshRenderer == null) return;
+
+			if (Vertices is not { Length: 4 }) return;
 			
 			if (mesh == null) CreateMesh();
-			
-			if (texture != null)
-				meshRenderer.material.SetTexture("_MainTex", texture.texture);
 
-			mesh.vertices = new Vector3[] { v1, v2, v3, v4 };
+			mesh.vertices = Vertices;
 			mesh.SetUVs(0, CalcUVQ());
+			mesh.bounds = CalcBounds();
+		}
+
+		private Bounds CalcBounds()
+		{
+			// float minX = Mathf.Min(v1.x, v2.x, v3.x, v4.x);
+			// float minY = Mathf.Min(v1.y, v2.y, v3.y, v4.y);
+			//
+			// float maxX = Mathf.Max(v1.x, v2.x, v3.x, v4.x);
+			// float maxY = Mathf.Max(v1.y, v2.y, v3.y, v4.y);
+
+			float minX, minY, maxX, maxY;
+
+			minX = maxX = Vertices[0].x;
+			minY = maxY = Vertices[0].y;
+
+			for (int i = 1; i < Vertices.Length; i++)
+			{
+				if (Vertices[i].x < minX)
+					minX = Vertices[i].x;
+				if (Vertices[i].y < minY)
+					minY = Vertices[i].y;
+				if (Vertices[i].x > maxX)
+					maxX = Vertices[i].x;
+				if (Vertices[i].y > maxY)
+					maxY = Vertices[i].y;
+			}
+
+			return new Bounds()
+			{
+				min = new Vector3(minX, minY, 0),
+				max = new Vector3(maxX, maxY, 0)
+			};
 		}
 
 		private void OnDrawGizmosSelected()
@@ -48,14 +90,14 @@ namespace SaturnRPG.Rendering.DistortedSprite
 			{
 				Debug.DrawLine((Vector3)v1 + p, (Vector3)v2 + p, Color.green);
 			}
+
+			for (int i = 0; i < Vertices.Length; i++)
+			{
+				DrawLine(Vertices[i], Vertices[(i + 1) % Vertices.Length]);
+			}
 			
-			DrawLine(v1, v2);
-			DrawLine(v2, v3);
-			DrawLine(v3, v4);
-			DrawLine(v4, v1);
-			
-			DrawLine(v1, v3);
-			DrawLine(v2, v4);
+			DrawLine(Vertices[0], Vertices[2]);
+			DrawLine(Vertices[1], Vertices[3]);
 
 			var intersection = (Vector3)GetIntersection();
 			
@@ -65,11 +107,11 @@ namespace SaturnRPG.Rendering.DistortedSprite
 		private Vector2 GetIntersection()
 		{
 			// v1 + v2 * t
-			Vector2 v1 = this.v1;
-			Vector2 v2 = this.v3 - this.v1;
+			Vector2 v1 = Vertices[0];
+			Vector2 v2 = Vertices[2] - Vertices[0];
 			// v3 + v4 * t
-			Vector2 v3 = this.v2;
-			Vector2 v4 = this.v4 - this.v2;
+			Vector2 v3 = Vertices[1];
+			Vector2 v4 = Vertices[3] - Vertices[1];
 
 			float determinant = v2.x * v4.y - v4.x * v2.y;
 			if (determinant == 0) return Vector2.zero;
@@ -89,13 +131,8 @@ namespace SaturnRPG.Rendering.DistortedSprite
 				=> Vector2.Distance(vertPos, intersectionPoint);
 
 			float[] ds = new float[4];
-			ds[0] = DistanceToIntersectionPoint(v1);
-			ds[1] = DistanceToIntersectionPoint(v2);
-			ds[2] = DistanceToIntersectionPoint(v3);
-			ds[3] = DistanceToIntersectionPoint(v4);
-
-			Vector3 CalcUVQWithDist2(float d1, float d2, int vI)
-				=> new Vector3(DEFAULT_UVS[vI].x, DEFAULT_UVS[vI].y, 1) * ((d1 + d2) / d2);
+			for (int i = 0; i < ds.Length; i++)
+				ds[i] = DistanceToIntersectionPoint(Vertices[i]);
 
 			Vector3 CalcUVQWithDist(int i, int j)
 				=> new Vector3(DEFAULT_UVS[i].x, DEFAULT_UVS[i].y, 1) * ((ds[i] + ds[j]) / ds[j]);
@@ -119,5 +156,9 @@ namespace SaturnRPG.Rendering.DistortedSprite
 
 			meshFilter.mesh = mesh;
 		}
+		
+		#if UNITY_EDITOR
+		private bool CorrectSize => Vertices.Length == 4;
+		#endif
 	}
 }
