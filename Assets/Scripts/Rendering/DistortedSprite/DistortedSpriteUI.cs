@@ -81,6 +81,14 @@ namespace SaturnRPG.Rendering.DistortedSprite
 
 			return uvq;
 		}
+
+		[Button]
+		public void SetVertices(Vector3[] vertices)
+		{
+			if (vertices.Length != 4) return;
+			Vertices = vertices;
+			SetVerticesDirty();
+		}
 		
 		#if UNITY_EDITOR
 		private bool CorrectSize => Vertices.Length == 4;
