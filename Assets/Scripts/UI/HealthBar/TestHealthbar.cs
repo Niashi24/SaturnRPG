@@ -10,8 +10,10 @@ namespace SaturnRPG
     public class TestHealthbar : MonoBehaviour
     {
         [SerializeField, Min(0)]
+        [OnValueChanged("UpdateBar")]
         private int hp = 100;
         [SerializeField, Min(0)]
+        [OnValueChanged("UpdateBar")]
         private int maxHP = 100;
 
         [SerializeField, Required]
