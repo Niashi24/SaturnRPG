@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace SaturnRPG.Rendering.DistortedSprite
 {
-	public class DistortedSpriteUI : Graphic
+	public class DistortedSpriteUI : Graphic, IDistortedSprite
 	{
 		[field: SerializeField]
 		public Texture Texture { get; private set; }
@@ -45,7 +45,8 @@ namespace SaturnRPG.Rendering.DistortedSprite
 
 		public void SetTexture(Texture texture)
 		{
-			Texture = texture ? texture : Texture;
+			if (texture == null) return;
+			Texture = texture;
 			SetMaterialDirty();
 		}
 		

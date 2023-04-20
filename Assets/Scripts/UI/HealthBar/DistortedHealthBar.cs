@@ -1,4 +1,5 @@
-﻿using SaturnRPG.Rendering.DistortedSprite;
+﻿using LS.Utilities;
+using SaturnRPG.Rendering.DistortedSprite;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace SaturnRPG.UI
     public class DistortedHealthBar : MonoBehaviour, ValueBarDisplay
     {
         [SerializeField, Required]
-        private DistortedSpriteUI left, middle, right;
+        private ObjectReference<IDistortedSprite> left, middle, right;
 
         private Vector3[] vertLeft, vertMiddle, vertRight;
 
@@ -18,7 +19,7 @@ namespace SaturnRPG.UI
         public float Target { get; private set; }
 
         [SerializeField, Required]
-        private Texture healTexture, damageTexture;
+        private Texture healthTexture, healTexture, damageTexture, emptyTexture;
 
         [SerializeField]
         [OnValueChanged("UpdateDisplay")]
@@ -28,9 +29,21 @@ namespace SaturnRPG.UI
         [OnValueChanged("UpdateDisplay")]
         private RectTransform rectTransform;
 
+        private void Start()
+        {
+            UpdateTextures();
+        }
+
+        [Button]
         private void UpdateDisplay()
         {
             SetValues(Value, Target);
+        }
+
+        private void UpdateTextures()
+        {
+            left.Value?.SetTexture(healthTexture);
+            right.Value?.SetTexture(emptyTexture);
         }
 
         [Button]
@@ -41,7 +54,7 @@ namespace SaturnRPG.UI
 
             Value = actual;
             Target = target;
-            middle.SetTexture(actual <= target ? damageTexture : healTexture);
+            middle.Value?.SetTexture(actual <= target ? damageTexture : healTexture);
 
             if (vertLeft is not { Length: 4 } ) vertLeft = new Vector3[4];
             if (vertMiddle is not { Length: 4 } ) vertMiddle = new Vector3[4];
@@ -83,9 +96,9 @@ namespace SaturnRPG.UI
             vertRight[3] = v6;
 
             
-            left.SetVertices(vertLeft);
-            middle.SetVertices(vertMiddle);
-            right.SetVertices(vertRight);
+            left.Value?.SetVertices(vertLeft);
+            middle.Value?.SetVertices(vertMiddle);
+            right.Value?.SetVertices(vertRight);
         }
     }
 }

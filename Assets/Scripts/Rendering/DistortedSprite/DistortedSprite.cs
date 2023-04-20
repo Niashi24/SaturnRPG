@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SaturnRPG.Rendering.DistortedSprite
 {
-	public class DistortedSprite : MonoBehaviour
+	public class DistortedSprite : MonoBehaviour, IDistortedSprite
 	{
 		[field: SerializeField]
 		[field: ValidateInput("CorrectSize", "Incorrect size.")]
@@ -23,14 +23,21 @@ namespace SaturnRPG.Rendering.DistortedSprite
 		private static readonly int[] DEFAULT_TRIS = new int[] { 0, 1, 2, 0, 2, 3 };
 
 		[Button]
-		public void UpdateSprite(Sprite texture = null)
+		public void SetTexture(Texture texture = null)
 		{
 			if (texture != null)
-				meshRenderer.material.SetTexture("_MainTex", texture.texture);
+				meshRenderer.material.SetTexture("_MainTex", texture);
+		}
+
+		public void SetVertices(Vector3[] vertices)
+		{
+			if (vertices is not { Length : 4 }) return;
+			Vertices = vertices;
+			UpdateMesh();
 		}
 
 		[Button]
-		public void UpdateMesh()
+		private void UpdateMesh()
 		{
 			if (meshFilter == null) return;
 			if (meshRenderer == null) return;

@@ -19,6 +19,11 @@ namespace SaturnRPG
         [SerializeField, Required]
         private DelayValueBar valueBar;
 
+        private void Start()
+        {
+            UpdateBar();
+        }
+
         [Button]
         private void Damage()
         {
