@@ -9,15 +9,18 @@ namespace SaturnRPG.UI
 {
     public class DelayValueBar : MonoBehaviour
     {
-        [field: SerializeField, Tooltip("Time (s) before starting to move the health around.")]
+        [field: SerializeField, Tooltip("Time (seconds) between ending moving the lead value and starting to move the follow value.")]
         public float SetDelay { get; private set; } = 0.5f;
 
-        [field: SerializeField, Tooltip("Fraction amount per second that the output value will give")]
-        public float ValueSpeed { get; private set; } = 2;
+        
+        public float LeadTime = 0.1f;
+        private float _leadVel = 0;
+        public float FollowTime = 0.1f;
+        private float _followVel = 0;
 
         private float _timer = 0;
 
-        [ShowInInspector, ReadOnly] private float _value, _maxValue;
+        [ShowInInspector, ReadOnly] private float _value, _target;
 
         [ShowInInspector, ReadOnly]
         public float Value { get; private set; }
@@ -27,23 +30,45 @@ namespace SaturnRPG.UI
 
         private void Update()
         {
-            if (_timer > 0)
+            if (_target != _value)
+                UpdateLead();
+            else if (_timer > 0)
                 _timer = Mathf.MoveTowards(_timer, 0, Time.deltaTime);
             else
-                UpdateValue();
+                UpdateFollow();
+        }
+
+        private void UpdateLead()
+        {
+            if (Mathf.Abs(_target - _value) < 0.01f)
+                _value = _target;
+            else
+                _value = Mathf.SmoothDamp(_value, _target, ref _leadVel, LeadTime);
+
+            UpdateValue();
+        }
+
+        private void UpdateFollow()
+        {
+            if (Value == _value) return;
+            
+            if (Mathf.Abs(Value - _value) < 0.01f)
+                Value = _value;
+            else
+                Value = Mathf.SmoothDamp(Value, _value, ref _followVel, FollowTime);
+            
+            UpdateValue();
         }
 
         private void UpdateValue()
         {
-            Value = Mathf.MoveTowards(Value, _value, ValueSpeed * Time.deltaTime);
-            
             valueBarDisplay.Value?.SetValues(_value, Value);
         }
 
         [Button]
         public void SetValue(float value)
         {
-            _value = Mathf.Clamp01(value);
+            _target = Mathf.Clamp01(value);
             ResetTimer();
         }
 

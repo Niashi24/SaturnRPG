@@ -16,11 +16,11 @@ namespace SaturnRPG.Rendering.DistortedSprite
 		[field: ValidateInput("CorrectSize", "Incorrect size.")]
 		public Vector3[] Vertices { get; private set; }
 		
-		private static readonly Vector2[] DEFAULT_UVS = new Vector2[] {
-			Vector2.up,
-			Vector2.one,
-			Vector2.right,
-			Vector2.zero
+		private static readonly Vector3[] DEFAULT_UVS = new Vector3[] {
+			new Vector3(0, 1, 1),
+			new Vector3(1, 1, 1),
+			new Vector3(1, 0, 1),
+			new Vector3(0, 0, 1)
 		};
 
 		protected override void OnPopulateMesh(VertexHelper vh)
@@ -73,7 +73,7 @@ namespace SaturnRPG.Rendering.DistortedSprite
 				ds[i] = DistanceToIntersectionPoint(Vertices[i]);
 
 			Vector3 CalcUVQWithDist(int i, int j)
-				=> new Vector3(DEFAULT_UVS[i].x, DEFAULT_UVS[i].y, 1) * ((ds[i] + ds[j]) / ds[j]);
+				=> ds[j] == 0 ? DEFAULT_UVS[i] : DEFAULT_UVS[i] * ((ds[i] + ds[j]) / ds[j]);
 
 			Vector3[] uvq = new Vector3[DEFAULT_UVS.Length];
 			for (int i = 0; i < uvq.Length; i++)
@@ -85,9 +85,15 @@ namespace SaturnRPG.Rendering.DistortedSprite
 		[Button]
 		public void SetVertices(Vector3[] vertices)
 		{
-			if (vertices.Length != 4) return;
+			if (vertices is not { Length: 4 } ) return;
 			Vertices = vertices;
 			SetVerticesDirty();
+		}
+
+		public void SetTexture(Texture texture)
+		{
+			Texture = texture ? texture : Texture;
+			SetMaterialDirty();
 		}
 		
 		#if UNITY_EDITOR

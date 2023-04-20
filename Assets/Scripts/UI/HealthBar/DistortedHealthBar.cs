@@ -11,17 +11,26 @@ namespace SaturnRPG.UI
 
         private Vector3[] vertLeft, vertMiddle, vertRight;
 
+        [ShowInInspector, OnValueChanged("UpdateDisplay")]
+        public float Value { get; private set; }
+
+        [ShowInInspector, OnValueChanged("UpdateDisplay")]
+        public float Target { get; private set; }
+
+        [SerializeField, Required]
+        private Texture healTexture, damageTexture;
+
         [SerializeField]
-        [OnValueChanged("Test")]
+        [OnValueChanged("UpdateDisplay")]
         private float cornerOffset = 0.1f;
 
         [SerializeField]
-        [OnValueChanged("Test", true)]
+        [OnValueChanged("UpdateDisplay")]
         private RectTransform rectTransform;
 
-        private void Test()
+        private void UpdateDisplay()
         {
-            SetValues(0.33f, 0.66f);
+            SetValues(Value, Target);
         }
 
         [Button]
@@ -29,8 +38,10 @@ namespace SaturnRPG.UI
         {
             if (rectTransform == null) rectTransform = GetComponent<RectTransform>();
             var rect = rectTransform.rect;
-            
-            // Debug.Log(rect);
+
+            Value = actual;
+            Target = target;
+            middle.SetTexture(actual <= target ? damageTexture : healTexture);
 
             if (vertLeft is not { Length: 4 } ) vertLeft = new Vector3[4];
             if (vertMiddle is not { Length: 4 } ) vertMiddle = new Vector3[4];
