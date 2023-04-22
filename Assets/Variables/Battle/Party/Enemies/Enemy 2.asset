@@ -19,7 +19,7 @@ MonoBehaviour:
   <Stats>k__BackingField:
     HP: 10
     MP: 0
-    Attack: 3
+    Attack: 8
     Magic: 0
-    Defense: 0
+    Defense: 1
   <VisualPrefab>k__BackingField: {fileID: 7858351256762439645, guid: f1c4af4567f986f4d81dfa6738ddc4e7, type: 3}

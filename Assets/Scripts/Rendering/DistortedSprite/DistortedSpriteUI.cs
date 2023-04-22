@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 namespace SaturnRPG.Rendering.DistortedSprite
 {
+	[RequireComponent(typeof(CanvasRenderer))]
 	public class DistortedSpriteUI : Graphic, IDistortedSprite
 	{
 		[field: SerializeField]
@@ -34,6 +35,24 @@ namespace SaturnRPG.Rendering.DistortedSprite
 			vh.AddTriangle(0,1,2);
 			vh.AddTriangle(0,2,3);
 		}
+		
+		private void OnDrawGizmosSelected()
+		{
+			Vector3 p = transform.position;
+
+			void DrawLine(Vector2 v1, Vector2 v2)
+			{
+				Debug.DrawLine((Vector3)v1 + p, (Vector3)v2 + p, Color.green);
+			}
+
+			for (int i = 0; i < Vertices.Length; i++)
+			{
+				DrawLine(Vertices[i], Vertices[(i + 1) % Vertices.Length]);
+			}
+			
+			DrawLine(Vertices[0], Vertices[2]);
+			DrawLine(Vertices[1], Vertices[3]);
+		}
 
 		[Button]
 		public void SetVertices(Vector3[] vertices)
@@ -45,7 +64,7 @@ namespace SaturnRPG.Rendering.DistortedSprite
 
 		public void SetTexture(Texture texture)
 		{
-			if (texture == null) return;
+			if (texture == null || texture == Texture) return;
 			Texture = texture;
 			SetMaterialDirty();
 		}

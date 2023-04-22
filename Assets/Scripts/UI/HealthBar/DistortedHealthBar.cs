@@ -49,7 +49,7 @@ namespace SaturnRPG.UI
         [Button]
         public void SetValues(float actual, float target)
         {
-            if (rectTransform == null) rectTransform = GetComponent<RectTransform>();
+            // if (rectTransform == null) rectTransform = GetComponent<RectTransform>();
             var rect = rectTransform.rect;
 
             Value = actual;
@@ -95,7 +95,6 @@ namespace SaturnRPG.UI
             vertRight[2] = v7;
             vertRight[3] = v6;
 
-            
             left.Value?.SetVertices(vertLeft);
             middle.Value?.SetVertices(vertMiddle);
             right.Value?.SetVertices(vertRight);

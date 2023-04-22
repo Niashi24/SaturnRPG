@@ -42,7 +42,7 @@ namespace SaturnRPG
         {
             if (maxHP == 0) return;
             
-            valueBar.SetValue((float)hp / maxHP);
+            valueBar.SetValueImmediate((float)hp / maxHP);
         }
     }
 }
