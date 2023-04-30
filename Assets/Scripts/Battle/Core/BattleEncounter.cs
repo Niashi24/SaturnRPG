@@ -10,7 +10,7 @@ namespace SaturnRPG.Battle
 		[field: SerializeField, Required]
 		public BattleParty EnemyParty { get; private set; }
 		
-		[field: SerializeField, AssetSearch]
-		public GameObject BackgroundPrefab { get; private set; }
+		[field: SerializeField, Required]
+		public BattleBackground Background { get; private set; }
 	}
 }

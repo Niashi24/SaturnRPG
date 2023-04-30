@@ -1,4 +1,5 @@
 ﻿using System;
+using SaturnRPG.Core;
 using SaturnRPG.Utilities.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -26,7 +27,7 @@ namespace SaturnRPG.Rendering.DistortedSprite
 		public void SetTexture(Texture texture = null)
 		{
 			if (texture != null)
-				meshRenderer.material.SetTexture("_MainTex", texture);
+				meshRenderer.material.SetTexture(Constants.MainTex, texture);
 		}
 
 		public void SetVertices(Vector3[] vertices)

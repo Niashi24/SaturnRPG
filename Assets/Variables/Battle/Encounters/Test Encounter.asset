@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Test Encounter
   m_EditorClassIdentifier: 
   <EnemyParty>k__BackingField: {fileID: 11400000, guid: 2ed216c6924e7404492f33a928b47d88, type: 2}
-  <BackgroundPrefab>k__BackingField: {fileID: 0}
+  <Background>k__BackingField: {fileID: 11400000, guid: 101b1425073f23b4cafa2b4f45b2217d, type: 2}

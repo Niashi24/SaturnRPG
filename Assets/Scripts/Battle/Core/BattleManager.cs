@@ -1,4 +1,4 @@
-﻿using System;
+﻿	using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,10 +9,8 @@ using Sirenix.OdinInspector;
 
 namespace SaturnRPG.Battle
 {
-	public class BattleManager : MonoBehaviour
+	public class BattleManager : MonoSingleton<BattleManager>
 	{
-		public static BattleManager I { get; private set; }
-		
 		public readonly AsyncEvent<BattleContext> OnBattleStart = new();
 		public readonly AsyncEvent<BattleState> OnBattleStateChange = new();
 		public readonly AsyncEvent OnBattleWon = new(), OnBattleLost = new(), OnBattleQuit = new();
@@ -33,24 +31,6 @@ namespace SaturnRPG.Battle
 		public BattleState BattleState { get; private set; } = BattleState.End;
 		[ShowInInspector, ReadOnly]
 		public int TurnCount { get; private set; }
-
-		private void Awake()
-		{
-			if (I == null)
-			{
-				I = this;
-			}
-			else
-			{
-				Destroy(gameObject);
-			}
-		}
-
-		private void OnDestroy()
-		{
-			if (I == this)
-				I = null;
-		}
 
 		[Button]
 		[DisableInEditorMode]

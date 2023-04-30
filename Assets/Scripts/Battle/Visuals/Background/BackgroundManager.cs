@@ -1,0 +1,46 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
+using SaturnRPG.Core;
+using SaturnRPG.Core.Systems;
+using Sirenix.OdinInspector;
+using UnityEngine;
+
+namespace SaturnRPG.Battle
+{
+    public class BackgroundManager : MonoBehaviour
+    {
+        [SerializeField, Required]
+        private SpriteRenderer wallSprite;
+
+        [SerializeField, Required]
+        private MeshRenderer[] floorTiles;
+
+        private void OnEnable()
+        {
+            Systems.I.BattleLoadManager.OnLoadBattle.Subscribe(LoadBackground);
+        }
+
+        private void OnDisable()
+        {
+            Systems.I.BattleLoadManager.OnLoadBattle.Unsubscribe(LoadBackground);
+        }
+
+        private UniTask LoadBackground(BattleEncounter encounter)
+        {
+            var background = encounter.Background;
+
+            wallSprite.sprite = background.Wall;
+
+            foreach (var renderer in floorTiles)
+            {
+                renderer.material.SetTexture(Constants.MainTex, background.Floor);
+            }
+
+            if (background.BackgroundPrefab != null)
+                Instantiate(background.BackgroundPrefab, Vector3.zero, Quaternion.identity, transform);            
+            return UniTask.CompletedTask;
+        }
+    }
+}

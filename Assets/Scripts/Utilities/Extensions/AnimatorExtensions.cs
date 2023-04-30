@@ -25,7 +25,7 @@ namespace SaturnRPG.Utilities.Extensions
 			
 			float delaySeconds = animator.GetCurrentAnimatorStateInfo(0).length;
 			
-			Debug.Log(delaySeconds);
+			// Debug.Log(delaySeconds);
 
 			await UniTask.Delay((int)(1000 * delaySeconds),
 				cancellationToken: cancellationToken);
