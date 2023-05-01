@@ -31,6 +31,12 @@ namespace SaturnRPG.Camera3D2D
         [Range(-1, 1)]
         private float anchorY = 0;
 
+        [SerializeField]
+        private bool useLocalPosition;
+
+        [SerializeField]
+        private Vector3 offset;
+
         [SerializeReference]
         [Tooltip("The size used when calculating the position of the Anchor")]
         private ISize sizeReference = new ManualSize();
@@ -79,10 +85,14 @@ namespace SaturnRPG.Camera3D2D
 
             Vector3 position = _outputFunction(_inputFunction(Anchor.position, inputCamera.Value), outputCamera.Value);
             position += new Vector3(-anchorX * halfSize.x, -anchorY * halfSize.y);
+            position += offset;
 
             position = position.With(x.Enabled ? x.Value : null, y.Enabled ? y.Value : null, z.Enabled ? z.Value : null);
 
-            transform.position = position;
+            if (useLocalPosition)
+                transform.localPosition = position;
+            else
+                transform.position = position;
         }
 
         public void SetAnchor(Transform anchor)

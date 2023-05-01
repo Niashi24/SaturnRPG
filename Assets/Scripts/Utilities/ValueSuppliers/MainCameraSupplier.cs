@@ -13,13 +13,7 @@ namespace SaturnRPG
 
         public Camera Value
         {
-            get
-            {
-                // if (_mainCamera == null)
-                //     _mainCamera = Camera.main;
-                // return _mainCamera;
-                return Systems.I.MainCameraManager.MainCamera;
-            }
+            get => Systems.Loaded ? Systems.I.MainCameraManager.MainCamera : Camera.main;
             set
             {
                 Debug.LogWarning("Tried to set Main Camera");

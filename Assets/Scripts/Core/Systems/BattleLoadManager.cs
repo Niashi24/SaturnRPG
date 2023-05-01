@@ -51,7 +51,8 @@ namespace SaturnRPG.Battle
 
             await OnStartUnloadBattle.Invoke(battleEncounter);
 
-            var unloadSceneTask = SceneManager.UnloadSceneAsync("BattleScene").ToUniTask();
+            // Have to use ? because may be unable to load if battle is base scene
+            var unloadSceneTask = SceneManager.UnloadSceneAsync("BattleScene")?.ToUniTask() ?? UniTask.CompletedTask;
             var unloadBattleTask = OnUnloadBattle.Invoke(battleEncounter);
             await UniTask.WhenAll(unloadSceneTask, unloadBattleTask);
 

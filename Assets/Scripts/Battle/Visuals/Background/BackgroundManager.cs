@@ -6,32 +6,33 @@ using SaturnRPG.Core;
 using SaturnRPG.Core.Systems;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace SaturnRPG.Battle
 {
     public class BackgroundManager : MonoBehaviour
     {
         [SerializeField, Required]
-        private SpriteRenderer wallSprite;
+        private Image wallImage;
 
         [SerializeField, Required]
         private MeshRenderer[] floorTiles;
 
         private void OnEnable()
         {
-            Systems.I.BattleLoadManager.OnLoadBattle.Subscribe(LoadBackground);
+            Systems.I?.BattleLoadManager.OnLoadBattle.Subscribe(LoadBackground);
         }
 
         private void OnDisable()
         {
-            Systems.I.BattleLoadManager.OnLoadBattle.Unsubscribe(LoadBackground);
+            Systems.I?.BattleLoadManager.OnLoadBattle.Unsubscribe(LoadBackground);
         }
 
         private UniTask LoadBackground(BattleEncounter encounter)
         {
             var background = encounter.Background;
 
-            wallSprite.sprite = background.Wall;
+            wallImage.sprite = background.Wall;
 
             foreach (var renderer in floorTiles)
             {

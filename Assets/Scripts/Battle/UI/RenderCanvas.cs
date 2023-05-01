@@ -16,14 +16,14 @@ namespace SaturnRPG
 
         private void OnEnable()
         {
-            Systems.I.BattleLoadManager.OnLoadBattle.Subscribe(ShowRenderTexture);
-            Systems.I.BattleLoadManager.OnUnloadBattle.Subscribe(HideRenderTexture);
+            Systems.I?.BattleLoadManager.OnLoadBattle.Subscribe(ShowRenderTexture);
+            Systems.I?.BattleLoadManager.OnUnloadBattle.Subscribe(HideRenderTexture);
         }
 
         private void OnDisable()
         {
-            Systems.I.BattleLoadManager.OnLoadBattle.Unsubscribe(ShowRenderTexture);
-            Systems.I.BattleLoadManager.OnUnloadBattle.Unsubscribe(HideRenderTexture);
+            Systems.I?.BattleLoadManager.OnLoadBattle.Unsubscribe(ShowRenderTexture);
+            Systems.I?.BattleLoadManager.OnUnloadBattle.Unsubscribe(HideRenderTexture);
         }
 
         private void HideRenderTexture()
