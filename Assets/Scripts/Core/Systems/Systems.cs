@@ -34,6 +34,10 @@ namespace SaturnRPG.Core.Systems
 				Debug.Log("Spawning system");
 				_instance = Instantiate(Resources.Load("Systems")).GetComponent<Systems>();
 			}
+			else
+			{
+				Debug.Log("Found system in scene.");
+			}
 			
 			if (_instance != null)
 				DontDestroyOnLoad(_instance.gameObject);
