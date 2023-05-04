@@ -8,7 +8,7 @@ namespace SaturnRPG.Utilities
 {
 	public class AsyncEvent
 	{
-		private HashSet<Func<UniTask>> _callbacks = new();
+		private readonly HashSet<Func<UniTask>> _callbacks = new();
 
 		public void Subscribe(Func<UniTask> callback)
 		{
@@ -28,11 +28,19 @@ namespace SaturnRPG.Utilities
 
 			await UniTask.WhenAll(tasks);
 		}
+
+		public void SubUnsub(bool subscribe, Func<UniTask> callback)
+		{
+			if (subscribe)
+				Subscribe(callback);
+			else
+				Unsubscribe(callback);
+		}
 	}
 	
 	public class AsyncEvent<T>
 	{
-		private HashSet<Func<T, UniTask>> _callbacks = new();
+		private readonly HashSet<Func<T, UniTask>> _callbacks = new();
 
 		public void Subscribe(Func<T, UniTask> callback)
 		{
@@ -52,11 +60,19 @@ namespace SaturnRPG.Utilities
 
 			await UniTask.WhenAll(tasks);
 		}
+
+		public void SubUnsub(bool subscribe, Func<T, UniTask> callback)
+		{
+			if (subscribe)
+				Subscribe(callback);
+			else
+				Unsubscribe(callback);
+		}
 	}
 	
 	public class AsyncEvent<T1, T2>
 	{
-		private HashSet<Func<T1, T2, UniTask>> _callbacks = new();
+		private readonly HashSet<Func<T1, T2, UniTask>> _callbacks = new();
 
 		public void Subscribe(Func<T1, T2, UniTask> callback)
 		{
@@ -76,11 +92,19 @@ namespace SaturnRPG.Utilities
 
 			await UniTask.WhenAll(tasks);
 		}
+
+		public void SubUnsub(bool subscribe, Func<T1, T2, UniTask> callback)
+		{
+			if (subscribe)
+				Subscribe(callback);
+			else
+				Unsubscribe(callback);
+		}
 	}
 	
 	public class AsyncEvent<T1, T2, T3>
 	{
-		private HashSet<Func<T1, T2, T3, UniTask>> _callbacks = new();
+		private readonly HashSet<Func<T1, T2, T3, UniTask>> _callbacks = new();
 
 		public void Subscribe(Func<T1, T2, T3, UniTask> callback)
 		{
@@ -99,6 +123,14 @@ namespace SaturnRPG.Utilities
 				.ToArray();
 
 			await UniTask.WhenAll(tasks);
+		}
+
+		public void SubUnsub(bool subscribe, Func<T1, T2, T3, UniTask> callback)
+		{
+			if (subscribe)
+				Subscribe(callback);
+			else
+				Unsubscribe(callback);
 		}
 	}
 }
