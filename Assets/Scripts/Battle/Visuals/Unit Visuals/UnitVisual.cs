@@ -57,13 +57,20 @@ namespace SaturnRPG.Battle
 		{
 			var cancelToken = BattleManager.I.BattleContext.BattleCancellationToken;
 
-			if (oldHP == 0 && HP == 0) return;
-			if (oldHP == 0 && HP > 0)
-				await PartyMemberVisual.PlayAnimation(BattleVisualStates.Revived, cancelToken);
-			else if (oldHP > 0 && HP == 0)
-				await PartyMemberVisual.PlayAnimation(BattleVisualStates.MortalBlow, cancelToken);
-			else if (oldHP > 0 && HP > 0)
-				await PartyMemberVisual.PlayAnimation(BattleVisualStates.Hit, cancelToken);
+			switch (HP)
+			{
+				case 0 when oldHP == 0:
+					return;
+				case 0 when oldHP > 0:
+					await PartyMemberVisual.PlayAnimation(BattleVisualStates.MortalBlow, cancelToken);
+					break;
+				case > 0 when oldHP == 0:
+					await PartyMemberVisual.PlayAnimation(BattleVisualStates.Revived, cancelToken);
+					return;
+				case > 0 when oldHP > 0:
+					await PartyMemberVisual.PlayAnimation(BattleVisualStates.Hit, cancelToken);
+					break;
+			}
 		}
 
 		private UniTask CleanUpOnEnd(BattleState state)
@@ -76,6 +83,8 @@ namespace SaturnRPG.Battle
 
 		private void CleanUpVisuals()
 		{
+			if (PartyMemberVisual == null) return;
+			
 			Destroy(PartyMemberVisual.gameObject);
 			cameraAnchor.SetSize(new ManualSize());
 		}

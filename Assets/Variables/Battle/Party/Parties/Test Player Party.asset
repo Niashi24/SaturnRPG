@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: Test Player Party
   m_EditorClassIdentifier: 
   <PartyMembers>k__BackingField:
-  - {fileID: 11400000, guid: c8ceee741ce6ee9419eb4f384146aa7f, type: 2}
   - {fileID: 11400000, guid: b42db8cfff42f4a4e91864a7d60b657f, type: 2}
   - {fileID: 11400000, guid: dbbafc777b2818b459858fa094ce73e0, type: 2}

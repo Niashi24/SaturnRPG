@@ -13,10 +13,10 @@ namespace SaturnRPG.UI
         private Vector3[] vertLeft, vertMiddle, vertRight;
 
         [ShowInInspector, OnValueChanged("UpdateDisplay")]
-        public float Value { get; private set; }
+        public float Value { get; private set; } = 0.5f;  // set to 0.5 for testing
 
         [ShowInInspector, OnValueChanged("UpdateDisplay")]
-        public float Target { get; private set; }
+        public float Target { get; private set; } = 1;
 
         [SerializeField, Required]
         private Texture healthTexture, healTexture, damageTexture, emptyTexture;
@@ -64,11 +64,14 @@ namespace SaturnRPG.UI
             //  /   /   /   /
             // 4 - 5 - 6 - 7
 
-            var v0 = new Vector3(rect.xMin, rect.yMax);
-            var v3 = new Vector3(rect.xMax, rect.yMax);
+            var v3 = rect.max;
+            var v4 = rect.min;
+            var v0 = new Vector2(v4.x, v3.y);
+            var v7 = new Vector2(v3.x, v4.y);
+
+            // Debug.Log($"Top Right: {v3}, Bottom Left: {v4}", this);
+
             v0 = Vector3.LerpUnclamped(v0, v3, cornerOffset);
-            var v4 = new Vector3(rect.xMin, rect.yMin);
-            var v7 = new Vector3(rect.xMax, rect.yMin);
             v7 = Vector3.LerpUnclamped(v7, v4, cornerOffset);
 
             float low = actual, high = target;

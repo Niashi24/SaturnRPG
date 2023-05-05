@@ -58,14 +58,5 @@ namespace SaturnRPG.Battle
 
             await OnFinishUnloadBattle.Invoke(battleEncounter);
         }
-
-        [Button]
-        private void TestSceneLoad()
-        {
-            var scene = SceneManager.GetSceneByName("Systems");
-            Debug.Log($"IsSubScene: {scene.isSubScene}, IsLoaded: {scene.isLoaded}");
-            // if (scene is { isSubScene: true, isLoaded: false })
-            //     SceneManager.LoadScene("Systems", LoadSceneMode.Additive);
-        }
     }
 }
