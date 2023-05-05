@@ -195,27 +195,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6720796778961925121, guid: 20cd7a6b90eb2a6449a347dae072a298, type: 3}
       propertyPath: m_EffectColor.b
-      value: 0.18823531
+      value: 0.19607845
       objectReference: {fileID: 0}
     - target: {fileID: 6720796778961925121, guid: 20cd7a6b90eb2a6449a347dae072a298, type: 3}
       propertyPath: m_EffectColor.g
-      value: 0.18823531
+      value: 0.50980395
       objectReference: {fileID: 0}
     - target: {fileID: 6720796778961925121, guid: 20cd7a6b90eb2a6449a347dae072a298, type: 3}
       propertyPath: m_EffectColor.r
-      value: 0.64705884
+      value: 0.27450982
       objectReference: {fileID: 0}
     - target: {fileID: 7043835308426329548, guid: 20cd7a6b90eb2a6449a347dae072a298, type: 3}
       propertyPath: m_EffectColor.b
-      value: 0.18823531
+      value: 0.19607845
       objectReference: {fileID: 0}
     - target: {fileID: 7043835308426329548, guid: 20cd7a6b90eb2a6449a347dae072a298, type: 3}
       propertyPath: m_EffectColor.g
-      value: 0.18823531
+      value: 0.50980395
       objectReference: {fileID: 0}
     - target: {fileID: 7043835308426329548, guid: 20cd7a6b90eb2a6449a347dae072a298, type: 3}
       propertyPath: m_EffectColor.r
-      value: 0.64705884
+      value: 0.27450982
       objectReference: {fileID: 0}
     - target: {fileID: 7340210186855270924, guid: 20cd7a6b90eb2a6449a347dae072a298, type: 3}
       propertyPath: m_Pivot.x
@@ -329,7 +329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.09019608, g: 0.1254902, b: 0.21960786, a: 0.5}
+  m_EffectColor: {r: 0.098039225, g: 0.20000002, b: 0.1764706, a: 1}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
 --- !u!1001 &1375771554371434254
@@ -927,7 +927,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.09019608, g: 0.1254902, b: 0.21960786, a: 0.5}
+  m_EffectColor: {r: 0.09019608, g: 0.1254902, b: 0.21960786, a: 1}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
 --- !u!224 &6551730017081023882 stripped
@@ -1093,7 +1093,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0.09019608, g: 0.1254902, b: 0.21960786, a: 0.5}
+  m_EffectColor: {r: 0.09019608, g: 0.1254902, b: 0.21960786, a: 1}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
 --- !u!1001 &5864314147329646883
