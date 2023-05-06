@@ -13,6 +13,15 @@ namespace SaturnRPG.Utilities.Extensions
 			);
 		}
 
+		public static Vector3 Round(this Vector3 original)
+		{
+			return new Vector3(
+				Mathf.Round(original.x),
+				Mathf.Round(original.y),
+				Mathf.Round(original.z)
+				);
+		}
+
 		public static Vector3 WithMagnitude(this Vector3 original, float magnitude)
 			=> original.normalized * magnitude;
 		
