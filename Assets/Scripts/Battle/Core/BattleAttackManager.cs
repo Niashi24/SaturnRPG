@@ -14,6 +14,12 @@ namespace SaturnRPG.Battle
 			BattleUnit[] sortedUnits = unitManager.GetAttackingUnits()
 				.OrderByDescending(x => x.SelectionPriority)
 				.ToArray();
+			
+			// TODO: Add a system for having attacks take multiple party members
+			// (Need this for pair/team attacks + running away)
+			// Ideas:
+			//    Array of Units with Corresponding bool HasBeenUsed (name pending)
+			//    Continually go through array and choose with least value
 
 			BattleAttack[] attacks = new BattleAttack[sortedUnits.Length];
 			for (int i = 0; i < sortedUnits.Length; i++)
@@ -29,6 +35,8 @@ namespace SaturnRPG.Battle
 				else
 					attacks[i] = attack;
 			}
+			
+			// TODO: Change so that moves with higher priorities go first
 
 			foreach (var attack in attacks)
 			{

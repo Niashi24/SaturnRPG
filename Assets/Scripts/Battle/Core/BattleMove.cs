@@ -22,6 +22,14 @@ namespace SaturnRPG.Battle
 		
 		[field: SerializeField]
 		public int MPCost { get; private set; }
+		
+		/*
+		 * [field: SerializeField, Tooltip("Systems will avoid displaying Discrete Moves to User")]
+		 * public bool Discrete { get; private set; }
+		 *
+		 * [field: SerializeField, Tooltip("Moves with higher priorities will move first")]
+		 * public int Priority { get; private set; }
+		 */
 
 		public async UniTask PlayMove(BattleContext context, BattleAttack attack)
 		{
@@ -36,8 +44,9 @@ namespace SaturnRPG.Battle
 		}
 
 		public List<ITargetable> GetTargetables(BattleUnit user, BattleContext context)
-		{
-			return movePrefab.GetTargetables(user, context);
-		}
+			=> movePrefab.GetTargetables(user, context);
+
+		public BattleStats GetMoveStats(BattleUnit user, ITargetable target, BattleContext context)
+			=> movePrefab.GetMoveStats(user, target, context);
 	}
 }

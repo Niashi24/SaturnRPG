@@ -60,6 +60,7 @@ namespace SaturnRPG.Battle.UI
 				popupTransform.position = popupTransform.position.Round();
 
 				await UniTask.Yield(cancelToken);
+				if (cancelToken.IsCancellationRequested) return;
 				accumulatedTime = Mathf.Min(accumulatedTime + Time.deltaTime, animationTimeSeconds);
 			}
 			

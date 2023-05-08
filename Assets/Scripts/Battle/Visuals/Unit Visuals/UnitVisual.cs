@@ -1,4 +1,5 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System;
+using Cysharp.Threading.Tasks;
 using SaturnRPG.Battle.Unit_Visuals;
 using SaturnRPG.Camera3D2D;
 using Sirenix.OdinInspector;
@@ -19,6 +20,9 @@ namespace SaturnRPG.Battle
 
 		[ShowInInspector, ReadOnly]
 		public PartyMemberVisual PartyMemberVisual { get; private set; }
+
+		public event Action<PartyMemberVisual> OnSetPartyMemberVisual;
+		public event Action<Transform> OnSetAnchor; 
 
 		private void OnEnable()
 		{
@@ -49,6 +53,8 @@ namespace SaturnRPG.Battle
 			PartyMemberVisual = Instantiate(partyMember.VisualPrefab, Vector3.zero, Quaternion.identity, transform);
 			PartyMemberVisual.transform.localPosition = Vector3.zero;
 			PartyMemberVisual.Initialize(battleUnit, this);
+			
+			OnSetPartyMemberVisual?.Invoke(PartyMemberVisual);
 			
 			cameraAnchor.SetSize(PartyMemberVisual.Size);
 		}
@@ -100,6 +106,7 @@ namespace SaturnRPG.Battle
 		{
 			Anchor3D = anchor3D;
 			cameraAnchor.SetAnchor(Anchor3D);
+			OnSetAnchor?.Invoke(Anchor3D);
 		}
 	}
 }
