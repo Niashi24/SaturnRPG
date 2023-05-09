@@ -125,6 +125,10 @@ PrefabInstance:
       propertyPath: heightToWidthRatio
       value: 0.25
       objectReference: {fileID: 0}
+    - target: {fileID: 7689223856982049276, guid: 94c6695c149d4f5408e61c1265990b14, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94c6695c149d4f5408e61c1265990b14, type: 3}
 --- !u!114 &2560531461016725378 stripped
@@ -197,6 +201,10 @@ PrefabInstance:
     - target: {fileID: 2696257129409464394, guid: 94c6695c149d4f5408e61c1265990b14, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7689223856982049276, guid: 94c6695c149d4f5408e61c1265990b14, type: 3}
+      propertyPath: m_RenderingLayerMask
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94c6695c149d4f5408e61c1265990b14, type: 3}

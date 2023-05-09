@@ -12,6 +12,11 @@ namespace SaturnRPG.Battle
 
 		public abstract List<ITargetable> GetTargetables(BattleUnit user, BattleContext context);
 
+		public virtual IEnumerable<BattleUnit> GetExhaustedUnitsOfAttack(BattleAttack user, BattleContext context)
+		{
+			yield return user.User;
+		}
+
 		public virtual BattleStats GetMoveStats(BattleUnit user, ITargetable target, BattleContext context)
 		{
 			return user.GetBattleStats();

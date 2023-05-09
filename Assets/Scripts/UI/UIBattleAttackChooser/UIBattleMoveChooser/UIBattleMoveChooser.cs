@@ -7,7 +7,7 @@ namespace SaturnRPG.UI
 {
 	public class UIBattleMoveChooser : MonoBehaviour
 	{
-		public async UniTask<BattleMove> ChooseMove(BattleContext context, BattleUnit unit)
+		public UniTask<BattleMove> ChooseMove(BattleContext context, BattleUnit unit)
 		{
 			throw new System.NotImplementedException();
 		}

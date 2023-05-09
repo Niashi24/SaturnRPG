@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using SaturnRPG.Battle;
@@ -8,7 +9,7 @@ namespace SaturnRPG.UI
 {
 	public class BattleTargetChooserUI : MonoBehaviour
 	{
-		public async UniTask<ITargetable> ChooseTarget(BattleContext context, BattleUnit unit, BattleMove move)
+		public UniTask<ITargetable> ChooseTarget(BattleContext context, BattleUnit unit, BattleMove move)
 		{
 			throw new NotImplementedException();
 		}

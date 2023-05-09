@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using Sirenix.Utilities;
 
 namespace SaturnRPG.Utilities.Extensions
 {
@@ -17,6 +20,29 @@ namespace SaturnRPG.Utilities.Extensions
 				int k = _rng.Next(n + 1);
 				(list[k], list[n]) = (list[n], list[k]);
 			}  
+		}
+		
+		public static T FirstWhere<T>(this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
+		{
+			foreach (var item in enumerable)
+				if (predicate(item))
+					return item;
+
+			return default;
+		}
+
+		public static bool TryFirstWhere<T>(this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate, out T first)
+		{
+			foreach (var item in enumerable)
+			{
+				if (!predicate(item)) continue;
+				
+				first = item;
+				return true;
+			}
+
+			first = default;
+			return false;
 		}
 	}
 }

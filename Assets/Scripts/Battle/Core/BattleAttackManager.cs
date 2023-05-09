@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using SaturnRPG.Utilities;
+using SaturnRPG.Utilities.Extensions;
 using UnityEngine;
 
 namespace SaturnRPG.Battle
@@ -11,34 +14,48 @@ namespace SaturnRPG.Battle
 
 		public async UniTask<TurnOutcome> ProcessAttacks(BattleUnitManager unitManager, BattleContext context)
 		{
-			BattleUnit[] sortedUnits = unitManager.GetAttackingUnits()
+			var sortedUnits = unitManager.ActiveUnits
 				.OrderByDescending(x => x.SelectionPriority)
-				.ToArray();
-			
-			// TODO: Add a system for having attacks take multiple party members
-			// (Need this for pair/team attacks + running away)
-			// Ideas:
-			//    Array of Units with Corresponding bool HasBeenUsed (name pending)
-			//    Continually go through array and choose with least value
+				.ThenBy(x => unitManager.ActiveUnits.IndexOf(x))
+				.ToList();
 
-			BattleAttack[] attacks = new BattleAttack[sortedUnits.Length];
-			for (int i = 0; i < sortedUnits.Length; i++)
+			List<BattleAttack> attackStack = new(sortedUnits.Count);
+			Dictionary<BattleUnit, BattleAttack> unitToAttack = new(sortedUnits.Count);
+			HashSet<BattleUnit> exhaustedUnits = new(sortedUnits.Count);
+			
+			BattleUnit currentUnit;
+			while ((currentUnit = sortedUnits.FirstWhere(x => !exhaustedUnits.Contains(x) && x.CanAttack())) != default)
 			{
 				BattleAttack attack;
-				if (attacks[i] == null)  // Haven't selected an attack yet
-					attack = await sortedUnits[i].ChooseAttack(context);
-				else  // Already selected an attack, redo attack choice
-					attack = await sortedUnits[i].RedoAttackChoice(attacks[i], context);
-				
-				if (attack == null)
-					i -= 2;  // Go back to previous (-2 b/c i++)
+				if (unitToAttack.ContainsKey(currentUnit))
+					attack = await currentUnit.RedoAttackChoice(unitToAttack[currentUnit], context);
 				else
-					attacks[i] = attack;
-			}
-			
-			// TODO: Change so that moves with higher priorities go first
+					attack = await currentUnit.ChooseAttack(context);
 
-			foreach (var attack in attacks)
+				if (attack == null)  // Go back and re-do previous attack
+				{
+					if (attackStack.Count == 0) continue;
+
+					var previousAttack = attackStack[^1];
+					attackStack.RemoveAt(attackStack.Count - 1);
+					// Assumption: moves cannot share units/use units already used
+					foreach (var unit in previousAttack.GetExhaustedUnits(context))
+						exhaustedUnits.Remove(unit);
+				}
+				else
+				{
+					attackStack.Add(attack);
+					foreach (var unit in attack.GetExhaustedUnits(context))
+						exhaustedUnits.Add(unit);
+					unitToAttack[currentUnit] = attack;
+				}
+			}
+
+			var sortedAttacks = attackStack
+				.OrderBy(x => x.MoveBase.Priority)
+				.ThenBy(x => attackStack.IndexOf(x));
+
+			foreach (var attack in sortedAttacks)
 			{
 				if (attack.CanBeUsed())
 				{

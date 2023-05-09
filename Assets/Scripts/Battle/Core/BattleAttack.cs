@@ -1,4 +1,6 @@
-﻿using Cysharp.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Cysharp.Threading.Tasks;
 
 namespace SaturnRPG.Battle
 {
@@ -23,5 +25,8 @@ namespace SaturnRPG.Battle
 
 			return Target.CanBeAttacked();
 		}
+
+		public IEnumerable<BattleUnit> GetExhaustedUnits(BattleContext context)
+			=> MoveBase == null ? Enumerable.Empty<BattleUnit>() : MoveBase.GetExhaustedUnits(this, context);
 	}
 }
