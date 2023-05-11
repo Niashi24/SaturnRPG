@@ -36,6 +36,7 @@ namespace SaturnRPG.UI
 			if (target == null)  // Didn't work, just choose attack normally
 				return await WaitForAttack(context, unit);
 			
+			// Worked! Return the new Battle Attack
 			ResetUI();
 			return new BattleAttack()
 			{

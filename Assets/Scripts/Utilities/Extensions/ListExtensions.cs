@@ -21,6 +21,15 @@ namespace SaturnRPG.Utilities.Extensions
 				(list[k], list[n]) = (list[n], list[k]);
 			}  
 		}
+
+		public static int FirstIndexWhere<T>(this IList<T> list, [NotNull] Func<T, bool> predicate)
+		{
+			for (int i = 0; i < list.Count; i++)
+				if (predicate(list[i]))
+					return i;
+
+			return -1;
+		}
 		
 		public static T FirstWhere<T>(this IEnumerable<T> enumerable, [NotNull] Func<T, bool> predicate)
 		{

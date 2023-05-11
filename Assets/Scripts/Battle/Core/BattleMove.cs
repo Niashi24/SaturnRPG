@@ -28,7 +28,9 @@ namespace SaturnRPG.Battle
 		
 		[field: SerializeField, Tooltip("Moves with higher priorities will move first")]
 		public int Priority { get; private set; }
-
+		
+		[field: SerializeField]
+		public MoveType MoveType { get; private set; }
 
 		public async UniTask PlayMove(BattleContext context, BattleAttack attack)
 		{
