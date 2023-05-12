@@ -18,9 +18,11 @@ namespace SaturnRPG.UI
 		[SerializeField]
 		private Color textUsable, textUnusable;
 
+		public event Action OnEnter;
 		public event Action OnSelection;
 		
 		public bool Usable { get; private set; }
+		public bool Active { get; private set; }
 		public BattleMove Move { get; private set; }
 
 		[Button]
@@ -33,12 +35,12 @@ namespace SaturnRPG.UI
 
 		public void Enter()
 		{
-			border.enabled = true;
+			OnEnter?.Invoke();
 		}
 
 		public void Exit()
 		{
-			border.enabled = false;
+			// border.enabled = false;
 		}
 
 		public void Select()
@@ -52,6 +54,12 @@ namespace SaturnRPG.UI
 			text.text = move.MoveName;
 			Move = move;
 			SetUsable(move.CanBeUsed(context, user));
+		}
+
+		public void SetActive(bool active)
+		{
+			Active = active;
+			border.enabled = active;
 		}
 
 		public void ResetSelection()

@@ -17,6 +17,9 @@ namespace SaturnRPG.UI
 		[SerializeField]
 		private List<UIMoveSelection> moveSelections;
 
+		[SerializeField]
+		private MoveType defaultType = MoveType.Attack;
+
 		public int CurrentTabIndex { get; private set; } = 0;
 		public int CurrentSelectionIndex { get; private set; } = 0;
 		private MoveType CurrentType => (MoveType)CurrentTabIndex;
@@ -47,6 +50,8 @@ namespace SaturnRPG.UI
 			foreach (var selection in moveSelections)
 			{
 				var temp = selection;
+				temp.SetActive(false);
+				temp.OnEnter += () => OnMoveEnter(temp);
 				selection.OnSelection += () => OnSelectMove(temp);
 			}
 
@@ -94,6 +99,8 @@ namespace SaturnRPG.UI
 			if (!_setup) Setup();
 			ResetSelection();
 			PopulateMoves(context, unit);
+			DisplayMovesOfType(defaultType);
+			SetActiveSelectionIndex(0);
 			gameObject.SetActive(true);
 			while (_selectedMove == null)
 				await UniTask.Yield();
@@ -137,6 +144,8 @@ namespace SaturnRPG.UI
 		{
 			if (index == CurrentSelectionIndex) return;
 			
+			// OnMoveEnter();
+			
 			moveSelections[CurrentSelectionIndex].Exit();
 			
 			if (index > moveSelections.Count) index = 0;
@@ -161,16 +170,9 @@ namespace SaturnRPG.UI
 
 		public void SelectCurrentSelection()
 		{
-			var moves = _typeToMoves[CurrentType];
-			if (CurrentSelectionIndex >= moves.Count || CurrentSelectionIndex < 0)
-			{
-				if (CurrentSelectionIndex == 0) return;  // Sometimes there's no moves to select and that's OK
-				// If it tried to select a move out of range otherwise, that's bad
-				Debug.LogError("Tried to select an out of range move.", this);
-				return;
-			}
-
-			_selectedMove = moves[CurrentSelectionIndex];
+			if (!moveSelections[CurrentSelectionIndex].Usable) return;
+			
+			OnSelectMove(moveSelections[CurrentSelectionIndex]);
 		}
 
 		private void OnSelectTab(UITab tab)
@@ -187,6 +189,16 @@ namespace SaturnRPG.UI
 			// TODO: Switch tabs
 			SetActiveSelectionIndex(0);
 			DisplayMovesOfType((MoveType)tabIndex);
+		}
+
+		private void OnMoveEnter(UIMoveSelection selection)
+		{
+			int index = moveSelections.IndexOf(selection);
+			if (index == -1) return;
+
+			moveSelections[CurrentSelectionIndex].SetActive(false);
+			CurrentSelectionIndex = index;
+			selection.SetActive(true);
 		}
 
 		private void OnSelectMove(UIMoveSelection selection)

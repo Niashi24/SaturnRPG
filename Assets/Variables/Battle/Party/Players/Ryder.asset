@@ -16,7 +16,7 @@ MonoBehaviour:
   <Moves>k__BackingField:
   - {fileID: 11400000, guid: c35ac21953ed346478ada0101c9eda78, type: 2}
   - {fileID: 11400000, guid: 159459a5ed121b342861ffcfbbc2196f, type: 2}
-  <BattleAttackChooser>k__BackingField: {fileID: 11400000, guid: 6635fadef29ca5a408cb9ed52e36126d, type: 2}
+  <BattleAttackChooser>k__BackingField: {fileID: 11400000, guid: 403e023bb9040ec4197f42d384c12663, type: 2}
   <Stats>k__BackingField:
     HP: 20
     MP: 5

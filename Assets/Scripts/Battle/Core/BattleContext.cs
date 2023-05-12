@@ -21,5 +21,12 @@ namespace SaturnRPG.Battle
 				return EnemyUnitManager;
 			return PlayerUnitManager;
 		}
+
+		public BattleUnitManager GetTeam(BattleUnit user)
+		{
+			if (PlayerUnitManager.ActiveUnits.Contains(user))
+				return PlayerUnitManager;
+			return EnemyUnitManager;
+		}
 	}
 }

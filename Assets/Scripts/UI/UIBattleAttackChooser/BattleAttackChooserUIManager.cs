@@ -31,13 +31,15 @@ namespace SaturnRPG.UI
 			
 			// Worked! Return the new Battle Attack
 			ResetUI();
-			return new BattleAttack()
+			var attack = new BattleAttack()
 			{
 				MoveBase = previous.MoveBase,
 				Stats = previous.Stats,
 				Target = target,
 				User = previous.User
 			};
+			await OnChooseAttack.Invoke(attack);
+			return attack;
 		}
 
 		private void ResetUI()
@@ -58,18 +60,23 @@ namespace SaturnRPG.UI
 						
 				if (selectedMove == null) return null;  // cancel selection
 
+				await OnChooseMove.Invoke(selectedMove);
+
 				ITargetable target = await battleTargetChooser.ChooseTarget(context, unit, selectedMove);
 				if (target == null) continue;  // restart selection
 
 				ResetUI();
-
-				return new BattleAttack()
+				var attack = new BattleAttack()
 				{
 					MoveBase = selectedMove,
 					Stats = selectedMove.GetMoveStats(unit, target, context),
 					Target = target,
 					User = unit
 				};
+
+				await OnChooseAttack.Invoke(attack);
+				
+				return attack;
 			}
 		}
 	}

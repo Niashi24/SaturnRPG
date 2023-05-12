@@ -22,6 +22,6 @@ MonoBehaviour:
     Attack: 5
     Magic: 1
     Defense: 2
-  <VisualPrefab>k__BackingField: {fileID: 7858351256762439645, guid: 986d9f96a2d4feb40a1c975528448a22, type: 3}
+  <VisualPrefab>k__BackingField: {fileID: 7858351256762439645, guid: f1c4af4567f986f4d81dfa6738ddc4e7, type: 3}
   <HP>k__BackingField: 20
   <MP>k__BackingField: 5
