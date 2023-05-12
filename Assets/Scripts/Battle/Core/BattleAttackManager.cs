@@ -59,8 +59,7 @@ namespace SaturnRPG.Battle
 			{
 				if (attack.CanBeUsed())
 				{
-					await OnAttack.Invoke(attack, context);
-					await attack.PlayAttack(context);
+					await PlayAttack(attack, context);
 				}
 				else  // Attack failed, try to fix it
 				{
@@ -68,10 +67,16 @@ namespace SaturnRPG.Battle
 					var newAttack = attack.User.FixAttack(attack, context);
 					if (newAttack.CanBeUsed())
 					{
-						await OnAttack.Invoke(attack, context);
-						await attack.PlayAttack(context);
+						await PlayAttack(newAttack, context);
 					}
 				}
+			}
+
+			async UniTask PlayAttack(BattleAttack attack, BattleContext context)
+			{
+				await OnAttack.Invoke(attack, context);
+				await attack.User.UseMP(attack.MoveBase.MPCost);
+				await attack.PlayAttack(context);
 			}
 
 			if (context.PlayerUnitManager.AllUnitsDown())

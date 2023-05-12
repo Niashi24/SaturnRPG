@@ -1,4 +1,5 @@
 ﻿using System;
+using SaturnRPG.Battle;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ namespace SaturnRPG.UI
 		public event Action OnSelection;
 		
 		public bool Usable { get; private set; }
+		public BattleMove Move { get; private set; }
 
 		[Button]
 		public void SetUsable(bool usable)
@@ -43,6 +45,20 @@ namespace SaturnRPG.UI
 		{
 			if (Usable)
 				OnSelection?.Invoke();
+		}
+
+		public void SetMove(BattleMove move, BattleContext context, BattleUnit user)
+		{
+			text.text = move.MoveName;
+			Move = move;
+			SetUsable(move.CanBeUsed(context, user));
+		}
+
+		public void ResetSelection()
+		{
+			text.text = string.Empty;
+			Move = null;
+			SetUsable(false);
 		}
 	}
 }

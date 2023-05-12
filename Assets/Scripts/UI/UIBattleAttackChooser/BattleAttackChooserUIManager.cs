@@ -18,23 +18,16 @@ namespace SaturnRPG.UI
 		public readonly AsyncEvent<BattleMove> OnChooseMove = new();
 		public readonly AsyncEvent<BattleAttack> OnChooseAttack = new();
 
-		public async UniTask<BattleAttack> ChooseAttack(BattleContext context, BattleUnit unit)
-		{
-			ResetUI();
-			return await WaitForAttack(context, unit);
-		}
+		public UniTask<BattleAttack> ChooseAttack(BattleContext context, BattleUnit unit)
+			=> WaitForAttack(context, unit);
 
 		public async UniTask<BattleAttack> RedoChoiceSelection(BattleContext context, BattleUnit unit, BattleAttack previous)
 		{
-			ResetUI();
-			battleMoveChooser.SetSelection(previous.MoveBase);
-			battleTargetChooser.SetSelection(previous.Target);
-			
 			// Just try to reselect target
 			var target = await battleTargetChooser.ChooseTarget(context, unit, previous.MoveBase);
 			
 			if (target == null)  // Didn't work, just choose attack normally
-				return await WaitForAttack(context, unit);
+				return await WaitForAttack(context, unit, previous.MoveBase);
 			
 			// Worked! Return the new Battle Attack
 			ResetUI();
@@ -53,22 +46,27 @@ namespace SaturnRPG.UI
 			battleMoveChooser.ResetSelection();
 		}
 
-		private async UniTask<BattleAttack> WaitForAttack(BattleContext context, BattleUnit unit)
+		private async UniTask<BattleAttack> WaitForAttack(BattleContext context, BattleUnit unit, BattleMove previous = null)
 		{
+			BattleMove selectedMove = previous;
 			while (true)
 			{
-				BattleMove move = await battleMoveChooser.ChooseMove(context, unit);
-				if (move == null) return null;  // cancel selection
+				if (selectedMove == null)
+					selectedMove = await battleMoveChooser.ChooseMove(context, unit);
+				else  // selected move then canceled target selection
+					selectedMove = await battleMoveChooser.RedoMoveChoice(context, unit, selectedMove);
+						
+				if (selectedMove == null) return null;  // cancel selection
 
-				ITargetable target = await battleTargetChooser.ChooseTarget(context, unit, move);
+				ITargetable target = await battleTargetChooser.ChooseTarget(context, unit, selectedMove);
 				if (target == null) continue;  // restart selection
 
 				ResetUI();
 
 				return new BattleAttack()
 				{
-					MoveBase = move,
-					Stats = move.GetMoveStats(unit, target, context),
+					MoveBase = selectedMove,
+					Stats = selectedMove.GetMoveStats(unit, target, context),
 					Target = target,
 					User = unit
 				};

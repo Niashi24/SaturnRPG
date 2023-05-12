@@ -19,7 +19,7 @@ namespace SaturnRPG.UI
 			throw new NotImplementedException();
 		}
 
-		public void SetSelection(ITargetable previousTarget)
+		public void SetSelection(BattleContext context, BattleUnit unit, ITargetable previousTarget)
 		{
 			throw new NotImplementedException();
 		}

@@ -73,6 +73,8 @@ namespace SaturnRPG.Battle
 
 		private async UniTask HPChange(int newHP, int oldHP)
 		{
+		    if (newHP == oldHP) return;
+		    
 			var maxHP = _battleUnit.GetBattleStats().HP;
 
 			hpText.text = $"{newHP}/{maxHP}";
@@ -85,6 +87,8 @@ namespace SaturnRPG.Battle
 
 		private async UniTask MPChange(int newMP, int oldMP)
 		{
+		    if (newMP == oldMP) return;
+		    
 			var maxMP = _battleUnit.GetBattleStats().MP;
 
 			mpText.text = $"{newMP}/{maxMP}";
@@ -92,7 +96,7 @@ namespace SaturnRPG.Battle
 			if (maxMP == 0) return;  // avoid / by 0
 			var battleCancellationToken = BattleManager.I.BattleContext.BattleCancellationToken;
 			
-			await hpBar.Value.SetValueAsync((float)newMP / maxMP, battleCancellationToken);
+			await mpBar.Value.SetValueAsync((float)newMP / maxMP, battleCancellationToken);
 		}
 
 		private void UpdatePartyMember(PartyMember partyMember)
