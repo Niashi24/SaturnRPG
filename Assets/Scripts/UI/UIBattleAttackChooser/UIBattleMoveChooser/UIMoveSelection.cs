@@ -49,11 +49,11 @@ namespace SaturnRPG.UI
 				OnSelection?.Invoke();
 		}
 
-		public void SetMove(BattleMove move, BattleContext context, BattleUnit user)
+		public void SetMove(BattleMove move, bool usable)
 		{
 			text.text = move.MoveName;
 			Move = move;
-			SetUsable(move.CanBeUsed(context, user));
+			SetUsable(usable);
 		}
 
 		public void SetActive(bool active)

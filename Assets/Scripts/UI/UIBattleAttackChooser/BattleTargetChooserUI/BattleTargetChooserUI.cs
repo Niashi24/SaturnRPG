@@ -9,12 +9,14 @@ namespace SaturnRPG.UI
 {
 	public class BattleTargetChooserUI : MonoBehaviour
 	{
-		public UniTask<ITargetable> ChooseTarget(BattleContext context, BattleUnit unit, BattleMove move)
+		public async UniTask<ITargetable> ChooseTarget(BattleContext context, BattleUnit unit, BattleMove move)
 		{
+			var targetables = move.GetTargetables(unit, context);
+			return targetables[0];
 			throw new NotImplementedException();
 		}
 
-		public void ResetSelection()
+		private void ResetSelection()
 		{
 			throw new NotImplementedException();
 		}

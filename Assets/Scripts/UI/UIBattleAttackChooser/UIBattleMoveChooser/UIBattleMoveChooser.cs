@@ -11,7 +11,7 @@ namespace SaturnRPG.UI
 	public class UIBattleMoveChooser : MonoBehaviour
 	{
 		[SerializeField]
-		[ValidateInput(nameof(TabsValid))]
+		// [ValidateInput(nameof(TabsValid))]
 		private List<UITab> tabs;
 
 		[SerializeField]
@@ -20,9 +20,9 @@ namespace SaturnRPG.UI
 		[SerializeField]
 		private MoveType defaultType = MoveType.Attack;
 
-		public int CurrentTabIndex { get; private set; } = 0;
-		public int CurrentSelectionIndex { get; private set; } = 0;
-		private MoveType CurrentType => (MoveType)CurrentTabIndex;
+		private int _tabIndex = 0;
+		private int _selectionIndex = 0;
+		private MoveType CurrentType => (MoveType)_tabIndex;
 
 		private readonly List<BattleMove> _currentMoves = new();
 		private readonly Dictionary<MoveType, List<BattleMove>> _typeToMoves = new();
@@ -33,6 +33,7 @@ namespace SaturnRPG.UI
 		private BattleMove _selectedMove;
 
 		private bool _setup;
+		private bool _active;
 		
 		private void Awake()
 		{
@@ -44,15 +45,17 @@ namespace SaturnRPG.UI
 			foreach (var tab in tabs)
 			{
 				var temp = tab;
-				temp.OnSelect += () => OnSelectTab(temp);
+				temp.OnSelect += () => SetActiveTab(temp);
 			}
 
 			foreach (var selection in moveSelections)
 			{
 				var temp = selection;
 				temp.SetActive(false);
-				temp.OnEnter += () => OnMoveEnter(temp);
-				selection.OnSelection += () => OnSelectMove(temp);
+				temp.gameObject.SetActive(false);
+				
+				temp.OnEnter += () => SetActiveSelection(temp);
+				selection.OnSelection += () => SelectSelection(temp);
 			}
 
 			foreach (MoveType type in Enum.GetValues(typeof(MoveType)))
@@ -63,170 +66,186 @@ namespace SaturnRPG.UI
 			_setup = true;
 		}
 
-		public void PopulateMoves(BattleContext context, BattleUnit unit)
+		public async UniTask<BattleMove> ChooseMove(BattleContext context, BattleUnit unit)
 		{
+			if (!_setup) Setup();
+			ResetSelection();
+			SetupMoves(context, unit);
+			_active = true;
+			SetTabIndex(0);
+			SetSelectionIndex(0);
+			gameObject.SetActive(true);
+
+			while (_selectedMove == null)
+				await UniTask.Yield(context.BattleCancellationToken);
+			
+			_active = false;
+			gameObject.SetActive(false);
+
+			var tempMove = _selectedMove;
 			_selectedMove = null;
-
-			_currentUnit = unit;
-			_currentContext = context;
-			var moves = unit.GetAvailableMoves(context);
-			
-			_currentMoves.AddRange(moves);
-
-			// Separate into tabs by move type
-			foreach (var move in _currentMoves)
-				_typeToMoves[move.MoveType].Add(move);
-			
-			SetActiveTabIndex(0);
+			return tempMove;
 		}
 
 		public async UniTask<BattleMove> RedoMoveChoice(BattleContext context, BattleUnit unit, BattleMove previous)
 		{
 			if (!_setup) Setup();
-			ResetSelection();
-			PopulateMoves(context, unit);
-			SetSelection(previous);
-			gameObject.SetActive(true);
-			while (_selectedMove == null)
-				await UniTask.Yield();
+			SetupMoves(context, unit);
+			_active = true;
 			
-			gameObject.SetActive(false);
+
+			while (_selectedMove == null)
+				await UniTask.Yield(context.BattleCancellationToken);
+
+			_active = false;
 			return _selectedMove;
 		}
 
-		public async UniTask<BattleMove> ChooseMove(BattleContext context, BattleUnit unit)
+		[Button]
+		public void IncrementTab(int i)
 		{
-			if (!_setup) Setup();
-			ResetSelection();
-			PopulateMoves(context, unit);
-			DisplayMovesOfType(defaultType);
-			SetActiveSelectionIndex(0);
-			gameObject.SetActive(true);
-			while (_selectedMove == null)
-				await UniTask.Yield();
+			if (!_active) return;
+			if (i == 0) return;
+			//TODO:
 
-			gameObject.SetActive(false);
-			return _selectedMove;
+			int newIndex = _tabIndex + i;
+			if (newIndex >= tabs.Count)
+				newIndex = 0;
+			if (newIndex < 0)
+				newIndex = tabs.Count - 1;
+
+			SetTabIndex(newIndex);
 		}
 
-		public void ResetSelection()
+		[Button]
+		public void IncrementSelection(int i)
 		{
-			tabs[CurrentTabIndex].SetActive(false);
-			CurrentTabIndex = 0;
-			CurrentSelectionIndex = 0;
-			tabs[CurrentTabIndex].SetActive(true);
+			if (!_active) return;
+			if (i == 0) return;
+			if (_currentMoves.Count == 0) return;
+			var currentTypeMoves = _typeToMoves[CurrentType];
 			
+			if (currentTypeMoves.Count == 0) return;
+
+			int newIndex = _selectionIndex + i;
+			if (newIndex >= currentTypeMoves.Count)
+				newIndex = 0;
+			if (newIndex < 0)
+				newIndex = currentTypeMoves.Count - 1;
+			
+			SetSelectionIndex(newIndex);
+			//TODO:
+		}
+
+		public void SelectActiveSelection()
+		{
+			if (!_active) return;
+			if (_currentMoves.Count == 0) return;
+			if (_typeToMoves[CurrentType].Count == 0) return;
+		}
+
+		private void SetActiveTab(UITab tab)
+		{
+			if (!_active) return;
+			int index = tabs.IndexOf(tab);
+			if (index == -1) return;
+			
+			SetTabIndex(index);
+		}
+
+		public void SetActiveSelection(UIMoveSelection selection)
+		{
+			if (!_active) return;
+			int index = moveSelections.IndexOf(selection);
+			if (index == -1) return;
+			
+			SetSelectionIndex(index);
+		}
+
+		private void SelectSelection(UIMoveSelection selection)
+		{
+			if (!selection.Usable) return;
+			if (selection.Move == null) return;
+
+			_selectedMove = selection.Move;
+		}
+
+		private void SetupMoves(BattleContext context, BattleUnit unit)
+		{
+			_selectedMove = null;
+			_currentUnit = unit;
+			
+			_currentMoves.AddRange(unit.GetAvailableMoves(context));
+
+			foreach (var move in _currentMoves)
+			{
+				_typeToMoves[move.MoveType].Add(move);
+			}
+		}
+
+		private void SetTabIndex(int tabIndex)
+		{
+			if (tabIndex < 0) return;
+			if (tabIndex >= tabs.Count) return;
+			
+			tabs[_tabIndex].SetActive(false);
+			tabs[tabIndex].SetActive(true);
+
+			_tabIndex = tabIndex;
+			
+			DisplayMovesOfType(CurrentType);
+		}
+
+		private void SetSelectionIndex(int i)
+		{
+			if (i < 0) return;
+			if (i >= moveSelections.Count) return;
+			
+			moveSelections[_selectionIndex].SetActive(false);
+			moveSelections[i].SetActive(true);
+			_selectionIndex = i;
+		}
+
+		private void DisplayMovesOfType(MoveType type)
+		{
+			foreach (var selection in moveSelections)
+			{
+				selection.ResetSelection();
+				selection.gameObject.SetActive(false);
+			}
+			
+			var movesOfType = _typeToMoves[type];
+			for (int i = 0; i < movesOfType.Count && i < moveSelections.Count; i++)
+			{
+				BattleMove move = movesOfType[i];
+				bool usable = move.CanBeUsed(_currentContext, _currentUnit);
+				moveSelections[i].SetMove(movesOfType[i], usable);
+				moveSelections[i].gameObject.SetActive(true);
+			}
+			
+			// TODO
+		}
+
+		private void ResetSelection()
+		{
+			SetTabIndex(0);
+			SetSelectionIndex(0);
+
+			foreach (var selection in moveSelections)
+			{
+				selection.ResetSelection();
+				selection.SetActive(false);
+			}
+
+			_currentContext = null;
+			_currentUnit = null;
+
 			_currentMoves.Clear();
 			foreach (var (_, moves) in _typeToMoves)
 			{
 				moves.Clear();
 			}
-
-			foreach (var selection in moveSelections)
-				selection.ResetSelection();
-		}
-
-		public void SetSelection(BattleMove previousMoveBase)
-		{
-			int typeIndex = (int)previousMoveBase.MoveType;
-			if (typeIndex < tabs.Count)
-			{
-				Debug.LogWarning($"Could not set selection: Move type is out of bounds.", this);
-				return;
-			}
-			
-			OnSelectTab(tabs[typeIndex]);
-			
-			
-		}
-
-		public void SetActiveSelectionIndex(int index)
-		{
-			if (index == CurrentSelectionIndex) return;
-			
-			// OnMoveEnter();
-			
-			moveSelections[CurrentSelectionIndex].Exit();
-			
-			if (index > moveSelections.Count) index = 0;
-			if (index < 0) index = moveSelections.Count - 1;
-
-			CurrentSelectionIndex = index;
-			moveSelections[CurrentSelectionIndex].Enter();
-		}
-
-		public void SetActiveTabIndex(int index)
-		{
-			if (index == CurrentTabIndex) return;
-
-			tabs[CurrentTabIndex].Exit();
-
-			if (index > tabs.Count) index = 0;
-			if (index < 0) index = tabs.Count - 1;
-
-			CurrentTabIndex = index;
-			tabs[CurrentTabIndex].Enter();
-		}
-
-		public void SelectCurrentSelection()
-		{
-			if (!moveSelections[CurrentSelectionIndex].Usable) return;
-			
-			OnSelectMove(moveSelections[CurrentSelectionIndex]);
-		}
-
-		private void OnSelectTab(UITab tab)
-		{
-			int tabIndex = tabs.IndexOf(tab);
-			if (tabIndex == -1) return;
-			if (tabIndex == CurrentTabIndex) return;
-
-			tabs[CurrentTabIndex].Deselect();
-			CurrentTabIndex = tabIndex;
-			
-			Debug.Log($"Selected tab #{tabIndex}");
-			
-			// TODO: Switch tabs
-			SetActiveSelectionIndex(0);
-			DisplayMovesOfType((MoveType)tabIndex);
-		}
-
-		private void OnMoveEnter(UIMoveSelection selection)
-		{
-			int index = moveSelections.IndexOf(selection);
-			if (index == -1) return;
-
-			moveSelections[CurrentSelectionIndex].SetActive(false);
-			CurrentSelectionIndex = index;
-			selection.SetActive(true);
-		}
-
-		private void OnSelectMove(UIMoveSelection selection)
-		{
-			if (selection.Move == null)
-			{
-				Debug.LogError("Selected tab with no move", selection);
-				return;
-			}
-			_selectedMove = selection.Move;
-		}
-
-		private void DisplayMovesOfType(MoveType moveType)
-		{
-			var moves = _typeToMoves[moveType];
-			moveSelections.ForEach(x => x.gameObject.SetActive(false));
-			for (int i = 0; i < moves.Count && i < moveSelections.Count; i++)
-			{
-				moveSelections[i].SetMove(moves[i], _currentContext, _currentUnit);
-				moveSelections[i].gameObject.SetActive(true);
-			}
-		}
-
-		private bool TabsValid()
-		{
-			if (tabs.Count < 3) return false;
-
-			return true;
+			// TODO
 		}
 	}
 }

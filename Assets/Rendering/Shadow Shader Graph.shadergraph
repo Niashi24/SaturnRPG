@@ -62,6 +62,9 @@
         },
         {
             "m_Id": "8b84a9fdf6aa4f88ab608ffba439d1be"
+        },
+        {
+            "m_Id": "f17f0676b63d480c8b9e5f4258148cdb"
         }
     ],
     "m_GroupDatas": [],
@@ -993,10 +996,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -544.0,
-            "y": 279.0,
-            "width": 120.00003051757813,
-            "height": 148.99996948242188
+            "x": -557.0,
+            "y": 116.99999237060547,
+            "width": 119.99996948242188,
+            "height": 149.0
         }
     },
     "m_Slots": [
@@ -1375,7 +1378,7 @@
     "m_SourceType": 1,
     "m_FunctionName": "ShadowOval",
     "m_FunctionSource": "",
-    "m_FunctionBody": "A = max(1, floor(A));\nB = max(1, floor(B));\nX = (X*A);\nY = (Y*B);\nOutput = 4*(trunc(X)*trunc(X))/(A*A) + 4*(trunc(Y)*trunc(Y))/(B*B) < 1;\n\nif (abs((ceil(X) + ceil(Y)) % 2) == 0)\n\tOutput = false;"
+    "m_FunctionBody": "A = max(1, floor(A));\nB = max(1, floor(B));\nX = (X*A);\nY = (Y*B);\nOutput = 4*(trunc(X)*trunc(X))/(A*A) + 4*(trunc(Y)*trunc(Y))/(B*B) <= 1;\n\nif (abs((ceil(X) + ceil(Y)) % 2) == 0)\n\tOutput = false;"
 }
 
 {
@@ -1642,10 +1645,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -378.9999694824219,
-            "y": 338.9999694824219,
-            "width": 208.00001525878907,
-            "height": 325.9999694824219
+            "x": -391.00006103515627,
+            "y": -79.00001525878906,
+            "width": 207.99998474121095,
+            "height": 326.0000305175781
         }
     },
     "m_Slots": [
@@ -1673,6 +1676,41 @@
     "m_CustomColors": {
         "m_SerializableColors": []
     }
+}
+
+{
+    "m_SGVersion": 1,
+    "m_Type": "UnityEditor.ShaderGraph.CustomFunctionNode",
+    "m_ObjectId": "f17f0676b63d480c8b9e5f4258148cdb",
+    "m_Group": {
+        "m_Id": ""
+    },
+    "m_Name": "ShadowOval2 (Custom Function)",
+    "m_DrawState": {
+        "m_Expanded": true,
+        "m_Position": {
+            "serializedVersion": "2",
+            "x": -1098.2501220703125,
+            "y": 225.4000244140625,
+            "width": 0.0,
+            "height": 0.0
+        }
+    },
+    "m_Slots": [],
+    "synonyms": [
+        "code",
+        "HLSL"
+    ],
+    "m_Precision": 0,
+    "m_PreviewExpanded": true,
+    "m_PreviewMode": 0,
+    "m_CustomColors": {
+        "m_SerializableColors": []
+    },
+    "m_SourceType": 1,
+    "m_FunctionName": "ShadowOval2",
+    "m_FunctionSource": "",
+    "m_FunctionBody": "Enter function body here..."
 }
 
 {

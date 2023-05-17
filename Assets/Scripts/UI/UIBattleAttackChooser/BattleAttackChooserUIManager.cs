@@ -30,7 +30,6 @@ namespace SaturnRPG.UI
 				return await WaitForAttack(context, unit, previous.MoveBase);
 			
 			// Worked! Return the new Battle Attack
-			ResetUI();
 			var attack = new BattleAttack()
 			{
 				MoveBase = previous.MoveBase,
@@ -40,12 +39,6 @@ namespace SaturnRPG.UI
 			};
 			await OnChooseAttack.Invoke(attack);
 			return attack;
-		}
-
-		private void ResetUI()
-		{
-			battleTargetChooser.ResetSelection();
-			battleMoveChooser.ResetSelection();
 		}
 
 		private async UniTask<BattleAttack> WaitForAttack(BattleContext context, BattleUnit unit, BattleMove previous = null)
@@ -65,7 +58,6 @@ namespace SaturnRPG.UI
 				ITargetable target = await battleTargetChooser.ChooseTarget(context, unit, selectedMove);
 				if (target == null) continue;  // restart selection
 
-				ResetUI();
 				var attack = new BattleAttack()
 				{
 					MoveBase = selectedMove,
