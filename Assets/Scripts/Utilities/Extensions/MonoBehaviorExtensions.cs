@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using SaturnRPG.Battle;
+using UnityEngine;
 using UnityEngine.Pool;
 
 namespace SaturnRPG.Utilities.Extensions
@@ -20,5 +21,8 @@ namespace SaturnRPG.Utilities.Extensions
 				actionOnRelease: (x) => x.gameObject.SetActive(false)
 			);
 		}
+
+		public static TransformViewable To3DViewable(this Transform transform)
+			=> new TransformViewable() {Transform = transform};
 	}
 }

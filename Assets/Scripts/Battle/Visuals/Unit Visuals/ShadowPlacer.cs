@@ -44,7 +44,7 @@ namespace SaturnRPG
 
         private void SetAnchor(Transform anchor3D)
         {
-            cameraAnchorTransformation.SetAnchor(anchor3D);
+            cameraAnchorTransformation.Set3DViewable(anchor3D.To3DViewable());
         }
 
         private void Update()

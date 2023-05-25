@@ -1,8 +1,9 @@
+#nullable enable
 using System;
 using UnityEngine;
 // Taken from https://gist.github.com/aarthificial/f2dbb58e4dbafd0a93713a380b9612af
-[Serializable]
 /// Requires Unity 2020.1+
+[Serializable]
 public struct Optional<T>
 {
     [SerializeField] private bool enabled;
@@ -16,4 +17,6 @@ public struct Optional<T>
         enabled = true;
         value = initialValue;
     }
+
+    public static Optional<T> None() => new Optional<T>();
 }

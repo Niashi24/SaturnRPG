@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using LS.Utilities;
+using SaturnRPG.Battle;
 using SaturnRPG.Utilities.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -20,8 +21,11 @@ namespace SaturnRPG.Camera3D2D
         
         [field: Header("Anchor")]
 
-        [field: SerializeField]
-        public Transform Anchor { get; private set; }
+        // [field: SerializeField]
+        // public Transform Anchor { get; private set; }
+        
+        [field: SerializeReference]
+        public I3DViewable Viewable3D { get; private set; }
 
         //The relative position on the current the Anchor will set the position to
         [SerializeField]
@@ -77,13 +81,14 @@ namespace SaturnRPG.Camera3D2D
         {
             if (inputCamera.Value == null) return;
             if (outputCamera.Value == null) return;
-            if (Anchor == null) return;
+            if (Viewable3D == null) return;
+            // if (Anchor == null) return;
             if (sizeReference == null) sizeReference = new ManualSize();
 
             Vector2 size = sizeReference.Size;
             Vector2 halfSize = size / 2;
 
-            Vector3 position = _outputFunction(_inputFunction(Anchor.position, inputCamera.Value), outputCamera.Value);
+            Vector3 position = _outputFunction(_inputFunction(Viewable3D.GetPosition(), inputCamera.Value), outputCamera.Value);
             position += new Vector3(-anchorX * halfSize.x, -anchorY * halfSize.y);
             position += offset;
 
@@ -95,11 +100,16 @@ namespace SaturnRPG.Camera3D2D
                 transform.position = position;
         }
 
-        public void SetAnchor(Transform anchor)
+        public void Set3DViewable(I3DViewable viewable3D)
         {
-            if (anchor == null) return;
-            this.Anchor = anchor;
+            Viewable3D = viewable3D;
         }
+
+        // public void SetAnchor(Transform anchor)
+        // {
+        //     if (anchor == null) return;
+        //     this.Anchor = anchor;
+        // }
 
         public void SetInputCamera(Camera inputCamera)
         {

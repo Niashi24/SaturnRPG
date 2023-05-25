@@ -172,6 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76345c0f0eb84620b263953d9dc69f27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uiTargets: []
 --- !u!1001 &148515414
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2134,7 +2135,8 @@ MonoBehaviour:
     value: {fileID: 588603861}
     reference:
       _object: {fileID: 0}
-  <Anchor>k__BackingField: {fileID: 620500901}
+  <Viewable3D>k__BackingField:
+    rid: 364840514009956352
   anchorX: 0
   anchorY: -1
   useLocalPosition: 1
@@ -2156,6 +2158,10 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 364840514009956352
+      type: {class: TransformViewable, ns: SaturnRPG.Battle, asm: Assembly-CSharp}
+      data:
+        Transform: {fileID: 620500901}
     - rid: 4264364189184163842
       type: {class: ImageSize, ns: SaturnRPG.Camera3D2D, asm: Assembly-CSharp}
       data:
@@ -2422,7 +2428,8 @@ MonoBehaviour:
     value: {fileID: 0}
     reference:
       _object: {fileID: 11400000, guid: da9935ef9958c24459e4072e28ef0330, type: 2}
-  <Anchor>k__BackingField: {fileID: 620500901}
+  <Viewable3D>k__BackingField:
+    rid: -2
   anchorX: 0
   anchorY: -1
   useLocalPosition: 0
@@ -2444,6 +2451,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 4264364007615627266
       type: {class: SpriteRendererSize, ns: SaturnRPG.Camera3D2D, asm: Assembly-CSharp}
       data:

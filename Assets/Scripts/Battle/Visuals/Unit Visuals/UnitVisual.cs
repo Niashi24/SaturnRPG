@@ -2,6 +2,7 @@
 using Cysharp.Threading.Tasks;
 using SaturnRPG.Battle.Unit_Visuals;
 using SaturnRPG.Camera3D2D;
+using SaturnRPG.Utilities.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -105,7 +106,7 @@ namespace SaturnRPG.Battle
 		public void SetAnchor(Transform anchor3D)
 		{
 			Anchor3D = anchor3D;
-			cameraAnchor.SetAnchor(Anchor3D);
+			cameraAnchor.Set3DViewable(Anchor3D.To3DViewable());
 			OnSetAnchor?.Invoke(Anchor3D);
 		}
 	}
