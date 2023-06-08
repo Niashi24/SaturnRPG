@@ -24,7 +24,7 @@ namespace SaturnRPG.UI
 		public async UniTask<BattleAttack> RedoChoiceSelection(BattleContext context, BattleUnit unit, BattleAttack previous)
 		{
 			// Just try to reselect target
-			var target = await battleTargetChooser.ChooseTarget(context, unit, previous.MoveBase);
+			var target = await battleTargetChooser.ReChooseTarget(context, unit, previous.MoveBase, previous.Target);
 			
 			if (target == null)  // Didn't work, just choose attack normally
 				return await WaitForAttack(context, unit, previous.MoveBase);

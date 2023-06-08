@@ -12,29 +12,47 @@ namespace SaturnRPG.UI
 		[SerializeField, Required]
 		private CameraAnchorTransformation anchorTransformation;
 
-		[SerializeField, Required]
+		[SerializeField, Required, Header("Border")]
 		private Image border;
+		[SerializeField, Required]
+		private RectTransform imageBorder;
 
 		[SerializeField]
-		private Color usableColor, unusableColor;
+		private Color unusableInactive, usableInactive, unusableActive, usableActive;
 
 		public ITargetable Targetable { get; private set; }
 		public bool Usable { get; private set; }
+		public bool Active { get; private set; }
 
 		public event Action OnSelect;
 		public event Action OnEnter;
+
 
 		public void SetTarget(ITargetable targetable, bool usable)
 		{
 			Targetable = targetable;
 			anchorTransformation.Set3DViewable(targetable.Viewable3D);
+
+			imageBorder.sizeDelta = targetable.Size.Size;
 			SetUsable(usable);
 		}
 
 		private void SetUsable(bool usable)
 		{
 			Usable = usable;
-			border.color = usable ? usableColor : unusableColor;
+			SetBorderColor(Active, Usable);
+		}
+
+		private void SetBorderColor(bool active, bool usable)
+		{
+			if (active)
+				border.color = usable ? usableActive : unusableActive;
+			else
+				border.color = usable ? usableInactive : unusableInactive;
+			
+			// border.color = active ?
+			// 	  usable ? usableActive : unusableActive
+			// 	: usable ? usableInactive : unusableInactive;
 		}
 
 		public void Select()
@@ -47,9 +65,10 @@ namespace SaturnRPG.UI
 			OnEnter?.Invoke();
 		}
 
-		private void LateUpdate()
+		public void SetActive(bool active)
 		{
-			
+			Active = active;
+			SetBorderColor(Active, Usable);
 		}
 	}
 }

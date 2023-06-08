@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using SaturnRPG.Camera3D2D;
 using SaturnRPG.Utilities;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -31,6 +32,8 @@ namespace SaturnRPG.Battle
 
 		public BattleStats BaseStats => PartyMember.Stats;
 		public I3DViewable Viewable3D => UnitVisual;
+
+		public ISize Size => UnitVisual.PartyMemberVisual.Size;
 
 		public bool CanAttack()
 		{

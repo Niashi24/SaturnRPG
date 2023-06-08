@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 
 namespace SaturnRPG.Utilities.Extensions
 {
@@ -63,6 +66,20 @@ namespace SaturnRPG.Utilities.Extensions
 			float t = (v4.x * (v1.y - v3.y) + v4.y * (v3.x - v1.x)) / determinant;
 
 			return v1 + v2 * t;
+		}
+		
+		public static (float, float) MinMax(this IEnumerable<float> enumerable)
+		{
+			bool any = false;
+			float min = float.MaxValue, max = float.MinValue;
+			foreach (float value in enumerable)
+			{
+				any = true;
+				if (value > max) max = value;
+				if (value < min) min = value;
+			}
+
+			return any ? (min, max) : (0, 0);
 		}
 	}
 }

@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 using SaturnRPG.Battle;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace SaturnRPG.UI
 {
@@ -16,9 +17,6 @@ namespace SaturnRPG.UI
 
 		[SerializeField]
 		private List<UIMoveSelection> moveSelections;
-
-		[SerializeField]
-		private MoveType defaultType = MoveType.Attack;
 
 		private int _tabIndex = 0;
 		private int _selectionIndex = 0;
@@ -33,8 +31,8 @@ namespace SaturnRPG.UI
 		private BattleMove _selectedMove;
 
 		private bool _setup;
-		private bool _active;
-		
+		public bool Active { get; private set; }
+
 		private void Awake()
 		{
 			if (!_setup) Setup();
@@ -71,7 +69,7 @@ namespace SaturnRPG.UI
 			if (!_setup) Setup();
 			ResetSelection();
 			SetupMoves(context, unit);
-			_active = true;
+			Active = true;
 			SetTabIndex(0);
 			SetSelectionIndex(0);
 			gameObject.SetActive(true);
@@ -79,7 +77,7 @@ namespace SaturnRPG.UI
 			while (_selectedMove == null)
 				await UniTask.Yield(context.BattleCancellationToken);
 			
-			_active = false;
+			Active = false;
 			gameObject.SetActive(false);
 
 			var tempMove = _selectedMove;
@@ -91,20 +89,20 @@ namespace SaturnRPG.UI
 		{
 			if (!_setup) Setup();
 			SetupMoves(context, unit);
-			_active = true;
-			
+			Active = true;
+			// TODO: Finish this lmao (refactor to make it like target selector (LoadMoves, SetCurrentMove, WaitForMove))
 
 			while (_selectedMove == null)
 				await UniTask.Yield(context.BattleCancellationToken);
 
-			_active = false;
+			Active = false;
 			return _selectedMove;
 		}
 
 		[Button]
 		public void IncrementTab(int i)
 		{
-			if (!_active) return;
+			if (!Active) return;
 			if (i == 0) return;
 			//TODO:
 
@@ -120,7 +118,7 @@ namespace SaturnRPG.UI
 		[Button]
 		public void IncrementSelection(int i)
 		{
-			if (!_active) return;
+			if (!Active) return;
 			if (i == 0) return;
 			if (_currentMoves.Count == 0) return;
 			var currentTypeMoves = _typeToMoves[CurrentType];
@@ -139,14 +137,14 @@ namespace SaturnRPG.UI
 
 		public void SelectActiveSelection()
 		{
-			if (!_active) return;
+			if (!Active) return;
 			if (_currentMoves.Count == 0) return;
 			if (_typeToMoves[CurrentType].Count == 0) return;
 		}
 
 		private void SetActiveTab(UITab tab)
 		{
-			if (!_active) return;
+			if (!Active) return;
 			int index = tabs.IndexOf(tab);
 			if (index == -1) return;
 			
@@ -155,7 +153,7 @@ namespace SaturnRPG.UI
 
 		public void SetActiveSelection(UIMoveSelection selection)
 		{
-			if (!_active) return;
+			if (!Active) return;
 			int index = moveSelections.IndexOf(selection);
 			if (index == -1) return;
 			

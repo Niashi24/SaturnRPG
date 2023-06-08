@@ -89,6 +89,12 @@ namespace SaturnRPG.Battle
 				SetTarget(targetable.Viewable3D, follow);
 		}
 
+		[Button]
+		public void ClearTarget(bool returnToCenter = false)
+		{
+			_constantViewable.Position = returnToCenter ? Vector3.zero : _target.GetPosition();
+		}
+
 		public async UniTask SetTargetAndWait(I3DViewable viewable, bool follow = true)
 		{
 			var cancelToken = BattleManager.I.BattleContext.BattleCancellationToken;

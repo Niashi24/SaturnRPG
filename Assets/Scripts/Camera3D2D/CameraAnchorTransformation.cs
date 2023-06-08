@@ -5,6 +5,7 @@ using SaturnRPG.Battle;
 using SaturnRPG.Utilities.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace SaturnRPG.Camera3D2D
 {
@@ -21,9 +22,6 @@ namespace SaturnRPG.Camera3D2D
         
         [field: Header("Anchor")]
 
-        // [field: SerializeField]
-        // public Transform Anchor { get; private set; }
-        
         [field: SerializeReference]
         public I3DViewable Viewable3D { get; private set; }
 
@@ -102,7 +100,10 @@ namespace SaturnRPG.Camera3D2D
 
         public void Set3DViewable(I3DViewable viewable3D)
         {
-            Viewable3D = viewable3D;
+            if (viewable3D is not Object)
+                Viewable3D = viewable3D;
+            else
+                Viewable3D = new ObjectReferenceViewable((Object)viewable3D);
         }
 
         // public void SetAnchor(Transform anchor)

@@ -24,7 +24,7 @@ namespace SaturnRPG
                 SetUI();
             }
             
-            MoveUIEvent += (x) => Debug.Log(x);
+            // MoveUIEvent += (x) => Debug.Log(x);
         }
 
         public event Action<Vector2> MoveUIEvent;
