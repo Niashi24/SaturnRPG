@@ -24,7 +24,7 @@ namespace SaturnRPG.Battle
 			HashSet<BattleUnit> exhaustedUnits = new(sortedUnits.Count);
 			
 			BattleUnit currentUnit;
-			while ((currentUnit = sortedUnits.FirstWhere(x => !exhaustedUnits.Contains(x) && x.CanAttack())) != default)
+			while ((currentUnit = sortedUnits.FirstWhere(x => !exhaustedUnits.Contains(x) && x.CanAttack())) != null)
 			{
 				BattleAttack attack;
 				if (unitToAttack.ContainsKey(currentUnit))
@@ -34,6 +34,8 @@ namespace SaturnRPG.Battle
 
 				if (attack == null)  // Go back and re-do previous attack
 				{
+					unitToAttack.Remove(currentUnit);  // Delete current unit from memory
+					
 					if (attackStack.Count == 0) continue;
 
 					var previousAttack = attackStack[^1];

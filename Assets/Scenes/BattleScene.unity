@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 64388294}
   - component: {fileID: 64388295}
+  - component: {fileID: 64388296}
   m_Layer: 5
   m_Name: Target Chooser
   m_TagString: Untagged
@@ -185,6 +186,20 @@ MonoBehaviour:
   - {fileID: 1514561943}
   - {fileID: 947255420}
   - {fileID: 1968057942}
+--- !u!114 &64388296
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 64388293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1367a909212747ba9845b78a2b478d41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetChooserUI: {fileID: 64388295}
+  inputReader: {fileID: 11400000, guid: 3ddd9c444fea193439f15bea910657b4, type: 2}
 --- !u!1001 &148515414
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4621,6 +4636,7 @@ GameObject:
   - component: {fileID: 2062031266}
   - component: {fileID: 2062031265}
   - component: {fileID: 2062031267}
+  - component: {fileID: 2062031268}
   m_Layer: 5
   m_Name: Move Chooser
   m_TagString: Untagged
@@ -4713,6 +4729,20 @@ MonoBehaviour:
   - {fileID: 148515416}
   - {fileID: 1686716056}
   - {fileID: 151049539}
+--- !u!114 &2062031268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062031263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5334a0d83f60404b8077aab8bd117899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleMoveChooserUI: {fileID: 2062031267}
+  inputReader: {fileID: 11400000, guid: 3ddd9c444fea193439f15bea910657b4, type: 2}
 --- !u!1 &2079113503
 GameObject:
   m_ObjectHideFlags: 0
@@ -4890,6 +4920,7 @@ GameObject:
   - component: {fileID: 2133848618}
   - component: {fileID: 2133848619}
   - component: {fileID: 2133848620}
+  - component: {fileID: 2133848621}
   m_Layer: 6
   m_Name: Events
   m_TagString: Untagged
@@ -4941,6 +4972,20 @@ MonoBehaviour:
   battleCamera: {fileID: 588603862}
   targetChooser: {fileID: 64388295}
   mouseCameraControl: {fileID: 1066033683}
+--- !u!114 &2133848621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2133848617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c758f412bb4432192ee744d16e1e337, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  battleCamera: {fileID: 588603862}
+  battleMoveChooser: {fileID: 2062031267}
 --- !u!1001 &2418189543613405520
 PrefabInstance:
   m_ObjectHideFlags: 0

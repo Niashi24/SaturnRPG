@@ -93,6 +93,7 @@ namespace SaturnRPG.Battle
 		public void ClearTarget(bool returnToCenter = false)
 		{
 			_constantViewable.Position = returnToCenter ? Vector3.zero : _target.GetPosition();
+			_target = _constantViewable;
 		}
 
 		public async UniTask SetTargetAndWait(I3DViewable viewable, bool follow = true)

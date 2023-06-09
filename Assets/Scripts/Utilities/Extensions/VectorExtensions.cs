@@ -81,5 +81,11 @@ namespace SaturnRPG.Utilities.Extensions
 
 			return any ? (min, max) : (0, 0);
 		}
+
+		public static float Sign0(this float value)
+		{
+			if (value == 0) return 0;
+			return Mathf.Sign(value);
+		}
 	}
 }

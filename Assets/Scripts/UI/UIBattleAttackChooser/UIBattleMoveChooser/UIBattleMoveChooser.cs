@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using SaturnRPG.Battle;
+using SaturnRPG.Utilities.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -31,7 +32,11 @@ namespace SaturnRPG.UI
 		private BattleMove _selectedMove;
 
 		private bool _setup;
+		private bool _canceled;
 		public bool Active { get; private set; }
+
+		public event Action<BattleUnit> OnStartSelection;
+		public event Action OnEndSelection;
 
 		private void Awake()
 		{
@@ -64,39 +69,56 @@ namespace SaturnRPG.UI
 			_setup = true;
 		}
 
-		public async UniTask<BattleMove> ChooseMove(BattleContext context, BattleUnit unit)
+		public UniTask<BattleMove> ChooseMove(BattleContext context, BattleUnit unit)
 		{
-			if (!_setup) Setup();
-			ResetSelection();
 			SetupMoves(context, unit);
-			Active = true;
-			SetTabIndex(0);
-			SetSelectionIndex(0);
-			gameObject.SetActive(true);
 
-			while (_selectedMove == null)
-				await UniTask.Yield(context.BattleCancellationToken);
-			
-			Active = false;
-			gameObject.SetActive(false);
-
-			var tempMove = _selectedMove;
-			_selectedMove = null;
-			return tempMove;
+			return WaitForMove(context, unit);
 		}
 
-		public async UniTask<BattleMove> RedoMoveChoice(BattleContext context, BattleUnit unit, BattleMove previous)
+		private async UniTask<BattleMove> WaitForMove(BattleContext context, BattleUnit unit)
 		{
-			if (!_setup) Setup();
-			SetupMoves(context, unit);
-			Active = true;
-			// TODO: Finish this lmao (refactor to make it like target selector (LoadMoves, SetCurrentMove, WaitForMove))
+			OnStartSelection?.Invoke(unit);
+			
+			while (true)
+			{
+				if (_canceled)
+				{
+					Active = false;
+					OnEndSelection?.Invoke();
+					gameObject.SetActive(false);
+					return null;
+				}
 
-			while (_selectedMove == null)
+				if (_selectedMove != null) break;
 				await UniTask.Yield(context.BattleCancellationToken);
+			}
 
 			Active = false;
+			gameObject.SetActive(false);
+			OnEndSelection?.Invoke();
+			
 			return _selectedMove;
+		}
+
+		public UniTask<BattleMove> RedoMoveChoice(BattleContext context, BattleUnit unit, BattleMove previous)
+		{
+			SetupMoves(context, unit);
+
+			SetCurrentMove(previous);
+
+			return WaitForMove(context, unit);
+		}
+
+		private void SetCurrentMove(BattleMove previous)
+		{
+			var moveType = previous.MoveType;
+			if (!_typeToMoves.ContainsKey(moveType)) return;
+			int moveIndex = _typeToMoves[moveType].FirstIndexWhere(x => x == previous);
+			if (moveIndex == -1) return;
+			
+			SetTabIndex((int)moveType);
+			SetSelectionIndex(moveIndex);
 		}
 
 		[Button]
@@ -140,6 +162,8 @@ namespace SaturnRPG.UI
 			if (!Active) return;
 			if (_currentMoves.Count == 0) return;
 			if (_typeToMoves[CurrentType].Count == 0) return;
+			
+			SelectSelection(moveSelections[_selectionIndex]);
 		}
 
 		private void SetActiveTab(UITab tab)
@@ -160,18 +184,30 @@ namespace SaturnRPG.UI
 			SetSelectionIndex(index);
 		}
 
-		private void SelectSelection(UIMoveSelection selection)
+		[Button]
+		public void CancelSelection()
+		{
+			_canceled = true;
+			Active = false;
+		}
+
+		public void SelectSelection(UIMoveSelection selection)
 		{
 			if (!selection.Usable) return;
 			if (selection.Move == null) return;
+			if (!Active) return;
 
 			_selectedMove = selection.Move;
+			Active = false;
 		}
 
 		private void SetupMoves(BattleContext context, BattleUnit unit)
 		{
+			if (!_setup) Setup();
+			ResetSelection();
 			_selectedMove = null;
 			_currentUnit = unit;
+			_canceled = false;
 			
 			_currentMoves.AddRange(unit.GetAvailableMoves(context));
 
@@ -179,6 +215,11 @@ namespace SaturnRPG.UI
 			{
 				_typeToMoves[move.MoveType].Add(move);
 			}
+			
+			Active = true;
+			SetTabIndex(0);
+			SetSelectionIndex(0);
+			gameObject.SetActive(true);
 		}
 
 		private void SetTabIndex(int tabIndex)

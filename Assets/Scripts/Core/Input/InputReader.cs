@@ -12,6 +12,13 @@ namespace SaturnRPG
     {
         private MainInput _mainInput;
 
+        [field: SerializeField]
+        public float AutoRepeatRateSeconds { get; private set; } = 0.05f;
+
+        [field: SerializeField]
+        public float DelayedAutoShiftSeconds { get; private set; } = 0.2f;
+
+
         private void OnEnable()
         {
             if (_mainInput == null)
@@ -23,8 +30,6 @@ namespace SaturnRPG
                 
                 SetUI();
             }
-            
-            // MoveUIEvent += (x) => Debug.Log(x);
         }
 
         public event Action<Vector2> MoveUIEvent;

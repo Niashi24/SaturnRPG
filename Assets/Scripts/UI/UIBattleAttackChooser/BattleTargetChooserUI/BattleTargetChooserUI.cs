@@ -94,21 +94,20 @@ namespace SaturnRPG.UI
 			gameObject.SetActive(true);
 			var targetables = move.GetTargetables(unit, context);
 			targetables.Sort((a, b) => a.Viewable3D.GetPosition().x > b.Viewable3D.GetPosition().x ? 1 : -1);
-
-			ActiveTargets.ForEach(x => x.gameObject.SetActive(false));
+			
+			ActiveTargets.ForEach(x =>
+			{
+				x.SetActive(false);
+				x.gameObject.SetActive(false);
+			});
 			ActiveTargets.Clear();
-			_targetIndex = 0;
 			for (int i = 0; i < targetables.Count && i < uiTargets.Count; i++)
 			{
 				uiTargets[i].SetTarget(targetables[i], targetables[i].CanBeAttacked());
 				uiTargets[i].gameObject.SetActive(true);
 				ActiveTargets.Add(uiTargets[i]);
 			}
-		}
-
-		public void SetSelection(BattleContext context, BattleUnit unit, ITargetable previousTarget)
-		{
-			throw new NotImplementedException();
+			SetSelectionIndex(0);
 		}
 
 		private void SetSelectedTarget(UITarget uiTarget)
@@ -130,6 +129,7 @@ namespace SaturnRPG.UI
 
 			ActiveTargets[_targetIndex].SetActive(false);
 			ActiveTargets[index].SetActive(true);
+			_targetIndex = index;
 		}
 
 		[Button]
@@ -146,6 +146,14 @@ namespace SaturnRPG.UI
 		{
 			_canceled = true;
 			_active = false;
+		}
+
+		public void IncrementSelectionIndex(int dI)
+		{
+			if (dI == 0) return;
+			if (!_active) return;
+			
+			SetSelectionIndex(_targetIndex + dI);
 		}
 
 		private void SelectTarget(UITarget uiTarget)

@@ -20,8 +20,11 @@ namespace SaturnRPG.UI
 		[SerializeField]
 		private Color unusableInactive, usableInactive, unusableActive, usableActive;
 
+		[ShowInInspector, ReadOnly]
 		public ITargetable Targetable { get; private set; }
+		[ShowInInspector, ReadOnly]
 		public bool Usable { get; private set; }
+		[ShowInInspector, ReadOnly]
 		public bool Active { get; private set; }
 
 		public event Action OnSelect;
