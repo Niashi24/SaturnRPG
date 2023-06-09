@@ -22,6 +22,15 @@ namespace SaturnRPG.Utilities.Extensions
 			}  
 		}
 
+		public static T PopEnd<T>(this IList<T> list)
+		{
+			if (list.Count == 0) return default;
+
+			var item = list[^1];
+			list.RemoveAt(list.Count - 1);
+			return item;
+		}
+
 		public static int FirstIndexWhere<T>(this IList<T> list, [NotNull] Func<T, bool> predicate)
 		{
 			for (int i = 0; i < list.Count; i++)

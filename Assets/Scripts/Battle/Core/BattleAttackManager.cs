@@ -24,6 +24,7 @@ namespace SaturnRPG.Battle
 			HashSet<BattleUnit> exhaustedUnits = new(sortedUnits.Count);
 			
 			BattleUnit currentUnit;
+			// Continually get next usable unit until all units are used
 			while ((currentUnit = sortedUnits.FirstWhere(x => !exhaustedUnits.Contains(x) && x.CanAttack())) != null)
 			{
 				BattleAttack attack;
@@ -34,19 +35,22 @@ namespace SaturnRPG.Battle
 
 				if (attack == null)  // Go back and re-do previous attack
 				{
-					unitToAttack.Remove(currentUnit);  // Delete current unit from memory
+					// Clear attack of current unit from memory if it exists
+					unitToAttack.Remove(currentUnit);
 					
 					if (attackStack.Count == 0) continue;
-
-					var previousAttack = attackStack[^1];
-					attackStack.RemoveAt(attackStack.Count - 1);
+					// Get and remove previous attack created
+					var previousAttack = attackStack.PopEnd();
 					// Assumption: moves cannot share units/use units already used
+					// Free all the units used in that attack to move again
 					foreach (var unit in previousAttack.GetExhaustedUnits(context))
 						exhaustedUnits.Remove(unit);
 				}
 				else
 				{
+					// Add created attack to list of attacks
 					attackStack.Add(attack);
+					// Add each unit 
 					foreach (var unit in attack.GetExhaustedUnits(context))
 						exhaustedUnits.Add(unit);
 					unitToAttack[currentUnit] = attack;
