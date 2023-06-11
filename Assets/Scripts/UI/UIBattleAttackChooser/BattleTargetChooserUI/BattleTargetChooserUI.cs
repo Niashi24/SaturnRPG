@@ -127,7 +127,8 @@ namespace SaturnRPG.UI
 			if (index < 0) index = ActiveTargets.Count - 1;
 			if (index >= ActiveTargets.Count) index = 0;
 
-			ActiveTargets[_targetIndex].SetActive(false);
+			if (ActiveTargets.IsInRange(_targetIndex))
+				ActiveTargets[_targetIndex].SetActive(false);
 			ActiveTargets[index].SetActive(true);
 			_targetIndex = index;
 		}

@@ -1,6 +1,7 @@
 ﻿using System;
 using SaturnRPG.Battle;
 using SaturnRPG.Camera3D2D;
+using SaturnRPG.Utilities.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,9 @@ namespace SaturnRPG.UI
 		private Image border;
 		[SerializeField, Required]
 		private RectTransform imageBorder;
+
+		[SerializeField]
+		private float sizeMultiplier = 1.25f;
 
 		[SerializeField]
 		private Color unusableInactive, usableInactive, unusableActive, usableActive;
@@ -36,7 +40,8 @@ namespace SaturnRPG.UI
 			Targetable = targetable;
 			anchorTransformation.Set3DViewable(targetable.Viewable3D);
 
-			imageBorder.sizeDelta = targetable.Size.Size;
+			// imageBorder.sizeDelta = targetable.Size.Size;
+			imageBorder.SetSize(targetable.Size.Size * sizeMultiplier);
 			SetUsable(usable);
 		}
 
@@ -52,10 +57,6 @@ namespace SaturnRPG.UI
 				border.color = usable ? usableActive : unusableActive;
 			else
 				border.color = usable ? usableInactive : unusableInactive;
-			
-			// border.color = active ?
-			// 	  usable ? usableActive : unusableActive
-			// 	: usable ? usableInactive : unusableInactive;
 		}
 
 		public void Select()

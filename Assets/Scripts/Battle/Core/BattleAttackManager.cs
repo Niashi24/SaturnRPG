@@ -76,6 +76,11 @@ namespace SaturnRPG.Battle
 						await PlayAttack(newAttack, context);
 					}
 				}
+				
+				if (context.PlayerUnitManager.AllUnitsDown())
+					return TurnOutcome.PlayerLost;
+				if (context.EnemyUnitManager.AllUnitsDown())
+					return TurnOutcome.PlayerWon;
 			}
 
 			async UniTask PlayAttack(BattleAttack attack, BattleContext context)

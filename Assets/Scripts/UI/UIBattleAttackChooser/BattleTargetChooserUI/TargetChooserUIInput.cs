@@ -45,8 +45,6 @@ namespace SaturnRPG.UI
 		private void UpdateInput(Vector2 dir)
 		{
 			int sign = (int)dir.x.Sign0();
-			
-			Debug.Log($"Input: {sign}");
 
 			if (sign != _input)
 			{

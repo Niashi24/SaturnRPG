@@ -175,7 +175,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   anchorTransformation: {fileID: 3314553149922510223}
   border: {fileID: 3314553149359028855}
-  imageBorder: {fileID: 3314553149359028856}
+  imageBorder: {fileID: 3314553149922510225}
+  sizeMultiplier: 1.25
   unusableInactive: {r: 0.14509805, g: 0.227451, b: 0.36862746, a: 1}
   usableInactive: {r: 0.30980393, g: 0.56078434, b: 0.7294118, a: 1}
   unusableActive: {r: 0.23529413, g: 0.36862746, b: 0.54509807, a: 1}
@@ -205,7 +206,7 @@ MonoBehaviour:
   <Viewable3D>k__BackingField:
     rid: -2
   anchorX: 0
-  anchorY: 0
+  anchorY: -0.5
   useLocalPosition: 1
   offset: {x: -176, y: -120, z: 0}
   sizeReference:

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Sirenix.OdinInspector;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ namespace SaturnRPG.Battle
 
 		[SerializeField]
 		private List<Transform> playerAnchors, enemyAnchors;
+
+		public event Action<(BattleUnit, Transform)> OnSetAnchor;
 
 		void OnEnable()
 		{
@@ -32,6 +35,7 @@ namespace SaturnRPG.Battle
 			for (int i = 0; i < activeUnits.Count && i < anchors.Count; i++)
 			{
 				activeUnits[i].UnitVisual.SetAnchor(anchors[i]);
+				OnSetAnchor?.Invoke((activeUnits[i], anchors[i]));
 			}
 		}
 	}

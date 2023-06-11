@@ -22,6 +22,11 @@ namespace SaturnRPG.Utilities.Extensions
 			}  
 		}
 
+		public static bool IsInRange(this IList list, int index)
+		{
+			return index >= 0 && index < list.Count;
+		}
+
 		public static T PopEnd<T>(this IList<T> list)
 		{
 			if (list.Count == 0) return default;
