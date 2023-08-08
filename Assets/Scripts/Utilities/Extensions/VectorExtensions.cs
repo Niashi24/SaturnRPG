@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -86,6 +87,11 @@ namespace SaturnRPG.Utilities.Extensions
 		{
 			if (value == 0) return 0;
 			return Mathf.Sign(value);
+		}
+
+		public static int Round(this float value)
+		{
+			return (int)Mathf.Round(value);
 		}
 	}
 }

@@ -40,10 +40,13 @@ namespace SaturnRPG.UI
             SetValues(Value, Target);
         }
 
+        [Button]
         private void UpdateTextures()
         {
-            left.Value?.SetTexture(healthTexture);
-            right.Value?.SetTexture(emptyTexture);
+            if (left.HasValue)
+                left.Value.SetTexture(healthTexture);
+            if (right.HasValue)
+                right.Value?.SetTexture(emptyTexture);
         }
 
         [Button]
@@ -54,7 +57,8 @@ namespace SaturnRPG.UI
 
             Value = actual;
             Target = target;
-            middle.Value?.SetTexture(actual <= target ? damageTexture : healTexture);
+            if (middle.HasValue)
+                middle.Value.SetTexture(actual <= target ? damageTexture : healTexture);
 
             if (vertLeft is not { Length: 4 } ) vertLeft = new Vector3[4];
             if (vertMiddle is not { Length: 4 } ) vertMiddle = new Vector3[4];
@@ -64,12 +68,10 @@ namespace SaturnRPG.UI
             //  /   /   /   /
             // 4 - 5 - 6 - 7
 
-            var v3 = rect.max;
-            var v4 = rect.min;
-            var v0 = new Vector2(v4.x, v3.y);
-            var v7 = new Vector2(v3.x, v4.y);
-
-            // Debug.Log($"Top Right: {v3}, Bottom Left: {v4}", this);
+            var v3 = (Vector3)rect.max;
+            var v4 = (Vector3)rect.min;
+            var v0 = new Vector3(v4.x, v3.y);
+            var v7 = new Vector3(v3.x, v4.y);
 
             v0 = Vector3.LerpUnclamped(v0, v3, cornerOffset);
             v7 = Vector3.LerpUnclamped(v7, v4, cornerOffset);

@@ -15,14 +15,20 @@ namespace SaturnRPG.UI
 		[SerializeField, Required]
 		private BattleTargetChooserUI battleTargetChooser;
 
+		public readonly AsyncEvent<BattleUnit, BattleContext> OnStartChooseAttack = new();
 		public readonly AsyncEvent<BattleMove> OnChooseMove = new();
 		public readonly AsyncEvent<BattleAttack> OnChooseAttack = new();
 
-		public UniTask<BattleAttack> ChooseAttack(BattleContext context, BattleUnit unit)
-			=> WaitForAttack(context, unit);
+		public async UniTask<BattleAttack> ChooseAttack(BattleContext context, BattleUnit unit)
+		{
+			await OnStartChooseAttack.Invoke(unit, context);
+			return await WaitForAttack(context, unit);
+		}
 
 		public async UniTask<BattleAttack> RedoChoiceSelection(BattleContext context, BattleUnit unit, BattleAttack previous)
 		{
+			await OnStartChooseAttack.Invoke(unit, context);
+			
 			// Just try to reselect target
 			var target = await battleTargetChooser.ReChooseTarget(context, unit, previous.MoveBase, previous.Target);
 			

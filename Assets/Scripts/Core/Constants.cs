@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace SaturnRPG.Core
 {
@@ -6,6 +7,8 @@ namespace SaturnRPG.Core
 	{
 		public static readonly int MainTex = Shader.PropertyToID("_MainTex");
 
-		public const string BattleScene = "BattleScene";
+		public const string BattleSceneName = "BattleScene";
+
+		public static readonly int BattleScene = SceneManager.GetSceneByName(BattleSceneName).buildIndex;
 	}
 }

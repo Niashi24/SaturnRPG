@@ -25,6 +25,8 @@ namespace SaturnRPG.UI
 
 		private readonly List<BattleMove> _currentMoves = new();
 		private readonly Dictionary<MoveType, List<BattleMove>> _typeToMoves = new();
+
+		public List<BattleMove> ActiveMoves => _typeToMoves[CurrentType];
 		// Set when calling ChooseMove or RedoMoveChoice
 		private BattleUnit _currentUnit;
 		private BattleContext _currentContext;
@@ -37,6 +39,11 @@ namespace SaturnRPG.UI
 
 		public event Action<BattleUnit> OnStartSelection;
 		public event Action OnEndSelection;
+		/// <summary>
+		/// An event triggered when changing to a new move or starting a new move selection.
+		/// If there are no moves available, the BattleMove will be null.
+		/// </summary>
+		public event Action<BattleMove> OnHighlightMove;
 
 		private void Awake()
 		{
@@ -79,6 +86,8 @@ namespace SaturnRPG.UI
 		private async UniTask<BattleMove> WaitForMove(BattleContext context, BattleUnit unit)
 		{
 			OnStartSelection?.Invoke(unit);
+			
+			OnHighlightMove?.Invoke(_currentMoves.GetIfInRange(_selectionIndex));
 			
 			while (true)
 			{
@@ -143,15 +152,15 @@ namespace SaturnRPG.UI
 			if (!Active) return;
 			if (i == 0) return;
 			if (_currentMoves.Count == 0) return;
-			var currentTypeMoves = _typeToMoves[CurrentType];
-			
-			if (currentTypeMoves.Count == 0) return;
+
+			var ActiveMoves = this.ActiveMoves;
+			if (ActiveMoves.Count == 0) return;
 
 			int newIndex = _selectionIndex + i;
-			if (newIndex >= currentTypeMoves.Count)
+			if (newIndex >= ActiveMoves.Count)
 				newIndex = 0;
 			if (newIndex < 0)
-				newIndex = currentTypeMoves.Count - 1;
+				newIndex = ActiveMoves.Count - 1;
 			
 			SetSelectionIndex(newIndex);
 			//TODO:
@@ -233,6 +242,7 @@ namespace SaturnRPG.UI
 			_tabIndex = tabIndex;
 			
 			DisplayMovesOfType(CurrentType);
+			OnHighlightMove?.Invoke(ActiveMoves.GetIfInRange(_selectionIndex));
 		}
 
 		private void SetSelectionIndex(int i)
@@ -243,6 +253,7 @@ namespace SaturnRPG.UI
 			moveSelections[_selectionIndex].SetActive(false);
 			moveSelections[i].SetActive(true);
 			_selectionIndex = i;
+			OnHighlightMove?.Invoke(ActiveMoves[_selectionIndex]);
 		}
 
 		private void DisplayMovesOfType(MoveType type)

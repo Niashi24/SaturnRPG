@@ -27,6 +27,9 @@ namespace SaturnRPG.Battle
 		[SerializeField, Required]
 		private BattleCamera battleCamera;
 
+		[SerializeField, Required]
+		private BattleText battleText;
+
 		[ShowInInspector, ReadOnly]
 		public BattleState BattleState { get; private set; } = BattleState.End;
 		[ShowInInspector, ReadOnly]
@@ -38,13 +41,14 @@ namespace SaturnRPG.Battle
 		{
 			if (BattleState != BattleState.End)
 				return;
-			
+
 			BattleContext.BattleManager = this;
 			BattleContext.BattleCamera = battleCamera;
 			BattleContext.PlayerParty = playerParty;
 			BattleContext.PlayerUnitManager = playerUnitManager;
 			BattleContext.EnemyParty = enemyParty;
 			BattleContext.EnemyUnitManager = enemyUnitManager;
+			BattleContext.BattleText = battleText;
 			BattleContext.BattleCancellationToken = this.GetCancellationTokenOnDestroy();
 
 			playerUnitManager.InitializeBattleUnits(playerParty);

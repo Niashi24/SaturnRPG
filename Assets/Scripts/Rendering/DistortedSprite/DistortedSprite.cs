@@ -19,15 +19,15 @@ namespace SaturnRPG.Rendering.DistortedSprite
 		[SerializeField, Required]
 		private MeshRenderer meshRenderer;
 
+		[ShowInInspector, ReadOnly]
 		private Mesh mesh;
 
 		private static readonly int[] DEFAULT_TRIS = new int[] { 0, 1, 2, 0, 2, 3 };
 
 		[Button]
-		public void SetTexture(Texture texture = null)
+		public void SetTexture(Texture texture)
 		{
-			if (texture != null)
-				meshRenderer.material.SetTexture(Constants.MainTex, texture);
+			meshRenderer.material.SetTexture(Constants.MainTex, texture);
 		}
 
 		public void SetVertices(Vector3[] vertices)

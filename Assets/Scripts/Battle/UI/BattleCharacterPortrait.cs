@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using LS.Utilities;
+using SaturnRPG.Battle.UI;
 using SaturnRPG.UI.HealthBar;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -18,14 +19,17 @@ namespace SaturnRPG.Battle
 		[SerializeField, Required]
 		private Text hpText, mpText;
 
-		private BattleUnit _battleUnit;
+		[field: SerializeField, Required]
+		public CharacterPortraitHighlight PortraitHighlight { get; private set; }
+
+		public BattleUnit BattleUnit { get; private set; }
 		
 		[SerializeField]
 		GameObject[] toSetActive;
 
 		private void OnDestroy()
 		{
-			if (_battleUnit == null) return;
+			if (BattleUnit == null) return;
 			
 			SubUnsubBattleUnit(false);
 		}
@@ -42,10 +46,10 @@ namespace SaturnRPG.Battle
 
 		public void SetUnit(BattleUnit unit)
 		{
-			if (_battleUnit != null)
+			if (BattleUnit != null)
 				SubUnsubBattleUnit(false);
 
-			_battleUnit = unit;
+			BattleUnit = unit;
 			SubUnsubBattleUnit(true);
 
 			InitializeBars();
@@ -53,29 +57,29 @@ namespace SaturnRPG.Battle
 
 		private void InitializeBars()
 		{
-			var stats = _battleUnit.GetBattleStats();
+			var stats = BattleUnit.GetBattleStats();
 			
-			hpText.text = $"{_battleUnit.HP}/{stats.HP}";
-			mpText.text = $"{_battleUnit.MP}/{stats.MP}";
+			hpText.text = $"{BattleUnit.HP}/{stats.HP}";
+			mpText.text = $"{BattleUnit.MP}/{stats.MP}";
 
 			if (stats.HP != 0)
-				hpBar.Value.SetValueImmediate((float)_battleUnit.HP / stats.HP);
+				hpBar.Value.SetValueImmediate((float)BattleUnit.HP / stats.HP);
 			if (stats.MP != 0)
-				mpBar.Value.SetValueImmediate((float)_battleUnit.MP / stats.MP);
+				mpBar.Value.SetValueImmediate((float)BattleUnit.MP / stats.MP);
 		}
 
 		private void SubUnsubBattleUnit(bool subscribe)
 		{
-			_battleUnit.OnHPChange.SubUnsub(subscribe, HPChange);
-			_battleUnit.OnMPChange.SubUnsub(subscribe, MPChange);
-			UpdatePartyMember(_battleUnit.PartyMember);
+			BattleUnit.OnHPChange.SubUnsub(subscribe, HPChange);
+			BattleUnit.OnMPChange.SubUnsub(subscribe, MPChange);
+			UpdatePartyMember(BattleUnit.PartyMember);
 		}
 
 		private async UniTask HPChange(int newHP, int oldHP)
 		{
 		    if (newHP == oldHP) return;
 		    
-			var maxHP = _battleUnit.GetBattleStats().HP;
+			var maxHP = BattleUnit.GetBattleStats().HP;
 
 			hpText.text = $"{newHP}/{maxHP}";
 			
@@ -89,7 +93,7 @@ namespace SaturnRPG.Battle
 		{
 		    if (newMP == oldMP) return;
 		    
-			var maxMP = _battleUnit.GetBattleStats().MP;
+			var maxMP = BattleUnit.GetBattleStats().MP;
 
 			mpText.text = $"{newMP}/{maxMP}";
 			

@@ -20,12 +20,12 @@ namespace SaturnRPG.Battle
 
         private void OnEnable()
         {
-            Systems.I?.BattleLoadManager.OnLoadBattle.Subscribe(LoadBackground);
+            BattleLoadManager.OnLoadBattle.Subscribe(LoadBackground);
         }
 
         private void OnDisable()
         {
-            Systems.I?.BattleLoadManager.OnLoadBattle.Unsubscribe(LoadBackground);
+            BattleLoadManager.OnLoadBattle.Unsubscribe(LoadBackground);
         }
 
         private UniTask LoadBackground(BattleEncounter encounter)

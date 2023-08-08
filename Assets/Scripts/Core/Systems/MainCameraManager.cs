@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace SaturnRPG.Core.Systems
 {
-	public class MainCameraManager : MonoBehaviour, IValueSupplier<Camera>
+	public class MainCameraManager : MonoSingleton<MainCameraManager>, IValueSupplier<Camera>
 	{
 		[field: SerializeField, Required]
 		public Camera MainCamera { get; private set; }

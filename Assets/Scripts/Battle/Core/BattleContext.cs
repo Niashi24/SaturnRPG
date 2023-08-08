@@ -13,6 +13,8 @@ namespace SaturnRPG.Battle
 		public BattleUnitManager PlayerUnitManager;
 		public BattleUnitManager EnemyUnitManager;
 
+		public BattleText BattleText;
+
 		public CancellationToken BattleCancellationToken;
 
 		public BattleUnitManager GetEnemies(BattleUnit user)

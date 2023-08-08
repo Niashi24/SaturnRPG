@@ -18,6 +18,7 @@ namespace SaturnRPG.UI
 		public readonly List<UITarget> ActiveTargets = new();
 
 		public event Action<List<UITarget>> OnStartSelection;
+		public event Action<UITarget> OnChangeSelection;
 		public event Action OnEndSelection;
 
 		private ITargetable _selection;
@@ -64,6 +65,7 @@ namespace SaturnRPG.UI
 		private async Task<ITargetable> WaitForTargetable(BattleContext context)
 		{
 			OnStartSelection?.Invoke(ActiveTargets);
+			OnChangeSelection?.Invoke(ActiveTargets.GetIfInRange(_targetIndex));
 
 			while (true)
 			{
@@ -131,6 +133,8 @@ namespace SaturnRPG.UI
 				ActiveTargets[_targetIndex].SetActive(false);
 			ActiveTargets[index].SetActive(true);
 			_targetIndex = index;
+			
+			OnChangeSelection?.Invoke(ActiveTargets.GetIfInRange(_targetIndex));
 		}
 
 		[Button]

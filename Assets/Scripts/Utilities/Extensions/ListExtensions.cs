@@ -27,6 +27,18 @@ namespace SaturnRPG.Utilities.Extensions
 			return index >= 0 && index < list.Count;
 		}
 
+		public static T GetIfInRange<T>(this IList<T> list, int index)
+		{
+			return index >= 0 && index < list.Count ? list[index] : default;
+		}
+
+		public static void Retain<T>(this IList<T> list, [NotNull] Func<T, bool> predicate)
+		{
+			for (int i = 0; i < list.Count; i++)
+				if (!predicate(list[i]))
+					list.RemoveAt(i--);
+		}
+
 		public static T PopEnd<T>(this IList<T> list)
 		{
 			if (list.Count == 0) return default;

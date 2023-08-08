@@ -108,7 +108,8 @@ MonoBehaviour:
     value: {fileID: 0}
     reference:
       _object: {fileID: 11400000, guid: da9935ef9958c24459e4072e28ef0330, type: 2}
-  <Anchor>k__BackingField: {fileID: 0}
+  <Viewable3D>k__BackingField:
+    rid: -2
   anchorX: 0
   anchorY: 0
   useLocalPosition: 0
@@ -130,6 +131,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 364840126126751744
       type: {class: ManualSize, ns: SaturnRPG.Camera3D2D, asm: Assembly-CSharp}
       data:
@@ -328,7 +331,8 @@ MonoBehaviour:
     value: {fileID: 0}
     reference:
       _object: {fileID: 11400000, guid: da9935ef9958c24459e4072e28ef0330, type: 2}
-  <Anchor>k__BackingField: {fileID: 0}
+  <Viewable3D>k__BackingField:
+    rid: -2
   anchorX: 0
   anchorY: -1
   useLocalPosition: 0
@@ -350,6 +354,8 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: -2
+      type: {class: , ns: , asm: }
     - rid: 3810672231534034944
       type: {class: ManualSize, ns: SaturnRPG.Camera3D2D, asm: Assembly-CSharp}
       data:
@@ -431,7 +437,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3927920220339678544, guid: 0a7498558d25882478f764e890d93a92, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 5
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 3927920220339678544, guid: 0a7498558d25882478f764e890d93a92, type: 3}
       propertyPath: m_LocalPosition.x
@@ -484,6 +490,10 @@ PrefabInstance:
     - target: {fileID: 3927920220339678545, guid: 0a7498558d25882478f764e890d93a92, type: 3}
       propertyPath: m_Name
       value: Health Bar World
+      objectReference: {fileID: 0}
+    - target: {fileID: 3927920220339678545, guid: 0a7498558d25882478f764e890d93a92, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3927920221035979437, guid: 0a7498558d25882478f764e890d93a92, type: 3}
       propertyPath: <Vertices>k__BackingField.Array.data[0].x

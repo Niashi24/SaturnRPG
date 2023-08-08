@@ -15,8 +15,6 @@ namespace SaturnRPG.Battle.Moves
 			
             Debug.Log($"{attack.User.Name} attacked {attack.Target.Name}!");
             await attack.User.UnitVisual.PartyMemberVisual.PlayAnimation("TestMoveAnim");
-			
-            // await UniTask.Delay(1000, cancellationToken: context.BattleCancellationToken);
 
             int damage = userStats.Attack - enemyStats.Defense;
             damage = Math.Max(0, damage);

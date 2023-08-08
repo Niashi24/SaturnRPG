@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movePrefab: {fileID: 2842910055519347234, guid: 942aba2491bc33849bf7c66dca1e0b1e, type: 3}
   <MoveName>k__BackingField: MP Test Attack
-  MoveDescription: A test attack to test the battle system.
+  MoveDescription: A test attack to test using MP in the battle system.
   <MPCost>k__BackingField: 4
   <Discrete>k__BackingField: 0
   <Priority>k__BackingField: 0

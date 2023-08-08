@@ -10,15 +10,15 @@ using UnityEngine.SceneManagement;
 
 namespace SaturnRPG.Battle
 {
-    public class BattleLoadManager : MonoBehaviour
+    public class BattleLoadManager : MonoSingleton<BattleLoadManager>
     {
-        public readonly AsyncEvent<BattleEncounter> OnStartLoadBattle = new(),
+        public static readonly AsyncEvent<BattleEncounter> OnStartLoadBattle = new(),
             OnLoadBattle = new(),
             OnFinishLoadBattle = new();
         
-        public readonly AsyncEvent<BattleEncounter> OnFinishBattle = new();
+        public static readonly AsyncEvent<BattleEncounter> OnFinishBattle = new();
 
-        public readonly AsyncEvent<BattleEncounter> OnStartUnloadBattle = new(),
+        public static readonly AsyncEvent<BattleEncounter> OnStartUnloadBattle = new(),
             OnUnloadBattle = new(),
             OnFinishUnloadBattle = new();
 
@@ -38,7 +38,7 @@ namespace SaturnRPG.Battle
         {
             await OnStartLoadBattle.Invoke(battleEncounter);
 
-            var loadSceneTask = !SceneManager.GetSceneByName(Constants.BattleScene).isLoaded ?
+            var loadSceneTask = !SceneManager.GetSceneByBuildIndex(Constants.BattleScene).isLoaded ?
                 SceneManager.LoadSceneAsync(Constants.BattleScene, LoadSceneMode.Additive).ToUniTask()
                 : UniTask.CompletedTask;
             var loadBattleTask = OnLoadBattle.Invoke(battleEncounter);
@@ -52,7 +52,7 @@ namespace SaturnRPG.Battle
             await OnStartUnloadBattle.Invoke(battleEncounter);
 
             // Have to use ? because may be unable to load if battle is base scene
-            var unloadSceneTask = SceneManager.UnloadSceneAsync("BattleScene")?.ToUniTask() ?? UniTask.CompletedTask;
+            var unloadSceneTask = SceneManager.UnloadSceneAsync(Constants.BattleScene)?.ToUniTask() ?? UniTask.CompletedTask;
             var unloadBattleTask = OnUnloadBattle.Invoke(battleEncounter);
             await UniTask.WhenAll(unloadSceneTask, unloadBattleTask);
 
