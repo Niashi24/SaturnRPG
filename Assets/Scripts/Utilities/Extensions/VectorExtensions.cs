@@ -30,6 +30,9 @@ namespace SaturnRPG.Utilities.Extensions
 			);
 		}
 
+		public static Vector3 RoundTo(this Vector3 original, float nearest)
+			=> new(original.x.RoundTo(nearest), original.y.RoundTo(nearest), original.z.RoundTo(nearest));
+
 		/// <summary>
 		/// Returns a vector going in the same direction as the 'original' vector with the given magnitude.
 		/// </summary>
@@ -124,6 +127,18 @@ namespace SaturnRPG.Utilities.Extensions
 			};
 		}
 
+		public static Vector2 Round(this Vector2 original)
+			=> new(Mathf.Round(original.x), Mathf.Round(original.y));
+
+		public static Vector2 RoundTo(this Vector2 original, float nearest)
+			=> new(original.x.RoundTo(nearest), original.y.RoundTo(nearest));
+
+		public static Vector2 ComponentMultiply(this Vector2 a, Vector2 b) => new(a.x * b.x, a.y * b.y);
+
+		public static Vector2 ComponentDivide(this Vector2 a, Vector2 b) => new(a.x / b.x, a.y / b.y);
+
+		public static Vector3 ToVector3(this Vector2 a, float z = 0) => new(a.x, a.y, z);
+
 		// Returns the intersection point of the vector lines
 		// v = v1 + v2 * t and w = v3 + v4 * u
 		public static Vector2 GetIntersectionPoint(Vector2 v1, Vector2 v2, Vector2 v3, Vector2 v4)
@@ -160,6 +175,11 @@ namespace SaturnRPG.Utilities.Extensions
 		public static int Round(this float value)
 		{
 			return (int)Mathf.Round(value);
+		}
+
+		public static float RoundTo(this float value, float nearest)
+		{
+			return Mathf.Round(value / nearest) * nearest;
 		}
 	}
 }

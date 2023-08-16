@@ -13,9 +13,16 @@ namespace SaturnRPG.Battle.UI
 		[SerializeField]
 		private AnimationCurve scaleCurve;
 
-		private void Update()
+		private Vector2 _baseSize;
+
+		private void Start()
 		{
-			highlightImage.transform.localScale = (scaleCurve.Evaluate(Time.time) * Vector3.one).With(z: 1);
+			_baseSize = highlightImage.rectTransform.rect.size;
+		}
+
+		private void LateUpdate()
+		{
+			highlightImage.rectTransform.SetSize((scaleCurve.Evaluate(Time.time) * _baseSize).RoundTo(2));
 		}
 
 		public void SetActive(bool active)
