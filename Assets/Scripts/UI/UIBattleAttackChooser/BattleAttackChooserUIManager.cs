@@ -18,6 +18,7 @@ namespace SaturnRPG.UI
 		public readonly AsyncEvent<BattleUnit, BattleContext> OnStartChooseAttack = new();
 		public readonly AsyncEvent<BattleMove> OnChooseMove = new();
 		public readonly AsyncEvent<BattleAttack> OnChooseAttack = new();
+		public readonly AsyncEvent<BattleUnit, BattleContext> OnCancelChooseAttack = new();
 
 		public async UniTask<BattleAttack> ChooseAttack(BattleContext context, BattleUnit unit)
 		{
@@ -57,7 +58,12 @@ namespace SaturnRPG.UI
 				else  // selected move then canceled target selection
 					selectedMove = await battleMoveChooser.RedoMoveChoice(context, unit, selectedMove);
 						
-				if (selectedMove == null) return null;  // cancel selection
+				if (selectedMove == null)
+				{
+					// cancel selection
+					await OnCancelChooseAttack.Invoke(unit, context);
+					return null;
+				}
 
 				await OnChooseMove.Invoke(selectedMove);
 

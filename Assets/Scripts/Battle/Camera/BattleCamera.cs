@@ -26,19 +26,19 @@ namespace SaturnRPG.Battle
 		private Vector3 _velocity = Vector3.zero;
 
 		[ShowInInspector, ReadOnly]
-		private I3DViewable _target;
+		public I3DViewable Target { get; private set; }
 
 		private readonly ConstantViewable _constantViewable = new();
 
 		private void Start()
 		{
 			_constantViewable.Position = transform.position;
-			_target = _constantViewable;
+			Target = _constantViewable;
 		}
 
 		private void Update()
 		{
-			var targetPosition = CalcTargetPosition(_target.GetPosition());
+			var targetPosition = CalcTargetPosition(Target.GetPosition());
 			
 			// Debug.Log($"Target: {targetPosition}");
 			
@@ -55,7 +55,7 @@ namespace SaturnRPG.Battle
 		public void SetTargetPosition(Vector3 position)
 		{
 			_constantViewable.Position = position;
-			_target = _constantViewable;
+			Target = _constantViewable;
 		}
 
 		private Vector3 CalcTargetPosition(Vector3 rawPosition)
@@ -74,12 +74,12 @@ namespace SaturnRPG.Battle
 		{
 			if (follow)
 			{
-				_target = viewable;
+				Target = viewable;
 			}
 			else
 			{
-				_target = _constantViewable;
-				_constantViewable.Position = _target.GetPosition();
+				Target = _constantViewable;
+				_constantViewable.Position = Target.GetPosition();
 			}
 		}
 		
@@ -92,8 +92,8 @@ namespace SaturnRPG.Battle
 		[Button]
 		public void ClearTarget(bool returnToCenter = false)
 		{
-			_constantViewable.Position = returnToCenter ? Vector3.zero : _target.GetPosition();
-			_target = _constantViewable;
+			_constantViewable.Position = returnToCenter ? Vector3.zero : Target.GetPosition();
+			Target = _constantViewable;
 		}
 
 		public async UniTask SetTargetAndWait(I3DViewable viewable, bool follow = true)

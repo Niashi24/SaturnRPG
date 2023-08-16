@@ -18,10 +18,17 @@ namespace SaturnRPG.UI
 
 		[SerializeField]
 		private List<UIMoveSelection> moveSelections;
+		
+		[field: SerializeField, Required]
+		public GameObject VisualRoot { get; private set; }
 
+		// Current selection stuff
 		private int _tabIndex = 0;
 		private int _selectionIndex = 0;
 		private MoveType CurrentType => (MoveType)_tabIndex;
+		// View Enemy Status stuff
+		private bool _shouldViewEnemyStatus = false;
+		private I3DViewable _previousViewable;
 
 		private readonly List<BattleMove> _currentMoves = new();
 		private readonly Dictionary<MoveType, List<BattleMove>> _typeToMoves = new();
@@ -217,6 +224,7 @@ namespace SaturnRPG.UI
 			_selectedMove = null;
 			_currentUnit = unit;
 			_canceled = false;
+			_currentContext = context;
 			
 			_currentMoves.AddRange(unit.GetAvailableMoves(context));
 
@@ -296,6 +304,32 @@ namespace SaturnRPG.UI
 				moves.Clear();
 			}
 			// TODO
+		}
+
+		[Button]
+		public void SetViewEnemyStatus(bool shouldViewEnemyStatus)
+		{
+			if (_shouldViewEnemyStatus && !shouldViewEnemyStatus)
+				GoBackToMoves();
+			else if (!_shouldViewEnemyStatus && shouldViewEnemyStatus)
+				GoToEnemyStatus();
+
+			_shouldViewEnemyStatus = shouldViewEnemyStatus;
+		}
+
+		private void GoBackToMoves()
+		{
+			_currentContext.BattleCamera.SetTarget(_previousViewable);
+			_currentContext.EnemyUnitManager.SetAllHealthBarsActive(false);
+			VisualRoot.SetActive(true);
+		}
+
+		private void GoToEnemyStatus()
+		{
+			_previousViewable = _currentContext.BattleCamera.Target;
+			_currentContext.BattleCamera.SetTarget(_currentContext.EnemyUnitManager.AllTargetable as I3DViewable);
+			_currentContext.EnemyUnitManager.SetAllHealthBarsActive(true);
+			VisualRoot.SetActive(false);
 		}
 	}
 }

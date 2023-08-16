@@ -1,7 +1,9 @@
 ﻿using System;
 using Cysharp.Threading.Tasks;
+using LS.Utilities;
 using SaturnRPG.Battle.Unit_Visuals;
 using SaturnRPG.Camera3D2D;
+using SaturnRPG.UI.HealthBar;
 using SaturnRPG.Utilities.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -18,6 +20,9 @@ namespace SaturnRPG.Battle
 
 		[SerializeField, Required]
 		private CameraAnchorTransformation cameraAnchor;
+		
+		[field: SerializeField, Required]
+		public ObjectReference<IValueBar> HealthBar { get; private set; }
 
 		[ShowInInspector, ReadOnly]
 		public PartyMemberVisual PartyMemberVisual { get; private set; }

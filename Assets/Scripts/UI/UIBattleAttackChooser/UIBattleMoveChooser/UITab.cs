@@ -11,6 +11,9 @@ namespace SaturnRPG.UI
 		private Image image;
 
 		[SerializeField, Required]
+		private RectTransform textTransform;
+
+		[SerializeField, Required]
 		private Sprite inactive, highlight, active;
 
 		public event Action OnSelect;
@@ -33,6 +36,10 @@ namespace SaturnRPG.UI
 
 		public void SetActive(bool active)
 		{
+			if (!Active && active)
+				textTransform.anchoredPosition += Vector2.up * 2;
+			else if (Active && !active)
+				textTransform.anchoredPosition -= Vector2.up * 2;
 			Active = active;
 			image.sprite = active ? this.active : inactive;
 		}

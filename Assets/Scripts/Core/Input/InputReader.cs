@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Sirenix.OdinInspector;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
@@ -39,13 +40,16 @@ namespace SaturnRPG
         public event Action<Vector2> MoveEvent;
         public event Action<Vector2> AimDirectionEvent;
         public event Action<Vector2> MouseDeltaEvent;
+        public event Action<bool> ShiftEvent;
 
+        [Button, DisableInEditorMode]
         public void SetBattle()
         {
             _mainInput.Battle.Enable();
             _mainInput.UI.Disable();
         }
 
+        [Button, DisableInEditorMode]
         public void SetUI()
         {
             _mainInput.UI.Enable();
@@ -65,6 +69,11 @@ namespace SaturnRPG
         public void OnMouseDelta(InputAction.CallbackContext context)
         {
             MouseDeltaEvent?.Invoke(context.ReadValue<Vector2>());
+        }
+
+        public void OnShift(InputAction.CallbackContext context)
+        {
+            ShiftEvent?.Invoke(context.started || context.performed);
         }
 
         public void OnMoveUI(InputAction.CallbackContext context)

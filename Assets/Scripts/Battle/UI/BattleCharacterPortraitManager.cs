@@ -23,6 +23,7 @@ namespace SaturnRPG.Battle.UI
 			battleUnitManager.OnSetActiveUnits += UpdateCharacterPortraits;
 			battleAttackChooser.OnStartChooseAttack.Subscribe(HighlightWhenActiveSelection);
 			battleAttackChooser.OnChooseAttack.Subscribe(DisableWhenDone);
+			battleAttackChooser.OnCancelChooseAttack.Subscribe(DisableWhenCancelled);
 		}
 
 		private void OnDisable()
@@ -30,6 +31,7 @@ namespace SaturnRPG.Battle.UI
 			battleUnitManager.OnSetActiveUnits -= UpdateCharacterPortraits;
 			battleAttackChooser.OnStartChooseAttack.Unsubscribe(HighlightWhenActiveSelection);
 			battleAttackChooser.OnChooseAttack.Unsubscribe(DisableWhenDone);
+			battleAttackChooser.OnCancelChooseAttack.Unsubscribe(DisableWhenCancelled);
 		}
 
 		private void UpdateCharacterPortraits(List<BattleUnit> battleUnits)
@@ -50,10 +52,7 @@ namespace SaturnRPG.Battle.UI
 
 		private void RemoveWorldHealthBar(BattleUnit unit)
 		{
-			// This feels bad but it's just a one time thing so oh well
-			var healthBar = unit.transform.Find("Visual/Health Bar");
-			if (healthBar == null) return;
-			healthBar.gameObject.SetActive(false);
+			unit.UnitVisual.HealthBar.Value.SetActive(false);
 		}
 
 		private UniTask HighlightWhenActiveSelection(BattleUnit unit, BattleContext _)
@@ -65,6 +64,12 @@ namespace SaturnRPG.Battle.UI
 		private UniTask DisableWhenDone(BattleAttack attack)
 		{
 			FindAndSetActiveHighlight(attack.User, false);
+			return UniTask.CompletedTask;
+		}
+
+		private UniTask DisableWhenCancelled(BattleUnit unit, BattleContext _)
+		{
+			FindAndSetActiveHighlight(unit, false);
 			return UniTask.CompletedTask;
 		}
 

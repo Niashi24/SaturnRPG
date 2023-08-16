@@ -17,36 +17,104 @@ namespace SaturnRPG.Utilities.Extensions
 			);
 		}
 
+		/// <summary>
+		/// Returns a vector containing all the elements of the original vector rounded to the nearest integer.
+		/// </summary>
+		/// <param name="original">The original Vector.</param>
 		public static Vector3 Round(this Vector3 original)
 		{
 			return new Vector3(
 				Mathf.Round(original.x),
 				Mathf.Round(original.y),
 				Mathf.Round(original.z)
-				);
+			);
 		}
 
+		/// <summary>
+		/// Returns a vector going in the same direction as the 'original' vector with the given magnitude.
+		/// </summary>
+		/// <param name="original">The original vector dictating the direction of the output vector.</param>
+		/// <param name="magnitude">The magnitude of the output vector.</param>
 		public static Vector3 WithMagnitude(this Vector3 original, float magnitude)
 			=> original.normalized * magnitude;
-		
-		public static Bounds CalcBounds(this Vector3[] Vertices)
-		{
 
+		public static Vector3 Average(this IEnumerable<Vector3> enumerable)
+		{
+			Vector3 average = default;
+			int count = 0;
+			foreach (var item in enumerable)
+			{
+				count++;
+				average += item;
+			}
+
+			if (count != 0) average /= count;
+
+			return average;
+		}
+
+		public static Vector2 Average(this IEnumerable<Vector2> enumerable)
+		{
+			Vector2 average = default;
+			int count = 0;
+			foreach (var item in enumerable)
+			{
+				count++;
+				average += item;
+			}
+
+			if (count != 0) average /= count;
+
+			return average;
+		}
+
+		public static float Average(this IEnumerable<float> enumerable)
+		{
+			float average = default;
+			int count = 0;
+			foreach (var item in enumerable)
+			{
+				count++;
+				average += item;
+			}
+
+			if (count != 0) average /= count;
+
+			return average;
+		}
+
+		public static int Average(this IEnumerable<int> enumerable)
+		{
+			int average = default;
+			int count = 0;
+			foreach (var item in enumerable)
+			{
+				count++;
+				average += item;
+			}
+
+			if (count != 0) average /= count;
+
+			return average;
+		}
+
+		public static Bounds CalcBounds(this Vector3[] vertices)
+		{
 			float minX, minY, maxX, maxY;
 
-			minX = maxX = Vertices[0].x;
-			minY = maxY = Vertices[0].y;
+			minX = maxX = vertices[0].x;
+			minY = maxY = vertices[0].y;
 
-			for (int i = 1; i < Vertices.Length; i++)
+			for (int i = 1; i < vertices.Length; i++)
 			{
-				if (Vertices[i].x < minX)
-					minX = Vertices[i].x;
-				if (Vertices[i].y < minY)
-					minY = Vertices[i].y;
-				if (Vertices[i].x > maxX)
-					maxX = Vertices[i].x;
-				if (Vertices[i].y > maxY)
-					maxY = Vertices[i].y;
+				if (vertices[i].x < minX)
+					minX = vertices[i].x;
+				if (vertices[i].y < minY)
+					minY = vertices[i].y;
+				if (vertices[i].x > maxX)
+					maxX = vertices[i].x;
+				if (vertices[i].y > maxY)
+					maxY = vertices[i].y;
 			}
 
 			return new Bounds()
@@ -62,13 +130,13 @@ namespace SaturnRPG.Utilities.Extensions
 		{
 			float determinant = v2.x * v4.y - v4.x * v2.y;
 			if (determinant == 0) return Vector2.zero;
-			
+
 			// Derived from setting v1 + v2*t = v3 + v4*u
 			float t = (v4.x * (v1.y - v3.y) + v4.y * (v3.x - v1.x)) / determinant;
 
 			return v1 + v2 * t;
 		}
-		
+
 		public static (float, float) MinMax(this IEnumerable<float> enumerable)
 		{
 			bool any = false;

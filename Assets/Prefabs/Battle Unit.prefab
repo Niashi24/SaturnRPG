@@ -309,6 +309,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battleUnit: {fileID: 2696257129409464395}
   cameraAnchor: {fileID: 1535293678071386092}
+  <HealthBar>k__BackingField:
+    _object: {fileID: 4718791843694512708}
 --- !u!114 &1535293678071386092
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,11 +435,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3927920220339678544, guid: 0a7498558d25882478f764e890d93a92, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 60
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 3927920220339678544, guid: 0a7498558d25882478f764e890d93a92, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 8
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 3927920220339678544, guid: 0a7498558d25882478f764e890d93a92, type: 3}
       propertyPath: m_LocalPosition.x

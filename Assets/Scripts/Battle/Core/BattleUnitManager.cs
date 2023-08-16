@@ -79,5 +79,13 @@ namespace SaturnRPG.Battle
 				return TurnOutcome.PlayerWon;
 			return TurnOutcome.Continue;
 		}
+
+		public void SetAllHealthBarsActive(bool active)
+		{
+			foreach (var unit in ActiveUnits)
+			{
+				unit.UnitVisual.HealthBar.Value.SetActive(active);
+			}
+		}
 	}
 }

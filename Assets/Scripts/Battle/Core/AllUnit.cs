@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
+using SaturnRPG.Utilities.Extensions;
 using UnityEngine;
 
 namespace SaturnRPG.Battle
@@ -89,14 +91,7 @@ namespace SaturnRPG.Battle
 		{
 			if (_activeUnits == null || _activeUnits.Count == 0) return Vector3.zero;
 
-			Vector3 averagePosition = Vector3.zero;
-
-			foreach (var unit in _activeUnits)
-				averagePosition += unit.Viewable3D.GetPosition();
-			
-			averagePosition /= _activeUnits.Count;
-			
-			return averagePosition;
+			return _activeUnits.Select(x => x.Viewable3D.GetPosition()).Average();
 		}
 	}
 }

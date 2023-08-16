@@ -23,6 +23,7 @@ namespace SaturnRPG.UI
 			inputReader.MoveUIEvent += UpdateInput;
 			inputReader.ConfirmUIEvent += SelectCurrent;
 			inputReader.CancelUIEvent += CancelSelection;
+			inputReader.ShiftEvent += ViewHealthBars;
 		}
 
 		private void OnDisable()
@@ -30,6 +31,7 @@ namespace SaturnRPG.UI
 			inputReader.MoveUIEvent -= UpdateInput;
 			inputReader.ConfirmUIEvent -= SelectCurrent;
 			inputReader.CancelUIEvent -= CancelSelection;
+			inputReader.ShiftEvent -= ViewHealthBars;
 		}
 
 		private void CancelSelection()
@@ -73,6 +75,11 @@ namespace SaturnRPG.UI
 				battleMoveChooserUI.IncrementSelection(_input.y);
 				_arrTimer = inputReader.AutoRepeatRateSeconds;
 			}
+		}
+
+		private void ViewHealthBars(bool active)
+		{
+			battleMoveChooserUI.SetViewEnemyStatus(active);
 		}
 	}
 }
