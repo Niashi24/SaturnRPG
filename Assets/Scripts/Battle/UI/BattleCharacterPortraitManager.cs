@@ -52,7 +52,10 @@ namespace SaturnRPG.Battle.UI
 
 		private void RemoveWorldHealthBar(BattleUnit unit)
 		{
-			unit.UnitVisual.HealthBar.Value.SetActive(false);
+			// This feels bad but it's just a one time thing so oh well
+			var healthBar = unit.transform.Find("Visual/Health Bar");
+			if (healthBar == null) return;
+			healthBar.gameObject.SetActive(false);
 		}
 
 		private UniTask HighlightWhenActiveSelection(BattleUnit unit, BattleContext _)
