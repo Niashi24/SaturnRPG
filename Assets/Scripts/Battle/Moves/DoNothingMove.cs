@@ -6,10 +6,10 @@ namespace SaturnRPG.Battle.Moves
 {
 	public class DoNothingMove : BattleMoveComponent
 	{
-		public override async UniTask PlayAttack(BattleContext context, BattleAttack attack)
+		public override UniTask PlayAttack(BattleContext context, BattleAttack attack)
 		{
 			Debug.Log($"{attack.User.Name} did nothing!");
-			await UniTask.Delay(1000, cancellationToken: context.BattleCancellationToken);
+			return UniTask.CompletedTask;
 		}
 
 		public override bool CanBeUsed(BattleContext context, BattleUnit user)
@@ -17,7 +17,9 @@ namespace SaturnRPG.Battle.Moves
 
 		public override List<ITargetable> GetTargetables(BattleUnit user, BattleContext context)
 		{
-			return new List<ITargetable>() { user };
+			return new() { user };
 		}
+
+		public override bool ShouldAutoTargetIfOnlyOne => true;
 	}
 }

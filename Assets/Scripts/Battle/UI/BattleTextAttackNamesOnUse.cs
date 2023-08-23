@@ -29,6 +29,8 @@ namespace SaturnRPG.Battle.UI
 
 		private async UniTask SetAttackNameOnUse(BattleAttack attack, BattleContext context)
 		{
+			if (attack.MoveBase.IsDiscrete) return;
+			
 			battleText.SetTextAndActive(attack.MoveBase.MoveName);
 			await UniTask.Delay((attackNameTime * 1000).Round(), cancellationToken: context.BattleCancellationToken);
 			battleText.SetActive(false);

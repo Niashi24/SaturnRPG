@@ -14,5 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movePrefab: {fileID: 3236857712850079440, guid: b2b506979c10a4947a6a713a684d72c0, type: 3}
   <MoveName>k__BackingField: Do Nothing
-  MoveDescription: Does nothing.
+  MoveDescription: Do nothing.
   <MPCost>k__BackingField: 0
+  <IsDiscrete>k__BackingField: 1
+  <Priority>k__BackingField: 0
+  <MoveType>k__BackingField: 2

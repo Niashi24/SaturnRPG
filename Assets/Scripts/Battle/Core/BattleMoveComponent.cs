@@ -21,5 +21,15 @@ namespace SaturnRPG.Battle
 		{
 			return user.GetBattleStats();
 		}
+
+		/// <summary>
+		/// If GetTargetables only returns one (valid) option,
+		/// whether the move should auto-target that one enemy
+		/// is determined by the below.
+		/// Should be used only if target is always known beforehand
+		/// (ex. targeting oneself or the AllUnit of the enemy team).
+		/// Needs to be implemented in each attack chooser ;-;
+		/// </summary>
+		public virtual bool ShouldAutoTargetIfOnlyOne => false;
 	}
 }

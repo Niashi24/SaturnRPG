@@ -40,13 +40,20 @@ namespace SaturnRPG.UI
 
 		public async UniTask<ITargetable> ChooseTarget(BattleContext context, BattleUnit unit, BattleMove move)
 		{
+			if (move.ShouldAutoTargetFirst)
+				return move.GetTargetables(unit, context)[0];
+			
 			LoadTargetSelections(context, unit, move);
 
 			return await WaitForTargetable(context);
 		}
 
-		public async UniTask<ITargetable> ReChooseTarget(BattleContext context, BattleUnit unit, BattleMove move, ITargetable previousTarget)
+		public async UniTask<ITargetable> ReChooseTarget(BattleContext context, BattleUnit unit, BattleMove move,
+			ITargetable previousTarget)
 		{
+			if (move.ShouldAutoTargetFirst)
+				return null;  // If retargets first, then can't go back bc continually auto-choosing first
+			
 			LoadTargetSelections(context, unit, move);
 
 			SetTargetable(previousTarget);
@@ -58,7 +65,7 @@ namespace SaturnRPG.UI
 		{
 			int index = ActiveTargets.FirstIndexWhere(x => x.Targetable == previousTarget);
 			if (index == -1) return;
-			
+
 			SetSelectionIndex(index);
 		}
 
@@ -96,7 +103,7 @@ namespace SaturnRPG.UI
 			gameObject.SetActive(true);
 			var targetables = move.GetTargetables(unit, context);
 			targetables.Sort((a, b) => a.Viewable3D.GetPosition().x > b.Viewable3D.GetPosition().x ? 1 : -1);
-			
+
 			ActiveTargets.ForEach(x =>
 			{
 				x.SetActive(false);
@@ -109,13 +116,14 @@ namespace SaturnRPG.UI
 				uiTargets[i].gameObject.SetActive(true);
 				ActiveTargets.Add(uiTargets[i]);
 			}
+
 			SetSelectionIndex(0);
 		}
 
 		private void SetSelectedTarget(UITarget uiTarget)
 		{
 			if (!_active) return;
-			
+
 			var index = ActiveTargets.IndexOf(uiTarget);
 			if (index == -1) return;
 
@@ -133,7 +141,7 @@ namespace SaturnRPG.UI
 				ActiveTargets[_targetIndex].SetActive(false);
 			ActiveTargets[index].SetActive(true);
 			_targetIndex = index;
-			
+
 			OnChangeSelection?.Invoke(ActiveTargets.GetIfInRange(_targetIndex));
 		}
 
@@ -142,7 +150,7 @@ namespace SaturnRPG.UI
 		{
 			if (!_active) return;
 			if (ActiveTargets.Count == 0) return;
-			
+
 			SelectTarget(ActiveTargets[_targetIndex]);
 		}
 
@@ -157,7 +165,7 @@ namespace SaturnRPG.UI
 		{
 			if (dI == 0) return;
 			if (!_active) return;
-			
+
 			SetSelectionIndex(_targetIndex + dI);
 		}
 

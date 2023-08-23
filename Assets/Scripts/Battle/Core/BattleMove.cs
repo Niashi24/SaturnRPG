@@ -24,7 +24,7 @@ namespace SaturnRPG.Battle
 		public int MPCost { get; private set; }
 	
 		[field: SerializeField, Tooltip("Systems will avoid displaying Discrete Moves to User")]
-		public bool Discrete { get; private set; }
+		public bool IsDiscrete { get; private set; }
 		
 		[field: SerializeField, Tooltip("Moves with higher priorities will move first")]
 		public int Priority { get; private set; }
@@ -52,5 +52,15 @@ namespace SaturnRPG.Battle
 
 		public IEnumerable<BattleUnit> GetExhaustedUnits(BattleAttack battleAttack, BattleContext context)
 			=> movePrefab.GetExhaustedUnitsOfAttack(battleAttack, context);
+		
+		/// <summary>
+		/// If GetTargetables only returns one (valid) option,
+		/// whether the move should auto-target that one enemy
+		/// is determined by the below.
+		/// Should be used only if target is always known beforehand
+		/// (ex. targeting oneself or the AllUnit of the enemy team).
+		/// Needs to be implemented in each attack chooser ;-;
+		/// </summary>
+		public bool ShouldAutoTargetFirst => movePrefab.ShouldAutoTargetIfOnlyOne;
 	}
 }

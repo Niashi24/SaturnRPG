@@ -203,15 +203,17 @@ namespace SaturnRPG.UI
 		[Button]
 		public void CancelSelection()
 		{
+			if (!Active) return;
+			
 			_canceled = true;
 			Active = false;
 		}
 
 		public void SelectSelection(UIMoveSelection selection)
 		{
+			if (!Active) return;
 			if (!selection.Usable) return;
 			if (selection.Move == null) return;
-			if (!Active) return;
 
 			_selectedMove = selection.Move;
 			Active = false;
@@ -322,6 +324,7 @@ namespace SaturnRPG.UI
 			_currentContext.BattleCamera.SetTarget(_previousViewable);
 			_currentContext.EnemyUnitManager.SetAllHealthBarsActive(false);
 			VisualRoot.SetActive(true);
+			Active = true;
 		}
 
 		private void GoToEnemyStatus()
@@ -330,6 +333,7 @@ namespace SaturnRPG.UI
 			_currentContext.BattleCamera.SetTarget(_currentContext.EnemyUnitManager.AllTargetable as I3DViewable);
 			_currentContext.EnemyUnitManager.SetAllHealthBarsActive(true);
 			VisualRoot.SetActive(false);
+			Active = false;
 		}
 	}
 }

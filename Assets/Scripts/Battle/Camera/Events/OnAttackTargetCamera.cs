@@ -27,6 +27,8 @@ namespace SaturnRPG
 
 	    private async UniTask TargetAttackUser(BattleAttack attack, BattleContext context)
 	    {
+		    if (attack.MoveBase.IsDiscrete) return;
+		    
 			await battleCamera.SetTargetAndWait(attack.User.UnitVisual);
 	    }
     }
