@@ -17,6 +17,8 @@ namespace SaturnRPG.Utilities.Extensions
 			);
 		}
 
+		public static Vector3 DirectionTo(this Vector3 from, Vector3 to) => (to - from).normalized;
+
 		/// <summary>
 		/// Returns a vector containing all the elements of the original vector rounded to the nearest integer.
 		/// </summary>
@@ -103,6 +105,7 @@ namespace SaturnRPG.Utilities.Extensions
 
 		public static Bounds CalcBounds(this Vector3[] vertices)
 		{
+			if (vertices.Length == 0) return default;
 			float minX, minY, maxX, maxY;
 
 			minX = maxX = vertices[0].x;
@@ -120,12 +123,14 @@ namespace SaturnRPG.Utilities.Extensions
 					maxY = vertices[i].y;
 			}
 
-			return new Bounds()
+			return new Bounds
 			{
 				min = new Vector3(minX, minY, 0),
 				max = new Vector3(maxX, maxY, 0)
 			};
 		}
+		
+		public static Vector2 DirectionTo(this Vector2 from, Vector2 to) => (to - from).normalized;
 
 		public static Vector2 Round(this Vector2 original)
 			=> new(Mathf.Round(original.x), Mathf.Round(original.y));
