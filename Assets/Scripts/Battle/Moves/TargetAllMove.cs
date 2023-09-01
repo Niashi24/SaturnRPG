@@ -24,11 +24,6 @@ namespace SaturnRPG.Battle.Moves
             await attack.Target.DealDamage(damage);
         }
 
-        public override bool CanBeUsed(BattleContext context, BattleUnit user)
-        {
-            return true;
-        }
-
         public override List<ITargetable> GetTargetables(BattleUnit user, BattleContext context)
         {
             var targetables = new List<ITargetable>();

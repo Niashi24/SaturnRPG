@@ -12,9 +12,6 @@ namespace SaturnRPG.Battle.Moves
 			return UniTask.CompletedTask;
 		}
 
-		public override bool CanBeUsed(BattleContext context, BattleUnit user)
-			=> true;
-
 		public override List<ITargetable> GetTargetables(BattleUnit user, BattleContext context)
 		{
 			return new() { user };

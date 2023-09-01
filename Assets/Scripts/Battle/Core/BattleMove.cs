@@ -18,7 +18,10 @@ namespace SaturnRPG.Battle
 		public string MoveName { get; private set; }
 
 		[field: SerializeField, TextArea(3, int.MaxValue)]
-		public string MoveDescription;
+		public string MoveDescription { get; private set; }
+
+		[field: SerializeField]
+		public TargetType TargetType { get; private set; } = TargetType.Single;
 		
 		[field: SerializeField]
 		public int MPCost { get; private set; }

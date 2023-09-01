@@ -15,8 +15,18 @@ namespace SaturnRPG.UI
 
 		[SerializeField, Required, Header("Text")]
 		private Text text;
+
+		[SerializeField, Required]
+		private Text mpCostText;
+		
 		[SerializeField]
 		private Color textUsable, textUnusable;
+		
+		[SerializeField, Required, Header("Target")]
+		private Image targetImage;
+
+		[SerializeField, Required]
+		private Sprite singleTarget, multiTarget;
 
 		public event Action OnEnter;
 		public event Action OnSelection;
@@ -30,7 +40,7 @@ namespace SaturnRPG.UI
 		{
 			Usable = usable;
 			border.color = Usable ? borderUsable : borderUnusable;
-			text.color = Usable ? textUsable : textUnusable;
+			text.color = mpCostText.color = Usable ? textUsable : textUnusable;
 		}
 
 		public void Enter()
@@ -53,6 +63,14 @@ namespace SaturnRPG.UI
 		{
 			text.text = move.MoveName;
 			Move = move;
+			mpCostText.gameObject.SetActive(move.MPCost != 0);
+			mpCostText.text = move.MPCost.ToString();
+			targetImage.sprite = move.TargetType switch
+			{
+				TargetType.Single => singleTarget,
+				TargetType.Multiple => multiTarget,
+				_ => singleTarget
+			};
 			SetUsable(usable);
 		}
 

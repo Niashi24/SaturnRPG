@@ -252,18 +252,17 @@ namespace SaturnRPG.UI
 			_tabIndex = tabIndex;
 			
 			DisplayMovesOfType(CurrentType);
-			OnHighlightMove?.Invoke(ActiveMoves.GetIfInRange(_selectionIndex));
+			SetSelectionIndex(0);
 		}
 
 		private void SetSelectionIndex(int i)
 		{
-			if (i < 0) return;
-			if (i >= moveSelections.Count) return;
+			if (!moveSelections.IsInRange(i)) return;
 			
 			moveSelections[_selectionIndex].SetActive(false);
 			moveSelections[i].SetActive(true);
 			_selectionIndex = i;
-			OnHighlightMove?.Invoke(ActiveMoves[_selectionIndex]);
+			OnHighlightMove?.Invoke(ActiveMoves.GetIfInRange(_selectionIndex));
 		}
 
 		private void DisplayMovesOfType(MoveType type)

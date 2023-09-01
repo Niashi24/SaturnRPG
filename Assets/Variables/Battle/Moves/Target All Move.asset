@@ -14,8 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movePrefab: {fileID: 3064981690605549261, guid: 109f5971e3bc29343bcd1c8c5494110e, type: 3}
   <MoveName>k__BackingField: Target All
-  MoveDescription: A test attack to test targeting all units in the battle system.
+  <MoveDescription>k__BackingField: A test attack that allows you to select any of
+    the battle units.
+  <TargetType>k__BackingField: 0
   <MPCost>k__BackingField: 0
-  <Discrete>k__BackingField: 0
+  <IsDiscrete>k__BackingField: 0
   <Priority>k__BackingField: 0
   <MoveType>k__BackingField: 0

@@ -8,9 +8,9 @@ namespace SaturnRPG.Battle
 	{
 		public abstract UniTask PlayAttack(BattleContext context, BattleAttack attack);
 
-		public abstract bool CanBeUsed(BattleContext context, BattleUnit user);
-
 		public abstract List<ITargetable> GetTargetables(BattleUnit user, BattleContext context);
+
+		public virtual bool CanBeUsed(BattleContext context, BattleUnit user) => true;
 
 		public virtual IEnumerable<BattleUnit> GetExhaustedUnitsOfAttack(BattleAttack user, BattleContext context)
 		{
