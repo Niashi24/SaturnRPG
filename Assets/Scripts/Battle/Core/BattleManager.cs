@@ -3,7 +3,8 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
-using SaturnRPG.Utilities;
+	using SaturnRPG.Battle.BattleAction;
+	using SaturnRPG.Utilities;
 using UnityEngine;
 using Sirenix.OdinInspector;
 
@@ -28,6 +29,9 @@ namespace SaturnRPG.Battle
 		private BattleCamera battleCamera;
 
 		[SerializeField, Required]
+		private PlayerActionInfo playerActionInfo;
+
+		[SerializeField, Required]
 		private BattleText battleText;
 
 		[ShowInInspector, ReadOnly]
@@ -48,6 +52,7 @@ namespace SaturnRPG.Battle
 			BattleContext.PlayerUnitManager = playerUnitManager;
 			BattleContext.EnemyParty = enemyParty;
 			BattleContext.EnemyUnitManager = enemyUnitManager;
+			BattleContext.PlayerActionInfo = playerActionInfo;
 			BattleContext.BattleText = battleText;
 			BattleContext.BattleCancellationToken = this.GetCancellationTokenOnDestroy();
 

@@ -109,5 +109,7 @@ namespace SaturnRPG.Battle
 			// Do MP Animations
 			await OnMPChange.Invoke(MP, oldMP);
 		}
+		
+		public Optional<PartyMember> GetPartyMember() => Optional<PartyMember>.Some(PartyMember);
 	}
 }

@@ -41,6 +41,8 @@ namespace SaturnRPG
         public event Action<Vector2> AimDirectionEvent;
         public event Action<Vector2> MouseDeltaEvent;
         public event Action<bool> ShiftEvent;
+        public event Action<bool> PrimaryEvent;
+        public event Action<bool> SecondaryEvent;
 
         [Button, DisableInEditorMode]
         public void SetBattle()
@@ -74,6 +76,16 @@ namespace SaturnRPG
         public void OnShift(InputAction.CallbackContext context)
         {
             ShiftEvent?.Invoke(context.started || context.performed);
+        }
+
+        public void OnPrimary(InputAction.CallbackContext context)
+        {
+            PrimaryEvent?.Invoke(context.started || context.performed);
+        }
+
+        public void OnSecondary(InputAction.CallbackContext context)
+        {
+            SecondaryEvent?.Invoke(context.started || context.performed);
         }
 
         public void OnMoveUI(InputAction.CallbackContext context)

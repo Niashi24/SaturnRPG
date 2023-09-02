@@ -293,6 +293,24 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Primary"",
+                    ""type"": ""Button"",
+                    ""id"": ""2035fc99-2ec9-4a6c-89db-05e2fcf31b97"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Secondary"",
+                    ""type"": ""Button"",
+                    ""id"": ""8f8c29b3-a5d8-4706-bc69-f81e88504f1a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -387,11 +405,55 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""96c3d2de-cab1-4c9d-8f22-b9151664af02"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""path"": ""<Gamepad>/leftTrigger"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Shift"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e1f7c6c7-fa18-49a4-b8a8-7d9ffe37e079"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Primary"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""3fee0cf7-9651-4e91-8572-2299c69d9e35"",
+                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Primary"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""59da978c-3ab9-4a77-9ac2-a0ce51012718"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Secondary"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6da61ac3-da88-44a8-a8f3-b5db550c6aa5"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Secondary"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -412,6 +474,8 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
         m_Battle_AimDirection = m_Battle.FindAction("Aim Direction", throwIfNotFound: true);
         m_Battle_MouseDelta = m_Battle.FindAction("Mouse Delta", throwIfNotFound: true);
         m_Battle_Shift = m_Battle.FindAction("Shift", throwIfNotFound: true);
+        m_Battle_Primary = m_Battle.FindAction("Primary", throwIfNotFound: true);
+        m_Battle_Secondary = m_Battle.FindAction("Secondary", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -547,6 +611,8 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Battle_AimDirection;
     private readonly InputAction m_Battle_MouseDelta;
     private readonly InputAction m_Battle_Shift;
+    private readonly InputAction m_Battle_Primary;
+    private readonly InputAction m_Battle_Secondary;
     public struct BattleActions
     {
         private @MainInput m_Wrapper;
@@ -555,6 +621,8 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
         public InputAction @AimDirection => m_Wrapper.m_Battle_AimDirection;
         public InputAction @MouseDelta => m_Wrapper.m_Battle_MouseDelta;
         public InputAction @Shift => m_Wrapper.m_Battle_Shift;
+        public InputAction @Primary => m_Wrapper.m_Battle_Primary;
+        public InputAction @Secondary => m_Wrapper.m_Battle_Secondary;
         public InputActionMap Get() { return m_Wrapper.m_Battle; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -576,6 +644,12 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
             @Shift.started += instance.OnShift;
             @Shift.performed += instance.OnShift;
             @Shift.canceled += instance.OnShift;
+            @Primary.started += instance.OnPrimary;
+            @Primary.performed += instance.OnPrimary;
+            @Primary.canceled += instance.OnPrimary;
+            @Secondary.started += instance.OnSecondary;
+            @Secondary.performed += instance.OnSecondary;
+            @Secondary.canceled += instance.OnSecondary;
         }
 
         private void UnregisterCallbacks(IBattleActions instance)
@@ -592,6 +666,12 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
             @Shift.started -= instance.OnShift;
             @Shift.performed -= instance.OnShift;
             @Shift.canceled -= instance.OnShift;
+            @Primary.started -= instance.OnPrimary;
+            @Primary.performed -= instance.OnPrimary;
+            @Primary.canceled -= instance.OnPrimary;
+            @Secondary.started -= instance.OnSecondary;
+            @Secondary.performed -= instance.OnSecondary;
+            @Secondary.canceled -= instance.OnSecondary;
         }
 
         public void RemoveCallbacks(IBattleActions instance)
@@ -622,5 +702,7 @@ public partial class @MainInput: IInputActionCollection2, IDisposable
         void OnAimDirection(InputAction.CallbackContext context);
         void OnMouseDelta(InputAction.CallbackContext context);
         void OnShift(InputAction.CallbackContext context);
+        void OnPrimary(InputAction.CallbackContext context);
+        void OnSecondary(InputAction.CallbackContext context);
     }
 }

@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 // Taken from https://gist.github.com/aarthificial/f2dbb58e4dbafd0a93713a380b9612af
 /// Requires Unity 2020.1+
@@ -19,4 +20,5 @@ public struct Optional<T>
     }
 
     public static Optional<T> None() => new Optional<T>();
+    public static Optional<T> Some(T val) => new Optional<T>(val);
 }

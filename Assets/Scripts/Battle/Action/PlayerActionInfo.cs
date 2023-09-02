@@ -11,12 +11,12 @@ namespace SaturnRPG.Battle.BattleAction
 		[SerializeField]
 		private Dictionary<PartyMember, PlayerActionComponent> partyMemberToActionComponent;
 
-		[SerializeField, Required]
-		private PlayerActionComponent defaultActionComponent;
+		[field: SerializeField, Required]
+		public PlayerActionComponent DefaultActionComponent { get; private set; }
 
 		public PlayerActionComponent this[PartyMember partyMember]
 			=> partyMemberToActionComponent.ContainsKey(partyMember)
 				? partyMemberToActionComponent[partyMember]
-				: defaultActionComponent;
+				: DefaultActionComponent;
 	}
 }

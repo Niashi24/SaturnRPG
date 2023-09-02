@@ -93,5 +93,7 @@ namespace SaturnRPG.Battle
 
 			return _activeUnits.Select(x => x.Viewable3D.GetPosition()).Average();
 		}
+
+		public Optional<PartyMember> GetPartyMember() => Optional<PartyMember>.None();
 	}
 }

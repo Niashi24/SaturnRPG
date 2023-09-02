@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using SaturnRPG.Battle.BattleAction;
 
 namespace SaturnRPG.Battle
 {
@@ -12,6 +13,8 @@ namespace SaturnRPG.Battle
 
 		public BattleUnitManager PlayerUnitManager;
 		public BattleUnitManager EnemyUnitManager;
+
+		public PlayerActionInfo PlayerActionInfo;
 
 		public BattleText BattleText;
 

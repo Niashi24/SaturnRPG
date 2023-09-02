@@ -7,19 +7,29 @@ using UnityEngine;
 
 namespace SaturnRPG.Battle.BattleAction
 {
-    public abstract class ActionMoveComponent : BattleMoveComponent
-    {
-        [SerializeField, Required]
-        private Transform playerSpawnLocation;
+	public abstract class ActionMoveComponent : BattleMoveComponent
+	{
+		[SerializeField, Required]
+		private Transform playerSpawnLocation;
 
-        public override UniTask PlayAttack(BattleContext context, BattleAttack attack)
-        {
-            throw new System.NotImplementedException();
-        }
+		public override async UniTask PlayAttack(BattleContext context, BattleAttack attack)
+		{
+			var targetPartyMember = attack.Target.GetPartyMember();
+			// Use the corresponding action component (if it exists) if it has a party member
+			// Otherwise use default action component
+			var actionComponent = targetPartyMember.Enabled
+				? context.PlayerActionInfo[targetPartyMember.Value]
+				: context.PlayerActionInfo.DefaultActionComponent;
 
-        public override List<ITargetable> GetTargetables(BattleUnit user, BattleContext context)
-        {
-            throw new System.NotImplementedException();
-        }
-    }
+			var playerActionComponent = Instantiate(actionComponent, playerSpawnLocation.position,
+				Quaternion.identity, transform);
+
+			await PlayMove(context, attack, playerActionComponent);
+
+			Destroy(playerActionComponent.gameObject);
+		}
+
+		protected abstract UniTask PlayMove(BattleContext context, BattleAttack attack,
+			PlayerActionComponent playerActionComponent);
+	}
 }
