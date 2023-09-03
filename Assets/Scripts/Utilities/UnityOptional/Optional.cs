@@ -19,6 +19,12 @@ public struct Optional<T>
         value = initialValue;
     }
 
-    public static Optional<T> None() => new Optional<T>();
+    public bool IsSome(out T value)
+    {
+        value = this.value;
+        return enabled;
+    }
+
+    public static Optional<T> None => default;
     public static Optional<T> Some(T val) => new Optional<T>(val);
 }

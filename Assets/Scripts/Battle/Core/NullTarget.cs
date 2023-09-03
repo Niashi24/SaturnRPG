@@ -30,6 +30,6 @@ namespace SaturnRPG.Battle
 
 		public Vector3 GetPosition() => Vector3.zero;
 		
-		public Optional<PartyMember> GetPartyMember() => Optional<PartyMember>.None();
+		public Optional<PartyMember> GetPartyMember() => Optional<PartyMember>.None;
 	}
 }
