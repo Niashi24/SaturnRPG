@@ -24,4 +24,4 @@ MonoBehaviour:
     - Name: partyMemberToActionComponent
       Entry: 6
       Data: 
-  defaultActionComponent: {fileID: 0}
+  <DefaultActionComponent>k__BackingField: {fileID: 0}

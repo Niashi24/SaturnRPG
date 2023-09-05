@@ -129,8 +129,11 @@ namespace SaturnRPG.Utilities.Extensions
 				max = new Vector3(maxX, maxY, 0)
 			};
 		}
-		
+
 		public static Vector2 DirectionTo(this Vector2 from, Vector2 to) => (to - from).normalized;
+
+		public static Vector2 With(this Vector2 original, float? x = null, float? y = null)
+			=> new Vector2(x ?? original.x, y ?? original.y);
 
 		public static Vector2 Round(this Vector2 original)
 			=> new(Mathf.Round(original.x), Mathf.Round(original.y));
@@ -138,11 +141,16 @@ namespace SaturnRPG.Utilities.Extensions
 		public static Vector2 RoundTo(this Vector2 original, float nearest)
 			=> new(original.x.RoundTo(nearest), original.y.RoundTo(nearest));
 
+		public static float Angle(this Vector2 original)
+			=> Mathf.Atan2(original.y, original.x);
+
 		public static Vector2 ComponentMultiply(this Vector2 a, Vector2 b) => new(a.x * b.x, a.y * b.y);
 
 		public static Vector2 ComponentDivide(this Vector2 a, Vector2 b) => new(a.x / b.x, a.y / b.y);
 
 		public static Vector3 ToVector3(this Vector2 a, float z = 0) => new(a.x, a.y, z);
+
+		public static Vector2 WithMagnitude(this Vector2 a, float magnitude) => a.normalized * magnitude;
 
 		// Returns the intersection point of the vector lines
 		// v = v1 + v2 * t and w = v3 + v4 * u
@@ -176,6 +184,21 @@ namespace SaturnRPG.Utilities.Extensions
 			if (value == 0) return 0;
 			return Mathf.Sign(value);
 		}
+
+		public static float IncreaseAbs(this float value, float increase, float maxAbs = Mathf.Infinity)
+		{
+			return value.Sign0() * Mathf.Clamp(Mathf.Abs(value) + increase, 0, maxAbs);
+		}
+
+		public static float MaxAbs(this float value, float maxAbs)
+		{
+			return value.Sign0() * Mathf.Min(Math.Abs(value), maxAbs);
+		}
+
+		public static Vector2 AngleToDirection(this float angleRadians)
+			=> new(Mathf.Cos(angleRadians), Mathf.Sin(angleRadians));
+		
+		// public static float DecreaseAbs(this float value, float dec)
 
 		public static int Round(this float value)
 		{

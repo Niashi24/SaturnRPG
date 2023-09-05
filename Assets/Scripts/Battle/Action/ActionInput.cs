@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace SaturnRPG.Battle.BattleAction
 {
@@ -9,5 +10,12 @@ namespace SaturnRPG.Battle.BattleAction
 		public bool Shift;
 		public bool Primary;
 		public bool Secondary;
+
+		public Action OnShift;
+		public Action OffShift;
+		public Action OnPrimary;
+		public Action OffPrimary;
+		public Action OnSecondary;
+		public Action OffSecondary;
 	}
 }

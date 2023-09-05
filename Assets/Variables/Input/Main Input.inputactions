@@ -349,6 +349,28 @@
                 },
                 {
                     "name": "",
+                    "id": "3c470050-f031-44f6-a41b-b9243072721c",
+                    "path": "<Gamepad>/leftStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "38d04ac7-18e3-4efb-a13a-97c8d80bf599",
+                    "path": "<Gamepad>/dpad",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "851fee02-8b7c-465e-8225-af227ccc2983",
                     "path": "<Gamepad>/rightStick",
                     "interactions": "",
@@ -405,7 +427,7 @@
                 {
                     "name": "",
                     "id": "3fee0cf7-9651-4e91-8572-2299c69d9e35",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -427,7 +449,7 @@
                 {
                     "name": "",
                     "id": "6da61ac3-da88-44a8-a8f3-b5db550c6aa5",
-                    "path": "<Gamepad>/leftShoulder",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

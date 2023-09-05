@@ -13,9 +13,9 @@ TagManager:
   - UI
   - 3D
   - 2D
-  - 
-  - 
-  - 
+  - Player
+  - Enemy
+  - Collision
   - 
   - 
   - 
