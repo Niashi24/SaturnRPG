@@ -16,7 +16,7 @@ namespace SaturnRPG.Battle.BattleAction
 		private Rigidbody2D rbdy2D;
 
 		[SerializeField, Required]
-		private Collider2D coll2D;
+		private CircleCollider2D coll2D;
 
 		[SerializeField]
 		private LayerMask playerMask;
@@ -99,13 +99,7 @@ namespace SaturnRPG.Battle.BattleAction
 
 		private bool IsGrounded()
 		{
-			// var results = new RaycastHit2D[1];
-			// coll2D.Cast(Vector2.down, new ContactFilter2D()
-			// {
-			// 	layerMask = collisionMask
-			// }, results);
-			// return results[0];
-			return Physics2D.CircleCast(rbdy2D.position, 16, Vector2.down, 1, collisionMask);
+			return Physics2D.CircleCast(rbdy2D.position, coll2D.radius, Vector2.down, 1, collisionMask);
 		}
 
 		private void StartShoot()

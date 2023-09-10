@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7858351256762439645}
   - component: {fileID: 9097721050617078035}
   m_Layer: 0
-  m_Name: SpiderNew
+  m_Name: Fly Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 6eafa8b80d8afbd41beda2224e7d5981, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ce37cdcd53921e744b9e6caea08518ce, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -110,7 +110,7 @@ MonoBehaviour:
         spriteRenderer: {fileID: 7858351256762439646}
 --- !u!95 &9097721050617078035
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -127,4 +127,5 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

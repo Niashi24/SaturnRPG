@@ -9,7 +9,7 @@ namespace SaturnRPG.Battle.BattleAction
 	public class PlayerActionInfo : SerializedScriptableObject
 	{
 		[SerializeField]
-		private Dictionary<PartyMember, PlayerActionComponent> partyMemberToActionComponent;
+		private Dictionary<PartyMember, PlayerActionComponent> partyMemberToActionComponent = new();
 
 		[field: SerializeField, Required]
 		public PlayerActionComponent DefaultActionComponent { get; private set; }

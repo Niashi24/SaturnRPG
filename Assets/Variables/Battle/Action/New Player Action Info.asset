@@ -15,13 +15,44 @@ MonoBehaviour:
   serializationData:
     SerializedFormat: 2
     SerializedBytes: 
-    ReferencedUnityObjects: []
+    ReferencedUnityObjects:
+    - {fileID: 11400000, guid: c8ceee741ce6ee9419eb4f384146aa7f, type: 2}
     SerializedBytesString: 
     Prefab: {fileID: 0}
     PrefabModificationsReferencedUnityObjects: []
     PrefabModifications: []
     SerializationNodes:
     - Name: partyMemberToActionComponent
+      Entry: 7
+      Data: 0|System.Collections.Generic.Dictionary`2[[SaturnRPG.Battle.PartyMember,
+        Assembly-CSharp],[SaturnRPG.Battle.BattleAction.PlayerActionComponent, Assembly-CSharp]],
+        mscorlib
+    - Name: comparer
+      Entry: 7
+      Data: 1|System.Collections.Generic.ObjectEqualityComparer`1[[SaturnRPG.Battle.PartyMember,
+        Assembly-CSharp]], mscorlib
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 12
+      Data: 1
+    - Name: 
+      Entry: 7
+      Data: 
+    - Name: $k
+      Entry: 10
+      Data: 0
+    - Name: $v
       Entry: 6
       Data: 
-  <DefaultActionComponent>k__BackingField: {fileID: 0}
+    - Name: 
+      Entry: 8
+      Data: 
+    - Name: 
+      Entry: 13
+      Data: 
+    - Name: 
+      Entry: 8
+      Data: 
+  <DefaultActionComponent>k__BackingField: {fileID: 6206939545836613546, guid: 120b47da8a5c32845ac1cbbee3ba5be2, type: 3}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d29bdee14ad4d13b6bb08fdf9844c18, type: 3}
   m_Name: Enemy 1
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Enemy 1
+  <Name>k__BackingField: Fly 1
   <Moves>k__BackingField:
   - {fileID: 11400000, guid: c35ac21953ed346478ada0101c9eda78, type: 2}
   <BattleAttackChooser>k__BackingField: {fileID: 11400000, guid: 6635fadef29ca5a408cb9ed52e36126d, type: 2}
@@ -22,4 +22,4 @@ MonoBehaviour:
     Attack: 8
     Magic: 0
     Defense: 1
-  <VisualPrefab>k__BackingField: {fileID: 7858351256762439645, guid: f1c4af4567f986f4d81dfa6738ddc4e7, type: 3}
+  <VisualPrefab>k__BackingField: {fileID: 7858351256762439645, guid: 3e5475f665bdb3e438b1bb02187887bd, type: 3}

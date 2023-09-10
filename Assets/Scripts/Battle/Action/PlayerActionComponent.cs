@@ -9,7 +9,7 @@ namespace SaturnRPG.Battle.BattleAction
 	[SelectionBase]
 	public abstract class PlayerActionComponent : MonoBehaviour
 	{
-		[SerializeField, Required]
+		[SerializeField, Required, Header("Action Component")]
 		private InputReader inputReader;
 
 		[SerializeField]
