@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Arial
   <Moves>k__BackingField:
-  - {fileID: 11400000, guid: c35ac21953ed346478ada0101c9eda78, type: 2}
   - {fileID: 11400000, guid: 06bd5a8e1835deb42ad536548729f664, type: 2}
+  - {fileID: 11400000, guid: a810d13a6b8180e4fbeb74315cab9bfc, type: 2}
   <BattleAttackChooser>k__BackingField: {fileID: 11400000, guid: 403e023bb9040ec4197f42d384c12663, type: 2}
   <Stats>k__BackingField:
     HP: 20
