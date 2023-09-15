@@ -2,16 +2,13 @@
 using SaturnRPG.Utilities.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace SaturnRPG.Battle.BattleAction
 {
-	public class SpiderActionComponent : PlayerActionComponent
+	public class WolfActionComponent : PlayerActionComponent
 	{
-		[Header("Static Physics")]
-		[SerializeField, Required]
-		private SpiderWebShot spiderWebShot;
 
+		[Header("Static Physics")]
 		[SerializeField, Required]
 		private Rigidbody2D rbdy2D;
 
@@ -30,24 +27,9 @@ namespace SaturnRPG.Battle.BattleAction
 
 		[SerializeField, Min(0)]
 		private float maxGroundXSpeed = 32f;
-
-		[SerializeField]
-		private float pullForce = 320f;
-
+		
 		private bool _isGrounded = false;
-
-		private void OnEnable()
-		{
-			MainInput.OnSecondary += StartShoot;
-			MainInput.OffSecondary += StopShoot;
-		}
-
-		private void OnDisable()
-		{
-			MainInput.OnSecondary -= StartShoot;
-			MainInput.OffSecondary -= StopShoot;
-		}
-
+		
 		private void FixedUpdate()
 		{
 			_isGrounded = IsGrounded();
@@ -83,34 +65,12 @@ namespace SaturnRPG.Battle.BattleAction
 
 				// rbdy2D.AddForce(mainInput.MoveDirection.With(y: 0) * (moveAcceleration * Time.deltaTime));
 			}
-
-			WebSwinging();
 		}
-
-		private void WebSwinging()
-		{
-			if (spiderWebShot.ShotState != SpiderWebShot.State.Attached) return;
-
-			if (MainInput.Shift)
-				spiderWebShot.Swing(rbdy2D);
-			else if (MainInput.Primary)
-				spiderWebShot.Pull(rbdy2D, pullForce);
-		}
-
+		
 		private bool IsGrounded()
 		{
-			return Physics2D.CircleCast(rbdy2D.position, coll2D.radius, Vector2.down, 1, collisionMask);
-		}
-
-		private void StartShoot()
-		{
-			if (MainInput.AimDirection == Vector2.zero) return;
-			spiderWebShot.StartShot(rbdy2D.position, MainInput.AimDirection);
-		}
-
-		private void StopShoot()
-		{
-			spiderWebShot.StopShot();
+			// multiply radius by 0.95f so you can't jump off walls
+			return Physics2D.CircleCast(rbdy2D.position, coll2D.radius * 0.95f, Vector2.down, 1, collisionMask);
 		}
 	}
 }
