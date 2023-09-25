@@ -13,6 +13,9 @@ namespace SaturnRPG.Battle.BattleAction
 		private SpiderWebShot spiderWebShot;
 
 		[SerializeField, Required]
+		private DistanceJoint2D distanceJoint2D;
+
+		[SerializeField, Required]
 		private Rigidbody2D rbdy2D;
 
 		[SerializeField, Required]
@@ -83,6 +86,8 @@ namespace SaturnRPG.Battle.BattleAction
 
 				// rbdy2D.AddForce(mainInput.MoveDirection.With(y: 0) * (moveAcceleration * Time.deltaTime));
 			}
+
+			distanceJoint2D.enabled = MainInput.Shift && spiderWebShot.ShotState == SpiderWebShot.State.Attached;
 
 			WebSwinging();
 		}

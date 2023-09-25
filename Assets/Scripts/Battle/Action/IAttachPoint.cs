@@ -4,9 +4,11 @@ namespace SaturnRPG.Battle.BattleAction
 {
 	public interface IAttachPoint
 	{
+		void OnAttach(Rigidbody2D user, DistanceJoint2D distanceJoint2D);
+		
 		void Pull(Rigidbody2D user, float pullForce);
 
-		void Swing(Rigidbody2D user);
+		void Swing(Rigidbody2D user, DistanceJoint2D distanceJoint2D);
 
 		public const float MINIMUM_SWING_DISTANCE = 0.01f;
 

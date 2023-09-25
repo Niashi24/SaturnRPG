@@ -132,8 +132,23 @@ namespace SaturnRPG.Utilities.Extensions
 
 		public static Vector2 DirectionTo(this Vector2 from, Vector2 to) => (to - from).normalized;
 
-		public static Vector2 With(this Vector2 original, float? x = null, float? y = null)
-			=> new Vector2(x ?? original.x, y ?? original.y);
+		public static Vector2 Rotate(this Vector2 original, float angleRad)
+		{
+			float sin = Mathf.Sin(angleRad);
+			float cos = Mathf.Cos(angleRad);
+
+			return new Vector2(original.x * cos - original.y * sin, original.x * sin + original.y * cos);
+		}
+
+		/// <summary>
+		/// Projects the 'original' Vector2 along the 'newDirection' Vector.
+		/// Note: assumes that the newDirection Vector is normalized
+		/// </summary>
+		public static Vector2 ProjectToDirection(this Vector2 original, Vector2 newDirection) 
+			=> Vector2.Dot(original, newDirection) * newDirection;
+
+		public static Vector2 With(this Vector2 original, float? x = null, float? y = null) =>
+			new Vector2(x ?? original.x, y ?? original.y);
 
 		public static Vector2 Round(this Vector2 original)
 			=> new(Mathf.Round(original.x), Mathf.Round(original.y));
@@ -197,7 +212,7 @@ namespace SaturnRPG.Utilities.Extensions
 
 		public static Vector2 AngleToDirection(this float angleRadians)
 			=> new(Mathf.Cos(angleRadians), Mathf.Sin(angleRadians));
-		
+
 		// public static float DecreaseAbs(this float value, float dec)
 
 		public static int Round(this float value)
@@ -208,6 +223,28 @@ namespace SaturnRPG.Utilities.Extensions
 		public static float RoundTo(this float value, float nearest)
 		{
 			return Mathf.Round(value / nearest) * nearest;
+		}
+		
+		public static float Remap (this float value, float from1, float to1, float from2, float to2)
+			=> (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+
+		public static IEnumerable<float> StepTo(this float start, float end, int steps)
+		{
+			if (steps <= 0) yield break;
+			if (steps == 1) yield return start;
+			else if (steps == 2)
+			{
+				yield return start;
+				yield return end;
+			}
+			else
+			{
+				float stepsF = steps - 1;
+				for (int i = 0; i < steps; i++)
+				{
+					yield return Mathf.Lerp(start, end, i / stepsF);
+				}
+			}
 		}
 	}
 }

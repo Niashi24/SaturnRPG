@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 708114684}
   - component: {fileID: 7134167023358587307}
   - component: {fileID: 5773877682833478371}
+  - component: {fileID: 258335822}
   m_Layer: 8
   m_Name: Main Rigidbody
   m_TagString: Untagged
@@ -71,6 +72,25 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 16
+--- !u!232 &258335822
+DistanceJoint2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 708114683}
+  m_Enabled: 0
+  serializedVersion: 4
+  m_EnableCollision: 1
+  m_ConnectedRigidBody: {fileID: 0}
+  m_BreakForce: Infinity
+  m_BreakTorque: Infinity
+  m_AutoConfigureConnectedAnchor: 0
+  m_Anchor: {x: 0, y: 0}
+  m_ConnectedAnchor: {x: 0, y: 0}
+  m_AutoConfigureDistance: 0
+  m_Distance: 64
+  m_MaxDistanceOnly: 1
 --- !u!1 &136279689940942031
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,8 +142,10 @@ MonoBehaviour:
     m_Bits: 1783
   parentTransform: {fileID: 6206939545836613545}
   spider: {fileID: 7134167023358587307}
+  distanceJoint2D: {fileID: 258335822}
   lineRenderer: {fileID: 1300038288}
   moveSpeed: 900
+  radius: 1
 --- !u!212 &1691391004484813252
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -273,7 +295,7 @@ LineRenderer:
     textureMode: 0
     shadowBias: 0.5
     generateLightingData: 0
-  m_UseWorldSpace: 0
+  m_UseWorldSpace: 1
   m_Loop: 0
 --- !u!1 &5561274049580804056
 GameObject:
@@ -412,7 +434,9 @@ MonoBehaviour:
     reference:
       _object: {fileID: 11400000, guid: da9935ef9958c24459e4072e28ef0330, type: 2}
   playerTransform: {fileID: 708114684}
+  controllerAimNotches: 32
   spiderWebShot: {fileID: 7200079998474331325}
+  distanceJoint2D: {fileID: 258335822}
   rbdy2D: {fileID: 7134167023358587307}
   coll2D: {fileID: 5773877682833478371}
   playerMask:
@@ -424,4 +448,3 @@ MonoBehaviour:
   moveAcceleration: 1600
   maxGroundXSpeed: 160
   pullForce: 1000
-  updateDraw: 0

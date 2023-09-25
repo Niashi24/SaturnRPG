@@ -10,40 +10,24 @@ namespace SaturnRPG.Battle.BattleAction
 		public Transform AttachPoint;
 		public bool ShouldBeMaxDistanceSwingOnly = true;
 		public float MaxAccelerationPerFrame = 100f;
-		public event Action OnOverAccelerationPerFrame;
+		
+		public void OnAttach(Rigidbody2D user, DistanceJoint2D distanceJoint2D)
+		{
+			distanceJoint2D.connectedBody = AttachedRigidbody;
+			distanceJoint2D.connectedAnchor = AttachedRigidbody.transform.InverseTransformPoint(AttachPoint.position);
+		}
 
 		public void Pull(Rigidbody2D user, float pullForce)
 		{
 			Vector2 position = AttachPoint.position;
 			Vector2 pullAcceleration = (position - user.position).normalized * (pullForce * Time.deltaTime);
 			user.velocity += pullAcceleration;
-			AttachedRigidbody.velocity -= pullAcceleration;
-			// user.AddForce(pullAcceleration);
-			// AttachedRigidbody.AddForceAtPosition(-pullAcceleration, position);
+			AttachedRigidbody.AddForceAtPosition(-pullAcceleration, position, ForceMode2D.Impulse);
 		}
 
-		public void Swing(Rigidbody2D user)
+		public void Swing(Rigidbody2D user, DistanceJoint2D distanceJoint2D)
 		{
-			var relativeVelocity = user.velocity + AttachedRigidbody.velocity;
-			var aC = IAttachPoint.GetCentripetalAcceleration(user.position, AttachPoint.position, relativeVelocity,
-				ShouldBeMaxDistanceSwingOnly);
-
-			var aCUser = IAttachPoint.GetCentripetalAcceleration(user.position, AttachPoint.position,
-				user.velocity,
-				ShouldBeMaxDistanceSwingOnly);
-
-			var aCOther = IAttachPoint.GetCentripetalAcceleration(AttachPoint.position, user.position,
-				AttachedRigidbody.velocity,
-				ShouldBeMaxDistanceSwingOnly);
-
-			if (aC.magnitude > MaxAccelerationPerFrame)
-			{
-				aC = aC.WithMagnitude(MaxAccelerationPerFrame);
-				OnOverAccelerationPerFrame?.Invoke();
-			}
-
-			user.velocity += aCUser - aCOther;
-			AttachedRigidbody.velocity += aCOther - aCUser;
+			distanceJoint2D.distance = Vector2.Distance(user.position, AttachPoint.position);
 		}
 	}
-}
+}	

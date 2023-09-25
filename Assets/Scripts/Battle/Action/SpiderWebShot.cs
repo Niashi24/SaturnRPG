@@ -17,6 +17,9 @@ namespace SaturnRPG.Battle.BattleAction
 		private Rigidbody2D spider;
 
 		[SerializeField, Required]
+		private DistanceJoint2D distanceJoint2D;
+
+		[SerializeField, Required]
 		private LineRenderer lineRenderer;
 		
 		[SerializeField]
@@ -59,10 +62,15 @@ namespace SaturnRPG.Battle.BattleAction
 			Attached
 		}
 
+		private void LateUpdate()
+		{
+			_transform.eulerAngles = Vector3.zero;
+			lineRenderer.SetPosition(0, spider.position.ToVector3());
+			lineRenderer.SetPosition(1, transform.position);
+		}
+
 		private void FixedUpdate()
 		{
-			lineRenderer.SetPosition(1, spider.position.ToVector3() - transform.position);
-			
 			if (ShotState != State.InMotion) return;
 
 			float distance = Time.deltaTime * moveSpeed;
@@ -84,6 +92,8 @@ namespace SaturnRPG.Battle.BattleAction
 				{
 					_attachPoint = _staticColliderAttachment;
 				}
+				
+				_attachPoint.OnAttach(spider, distanceJoint2D);
 			}
 			else
 			{
@@ -123,7 +133,7 @@ namespace SaturnRPG.Battle.BattleAction
 		public void Swing(Rigidbody2D spiderRigidbody2D)
 		{
 			if (ShotState != State.Attached) return;
-			_attachPoint.Swing(spiderRigidbody2D);
+			_attachPoint.Swing(spiderRigidbody2D, distanceJoint2D);
 		}
 	}
 }

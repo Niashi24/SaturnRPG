@@ -132,5 +132,11 @@ namespace SaturnRPG.Utilities.Extensions
 			first = default;
 			return false;
 		}
+
+		public static void ForEach<T>(this IEnumerable<T> enumerable, [NotNull] Action<T> action)
+		{
+			foreach (var item in enumerable)
+				action(item);
+		}
 	}
 }
