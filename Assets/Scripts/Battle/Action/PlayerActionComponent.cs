@@ -3,6 +3,7 @@ using LS.Utilities;
 using SaturnRPG.Utilities.Extensions;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace SaturnRPG.Battle.BattleAction
 {
@@ -22,13 +23,13 @@ namespace SaturnRPG.Battle.BattleAction
 		private int controllerAimNotches = 32;
 
 		// [ShowInInspector, ReadOnly]
-		public ActionInput MainInput { get; private set; }= new();
+		public ActionInput MainInput { get; private set; } = new();
 
 		private bool useMouse = false;
 
 		protected virtual void Awake()
 		{
-			inputReader.SetBattle();
+			inputReader.PushState(InputReader.InputState.Battle);
 
 			inputReader.MoveEvent += UpdateMove;
 			inputReader.AimDirectionEvent += UpdateAimDirection;
@@ -40,6 +41,7 @@ namespace SaturnRPG.Battle.BattleAction
 
 		protected virtual void OnDestroy()
 		{
+			inputReader.PopState();
 			inputReader.MoveEvent -= UpdateMove;
 			inputReader.AimDirectionEvent -= UpdateAimDirection;
 			inputReader.MouseDeltaEvent -= OnMouseDelta;

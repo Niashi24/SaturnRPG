@@ -29,8 +29,9 @@ namespace SaturnRPG
                 _mainInput.Battle.SetCallbacks(this);
                 _mainInput.UI.SetCallbacks(this);
                 
-                SetUI();
             }
+            _stateStack.Clear();
+            PushState(InputState.UI);
         }
 
         public event Action<Vector2> MoveUIEvent;
@@ -44,15 +45,50 @@ namespace SaturnRPG
         public event Action<bool> PrimaryEvent;
         public event Action<bool> SecondaryEvent;
 
+        [ShowInInspector, ReadOnly]
+        private readonly Stack<InputState> _stateStack = new();
+
+        public enum InputState
+        {
+            Battle,
+            UI
+        }
+
+        public void PushState(InputState newState)
+        {
+            Debug.Log($"new state: {newState}");
+            _stateStack.Push(newState);
+            SetState(newState);
+        }
+
+        public void PopState()
+        {
+            _stateStack.Pop();
+            SetState(_stateStack.Peek());
+        }
+
+        private void SetState(InputState newState)
+        {
+            switch (newState)
+            {
+                case InputState.Battle:
+                    SetBattle();
+                    break;
+                case InputState.UI:
+                    SetUI();
+                    break;
+            }
+        }
+
         [Button, DisableInEditorMode]
-        public void SetBattle()
+        private void SetBattle()
         {
             _mainInput.Battle.Enable();
             _mainInput.UI.Disable();
         }
 
         [Button, DisableInEditorMode]
-        public void SetUI()
+        private void SetUI()
         {
             _mainInput.UI.Enable();
             _mainInput.Battle.Disable();

@@ -561,7 +561,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 16
+  m_Radius: 8
 --- !u!50 &740708684
 Rigidbody2D:
   serializedVersion: 4
@@ -732,7 +732,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &837597201
 Transform:
   m_ObjectHideFlags: 0
@@ -1316,7 +1316,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 01edbf7dbd739d147815bebbc292a0e2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f29b0d9d31af7a544a68123a0598347c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -1848,6 +1848,10 @@ PrefabInstance:
     - target: {fileID: 6206939545836613544, guid: 120b47da8a5c32845ac1cbbee3ba5be2, type: 3}
       propertyPath: m_Name
       value: SpiderAction
+      objectReference: {fileID: 0}
+    - target: {fileID: 6206939545836613544, guid: 120b47da8a5c32845ac1cbbee3ba5be2, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6206939545836613545, guid: 120b47da8a5c32845ac1cbbee3ba5be2, type: 3}
       propertyPath: m_RootOrder
